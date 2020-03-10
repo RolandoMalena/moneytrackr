@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MoneyTrackr.Data.Migrations
+namespace MoneyTrackr.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class Initial_Migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,7 +51,7 @@ namespace MoneyTrackr.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -73,7 +72,7 @@ namespace MoneyTrackr.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -152,6 +151,41 @@ namespace MoneyTrackr.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "1", "354f8ba2-d289-42a1-bc84-813cec327456", "Administrator", "Administrator" },
+                    { "2", "509703ce-0cbb-4e6b-85fd-08e0490c4079", "User Manager", "User Manager" },
+                    { "3", "42ee467f-7949-4332-8f39-a01cf4002e18", "Regular User", "Regular User" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "07e1244e-cf1a-48d4-8b6e-551d815fcf95", 0, "9d73d32b-a18a-4564-8ec1-594fee828660", "admin@moneytrackr.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEFlqvFTOiv9/hxau1TwhCZL51htat/ZtuKshmME0zzBF6raURKU1U/3Ww0N+SRx3Ng==", null, false, "409e8f69-7c84-4939-9172-22cb54a3ebd4", false, "Admin" },
+                    { "ad68447e-ce08-464f-8291-299edcfc694f", 0, "7f0d2197-6662-4332-bfaa-36ad755b9035", "manager@moneytrackr.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEAOrMHDUsb8gP+b4I4l6K4KFOx+dGAEvZpz0dIc84n6Dlzh9COFEgkQrVfM8bvR+Mw==", null, false, "41964c4b-d1a9-4e43-9ba3-2a027b6d537b", false, "Manager" },
+                    { "350fd8cd-3ecd-42f5-8df0-2a655b57d7b1", 0, "2fd2c49d-ee0f-4503-89f2-ef4e3eb05cb9", "regular@moneytrackr.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEHQYhSlNjsGwiMXFhFLBSWAJ6DIi7c1paEgxa28FMrbYibtjQUvYEkffrx+yzEmuOA==", null, false, "75469417-4bf8-4347-9387-8c3366bf0352", false, "Regular" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[] { "07e1244e-cf1a-48d4-8b6e-551d815fcf95", "1" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[] { "ad68447e-ce08-464f-8291-299edcfc694f", "2" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "UserId", "RoleId" },
+                values: new object[] { "350fd8cd-3ecd-42f5-8df0-2a655b57d7b1", "3" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

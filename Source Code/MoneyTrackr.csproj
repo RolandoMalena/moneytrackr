@@ -5,6 +5,28 @@
     <UserSecretsId>aspnet-MoneyTrackr-1273EF41-F084-4A67-964F-D422980E8C49</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\ApplicationDbContextModelSnapshot.cs" />
+    <Compile Remove="Migrations\20200310161709_Initial_Migration.cs" />
+    <Compile Remove="Migrations\20200310161709_Initial_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200310162102_Initial_Migration.cs" />
+    <Compile Remove="Migrations\20200310162102_Initial_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200310170910_Initial_Migration.cs" />
+    <Compile Remove="Migrations\20200310170910_Initial_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200310171349_Initial_Migration.cs" />
+    <Compile Remove="Migrations\20200310171349_Initial_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200310173156_Initial_Migration.cs" />
+    <Compile Remove="Migrations\20200310173156_Initial_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200310173342_Initial_Migration.cs" />
+    <Compile Remove="Migrations\20200310173342_Initial_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200310214000_Initial_Migration.cs" />
+    <Compile Remove="Migrations\20200310214000_Initial_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200310220009_Initial_Migration.cs" />
+    <Compile Remove="Migrations\20200310220009_Initial_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200310221157_Initial_Migration.cs" />
+    <Compile Remove="Migrations\20200310221157_Initial_Migration.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
@@ -13,6 +35,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Data\DomainObjects\" />
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>
