@@ -12,6 +12,7 @@ namespace MoneyTrackr.Data
     {
         DbSet<IdentityRole> Roles { get; set; }
         DbSet<IdentityUser> Users { get; set; }
+        public DbSet<IdentityUserRole<string>> UserRoles { get; set; }
         //DbSet<Entry> Entries { get; set; }
 
         Task<int> SaveChangesAsync();
