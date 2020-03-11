@@ -48,19 +48,19 @@ namespace MoneyTrackr.Data
                 {
                     Id = AdministratorRoleId,
                     Name = AdministratorRoleName,
-                    NormalizedName = AdministratorRoleName
+                    NormalizedName = NormalizedAdministratorRoleName
                 },
                 new IdentityRole
                 {
                     Id = UserManagerRoleId,
                     Name = UserManagerRoleName,
-                    NormalizedName = UserManagerRoleName
+                    NormalizedName = NormalizedUserManagerRoleName
                 },
                 new IdentityRole
                 {
                     Id = RegularUserRoleId,
                     Name = RegularUserRoleName,
-                    NormalizedName = RegularUserRoleName
+                    NormalizedName = NormalizedRegularUserRoleName
                 }
             );
 
@@ -68,19 +68,22 @@ namespace MoneyTrackr.Data
             {
                 Id = adminUserId,
                 UserName = "Admin",
-                NormalizedUserName = "Admin"
+                NormalizedUserName = "Admin".ToUpper(),
+                LockoutEnabled = true
             };
             var managerUser = new IdentityUser
             {
                 Id = userManagerId,
                 UserName = "Manager",
-                NormalizedUserName = "Manager"
+                NormalizedUserName = "Manager".ToUpper(),
+                LockoutEnabled = true
             };
             var regularUser = new IdentityUser
             {
                 Id = regularUserId,
                 UserName = "Regular",
-                NormalizedUserName = "Regular"
+                NormalizedUserName = "Regular".ToUpper(),
+                LockoutEnabled = true
             };
 
             adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, Configuration["AdminPassword"]);

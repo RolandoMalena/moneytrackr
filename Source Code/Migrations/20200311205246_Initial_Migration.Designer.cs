@@ -10,14 +10,14 @@ using MoneyTrackr.Data;
 namespace MoneyTrackr.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200311002638_Initial_Migration")]
+    [Migration("20200311205246_Initial_Migration")]
     partial class Initial_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -51,23 +51,23 @@ namespace MoneyTrackr.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "81271e5a-f150-4f49-be31-19f7a9cb9445",
+                            ConcurrencyStamp = "b592db73-d6a0-4ddc-b552-b0cdf96d6741",
                             Name = "Administrator",
-                            NormalizedName = "Administrator"
+                            NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "787eefaf-41d9-460d-8838-35daae52f77f",
+                            ConcurrencyStamp = "7b053b9d-a08f-4eac-ba9e-067caeb1c08f",
                             Name = "User Manager",
-                            NormalizedName = "User Manager"
+                            NormalizedName = "USER MANAGER"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "55c3e9f8-5194-42ce-958b-4e39fe437d97",
+                            ConcurrencyStamp = "8f253445-8f89-44f3-bb07-57c3ecccdaa7",
                             Name = "Regular User",
-                            NormalizedName = "Regular User"
+                            NormalizedName = "REGULAR USER"
                         });
                 });
 
@@ -162,43 +162,43 @@ namespace MoneyTrackr.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "aeb8fa63-609e-4885-b61f-0725bbc06b1c",
+                            Id = "1d954590-2b9e-4f2f-922c-4aeaf62c6889",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f8a2bd74-158c-441c-af98-3d5b06382e53",
+                            ConcurrencyStamp = "55270b70-0750-4fd9-8fed-3a46bcd06185",
                             EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "Admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM42w3CI68/u9M5SmdoWLB0S8VOn0K5GUJHRakEX5B+EqnBOgHgOTGZqjZGRbtypzg==",
+                            LockoutEnabled = true,
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAELkm/s5lrg/bcou+LNrGVo2PkwDb9gAl5L7oBCFuF9oVYi3mvNDKmxmB97gZpiuIvg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "52c9692f-134a-4ce0-9a10-7debd48c510d",
+                            SecurityStamp = "2016e79f-f4ac-42af-a277-406f6ffabe56",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
                         new
                         {
-                            Id = "e5e4100b-5ec9-475e-a68e-c13e3c76c939",
+                            Id = "f0e89618-1f43-40cd-8ac4-85988296266a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2579a044-3cb6-4de7-bac6-c426686ddc88",
+                            ConcurrencyStamp = "4c566e14-886a-46ff-9ee7-f4ef0c5bbb11",
                             EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "Manager",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJt2VgShyCKADv/+dIY+KFc1Mx9u1GdAkM4wkoOeiZtcAUu31P2TfcPq44/ebpPTog==",
+                            LockoutEnabled = true,
+                            NormalizedUserName = "MANAGER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJo/+6SoKYtqTqeJ0yGp5o1Sj2HR5pmy3CvMjd1JAj3PZDE1dJ/9eE30jNcg8nIoag==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4f3b7e6c-c885-4b8a-8550-0294666eb2d5",
+                            SecurityStamp = "88dc18da-0d7a-4d8f-85d1-81a08e23efa3",
                             TwoFactorEnabled = false,
                             UserName = "Manager"
                         },
                         new
                         {
-                            Id = "01594cc2-d366-4138-9b5e-3061d79ef6e8",
+                            Id = "47a17c9f-be3a-44fb-a48c-70930ecd2b40",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a5cf31c1-6f26-4e9b-9295-119f5d387b28",
+                            ConcurrencyStamp = "c8c3bb98-aaa3-4216-895f-55c0a61250ce",
                             EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "Regular",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHG3TjdOvnb0NviXYku0CEGVDvtzpUASM+QE3tjZM4hj0qKT8XGUUBD8861I03qsHg==",
+                            LockoutEnabled = true,
+                            NormalizedUserName = "REGULAR",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBAi+Sdhe180Cj1RmYTZilo8O5FH/6Boa7jjhjPkTZvv1Y3bdqiLD/ff2BVxIoNC3Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e5f2df33-70ee-4b70-a383-5ff8664bae1d",
+                            SecurityStamp = "7ff4e046-cc54-44ea-9e1a-067e02694d07",
                             TwoFactorEnabled = false,
                             UserName = "Regular"
                         });
@@ -269,17 +269,17 @@ namespace MoneyTrackr.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "aeb8fa63-609e-4885-b61f-0725bbc06b1c",
+                            UserId = "1d954590-2b9e-4f2f-922c-4aeaf62c6889",
                             RoleId = "1"
                         },
                         new
                         {
-                            UserId = "e5e4100b-5ec9-475e-a68e-c13e3c76c939",
+                            UserId = "f0e89618-1f43-40cd-8ac4-85988296266a",
                             RoleId = "2"
                         },
                         new
                         {
-                            UserId = "01594cc2-d366-4138-9b5e-3061d79ef6e8",
+                            UserId = "47a17c9f-be3a-44fb-a48c-70930ecd2b40",
                             RoleId = "3"
                         });
                 });

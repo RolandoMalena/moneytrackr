@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MoneyTrackr.Data;
@@ -25,7 +26,6 @@ namespace MoneyTrackr.Controllers.API
         private readonly IConfiguration configuration;
         private readonly UserManager<IdentityUser> userManager;
 
-
         #region Constructor
         public UsersController(
             ApplicationDbContext _dbContext, 
@@ -39,14 +39,17 @@ namespace MoneyTrackr.Controllers.API
         #endregion
 
         #region LogIn
+        /// <summary>
+        /// Log in User and returns a JWT if succeeds
+        /// </summary>
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> LogIn([FromBody] UserLogInDto userDto)
         {
             var passwordHasher = new PasswordHasher<IdentityUser>();
             
-            var user = dbContext.Users
-                .SingleOrDefault(x => x.UserName.ToLower() == userDto.Username.ToLower());
+            var user = await dbContext.Users
+                .SingleOrDefaultAsync(x => x.UserName.ToLower() == userDto.Username.ToLower());
 
             if (user == null)
                 return BadRequest("Username or Password is incorrect."); //Return BadRequest so the end user does not know this username does not exists
@@ -65,7 +68,8 @@ namespace MoneyTrackr.Controllers.API
             }
 
             //Successful Authentication, proceed to generate token
-            string roleId = dbContext.UserRoles.SingleOrDefault(u => u.UserId == user.Id).RoleId;
+            string roleId = (await dbContext.UserRoles
+                .SingleOrDefaultAsync(u => u.UserId == user.Id)).RoleId;
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(configuration["Secret"]);
@@ -88,6 +92,148 @@ namespace MoneyTrackr.Controllers.API
 
             await userManager.ResetAccessFailedCountAsync(user);
             return Ok(response);
+        }
+        #endregion
+
+        #region Register
+        /// <summary>
+        /// Register a new User. Will be given a Regular User role.
+        /// </summary>
+        [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<ActionResult> Register(RegisterUserDto dto)
+        {
+            try
+            {
+                //Attempts to create User and assign role
+                await CreateUser(dto);
+            }
+            catch (ArgumentException ex)
+            {
+                //An error was found, return as BadRequest
+                return BadRequest(ex.Message);
+            }
+
+            //Everything went fine to this point
+            return Ok();
+        }
+        #endregion
+
+        #region GetAll
+        /// <summary>
+        /// Get every User registered in the Database. If the Logged In user is an User Manager, it won't return Administrators
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            bool isAdmin = User.IsInRole(AdministratorRoleName);
+
+            //Start by getting a list of User IDs with Role IDs
+            var userWithRoles = await dbContext.UserRoles
+                .ToDictionaryAsync
+                (
+                    ur => ur.UserId,
+                    ur => ur.RoleId
+                );
+
+            //Initialize query by getting all users
+            var users = await dbContext.Users.ToListAsync();
+
+            //Convert Models into Dtos
+            var dtos = users.Select(u => UserDto.ConvertBack(u, userWithRoles[u.Id])).ToArray();
+
+            //Order by RoleId and then by Username
+            dtos = dtos
+                .Where(u => isAdmin || u.RoleId != AdministratorRoleId) //If not an Administrator, filter non-Administrator Users
+                .OrderBy(u => u.RoleId)
+                .ThenBy(u => u.UserName)
+                .ToArray();
+
+            return Ok(dtos);
+        }
+        #endregion
+
+        #region Get
+        /// <summary>
+        /// Gets a single User by its Id
+        /// </summary>
+        /// <param name="id">The Id of the user to be found</param>
+        [HttpGet("{id}")]
+        public async Task<ActionResult> Get(string id)
+        {
+            var userInDb = await userManager.FindByIdAsync(id.ToString());
+
+            if (userInDb == null)
+                return NotFound();
+
+            string roleName = (await userManager.GetRolesAsync(userInDb)).Single();
+            if (User.IsInRole(UserManagerRoleName) && roleName == AdministratorRoleName)
+                return Forbid();
+
+            return Ok(UserDto.ConvertBack(userInDb, RoleHelper.GetRoleId(roleName)));
+        }
+        #endregion
+
+        #region GetByRole
+        /// <summary>
+        /// Get every User registered by its RoleId
+        /// </summary>
+        [HttpGet("GetByRole/{roleId}")]
+        public async Task<ActionResult> GetByRole(string roleId)
+        {
+            //If User is not an Admin, and passed the Admin RoleId, return Forbidden
+            if (!User.IsInRole(AdministratorRoleName) && roleId == AdministratorRoleId)
+                return Forbid();
+
+            //Check if the role is valid before going on
+            var role = await dbContext.Roles.SingleOrDefaultAsync(r => r.Id == roleId);
+            if (role == null)
+                return BadRequest("The provided roleId is not valid");
+
+            //Get users in DB and filter by roleId
+            var users = await userManager.GetUsersInRoleAsync(role.Name);
+
+            //Order by Username, then convert to Dto
+            var dtos = users
+                .Select(u => UserDto.ConvertBack(u))
+                .OrderBy(u => u.UserName)
+                .ToArray();
+
+            return Ok(dtos);
+        }
+        #endregion
+
+        #region Helpers
+        /// <summary>
+        /// Creates the user based on the Dto given and also assign Role,
+        /// check for exceptions for errors.
+        /// </summary>
+        /// <param name="dto">User data</param>
+        /// <returns>Id of the new User.</returns>
+        async Task<string> CreateUser(UserDto dto)
+        {
+            //Create model
+            var user = new IdentityUser()
+            {
+                UserName = dto.UserName
+            };
+
+            //This will validate the User and then create it
+            var result = await userManager.CreateAsync(user, dto.Password);
+
+            //If the user was not created, throw exception
+            if (!result.Succeeded)
+                throw new ArgumentException(result.Errors.First().Description);
+
+            //Create the UserRole entry
+            result = await userManager.AddToRoleAsync(user, RoleHelper.GetRoleName(dto.RoleId));
+
+            //If the role was not set, throw exception
+            if (!result.Succeeded)
+                throw new ArgumentException(result.Errors.First().Description);
+
+            //Return the user id
+            return user.Id;
         }
         #endregion
     }

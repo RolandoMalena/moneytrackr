@@ -11,6 +11,10 @@
             public const string AdministratorRoleName = "Administrator";
             public const string UserManagerRoleName = "User Manager";
             public const string RegularUserRoleName = "Regular User";
+
+            public const string NormalizedAdministratorRoleName = "ADMINISTRATOR";
+            public const string NormalizedUserManagerRoleName = "USER MANAGER";
+            public const string NormalizedRegularUserRoleName = "REGULAR USER";
         }
     }
 }
