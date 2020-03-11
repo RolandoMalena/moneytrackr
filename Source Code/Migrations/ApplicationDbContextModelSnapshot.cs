@@ -49,21 +49,21 @@ namespace MoneyTrackr.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "354f8ba2-d289-42a1-bc84-813cec327456",
+                            ConcurrencyStamp = "81271e5a-f150-4f49-be31-19f7a9cb9445",
                             Name = "Administrator",
                             NormalizedName = "Administrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "509703ce-0cbb-4e6b-85fd-08e0490c4079",
+                            ConcurrencyStamp = "787eefaf-41d9-460d-8838-35daae52f77f",
                             Name = "User Manager",
                             NormalizedName = "User Manager"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "42ee467f-7949-4332-8f39-a01cf4002e18",
+                            ConcurrencyStamp = "55c3e9f8-5194-42ce-958b-4e39fe437d97",
                             Name = "Regular User",
                             NormalizedName = "Regular User"
                         });
@@ -160,43 +160,43 @@ namespace MoneyTrackr.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "07e1244e-cf1a-48d4-8b6e-551d815fcf95",
+                            Id = "aeb8fa63-609e-4885-b61f-0725bbc06b1c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9d73d32b-a18a-4564-8ec1-594fee828660",
-                            Email = "admin@moneytrackr.com",
+                            ConcurrencyStamp = "f8a2bd74-158c-441c-af98-3d5b06382e53",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEFlqvFTOiv9/hxau1TwhCZL51htat/ZtuKshmME0zzBF6raURKU1U/3Ww0N+SRx3Ng==",
+                            NormalizedUserName = "Admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM42w3CI68/u9M5SmdoWLB0S8VOn0K5GUJHRakEX5B+EqnBOgHgOTGZqjZGRbtypzg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "409e8f69-7c84-4939-9172-22cb54a3ebd4",
+                            SecurityStamp = "52c9692f-134a-4ce0-9a10-7debd48c510d",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         },
                         new
                         {
-                            Id = "ad68447e-ce08-464f-8291-299edcfc694f",
+                            Id = "e5e4100b-5ec9-475e-a68e-c13e3c76c939",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7f0d2197-6662-4332-bfaa-36ad755b9035",
-                            Email = "manager@moneytrackr.com",
+                            ConcurrencyStamp = "2579a044-3cb6-4de7-bac6-c426686ddc88",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEAOrMHDUsb8gP+b4I4l6K4KFOx+dGAEvZpz0dIc84n6Dlzh9COFEgkQrVfM8bvR+Mw==",
+                            NormalizedUserName = "Manager",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJt2VgShyCKADv/+dIY+KFc1Mx9u1GdAkM4wkoOeiZtcAUu31P2TfcPq44/ebpPTog==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "41964c4b-d1a9-4e43-9ba3-2a027b6d537b",
+                            SecurityStamp = "4f3b7e6c-c885-4b8a-8550-0294666eb2d5",
                             TwoFactorEnabled = false,
                             UserName = "Manager"
                         },
                         new
                         {
-                            Id = "350fd8cd-3ecd-42f5-8df0-2a655b57d7b1",
+                            Id = "01594cc2-d366-4138-9b5e-3061d79ef6e8",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2fd2c49d-ee0f-4503-89f2-ef4e3eb05cb9",
-                            Email = "regular@moneytrackr.com",
+                            ConcurrencyStamp = "a5cf31c1-6f26-4e9b-9295-119f5d387b28",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEHQYhSlNjsGwiMXFhFLBSWAJ6DIi7c1paEgxa28FMrbYibtjQUvYEkffrx+yzEmuOA==",
+                            NormalizedUserName = "Regular",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHG3TjdOvnb0NviXYku0CEGVDvtzpUASM+QE3tjZM4hj0qKT8XGUUBD8861I03qsHg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "75469417-4bf8-4347-9387-8c3366bf0352",
+                            SecurityStamp = "e5f2df33-70ee-4b70-a383-5ff8664bae1d",
                             TwoFactorEnabled = false,
                             UserName = "Regular"
                         });
@@ -267,17 +267,17 @@ namespace MoneyTrackr.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "07e1244e-cf1a-48d4-8b6e-551d815fcf95",
+                            UserId = "aeb8fa63-609e-4885-b61f-0725bbc06b1c",
                             RoleId = "1"
                         },
                         new
                         {
-                            UserId = "ad68447e-ce08-464f-8291-299edcfc694f",
+                            UserId = "e5e4100b-5ec9-475e-a68e-c13e3c76c939",
                             RoleId = "2"
                         },
                         new
                         {
-                            UserId = "350fd8cd-3ecd-42f5-8df0-2a655b57d7b1",
+                            UserId = "01594cc2-d366-4138-9b5e-3061d79ef6e8",
                             RoleId = "3"
                         });
                 });

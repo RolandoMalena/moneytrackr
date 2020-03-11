@@ -67,19 +67,19 @@ namespace MoneyTrackr.Data
             {
                 Id = adminUserId,
                 UserName = "Admin",
-                Email = "admin@moneytrackr.com"
+                NormalizedUserName = "Admin"
             };
             var managerUser = new IdentityUser
             {
                 Id = userManagerId,
                 UserName = "Manager",
-                Email = "manager@moneytrackr.com"
+                NormalizedUserName = "Manager"
             };
             var regularUser = new IdentityUser
             {
                 Id = regularUserId,
                 UserName = "Regular",
-                Email = "regular@moneytrackr.com"
+                NormalizedUserName = "Regular"
             };
 
             adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, Configuration["AdminPassword"]);
