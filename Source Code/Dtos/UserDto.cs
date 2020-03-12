@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MoneyTrackr.Helpers;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using static MoneyTrackr.Constants.Role;
 
 namespace MoneyTrackr.Dtos
@@ -21,17 +22,18 @@ namespace MoneyTrackr.Dtos
     {
         public virtual string Id { get; set; }
 
-        [Required]
+        //Marked as not required to allow updating without the Username attached to it.
         [StringLength(25, MinimumLength = 5, ErrorMessage = "The Username must be between {2} and {1} characters long.")]
         [Display(Name = "Username")]
         public string UserName { get; set; }
 
-        //Marked as not required to allow updating without the password attached to it. Should check for it if Id is null
+        //Marked as not required to allow updating without the password attached to it.
         [StringLength(25, MinimumLength = 5, ErrorMessage = "The Password must be between {2} and {1} characters long.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         public virtual string RoleId { get; set; }
+        public virtual RoleDto Role { get; set; }
 
         /// <summary>
         /// Converts the Dto to the Model Object. It also sets the hashed password and the RoleId
@@ -60,7 +62,7 @@ namespace MoneyTrackr.Dtos
             };
 
             if (RoleHelper.GetRoleName(roleId) != null)
-                dto.RoleId = roleId;
+                dto.Role = new RoleDto(roleId);
 
             return dto;
         }
@@ -81,6 +83,26 @@ namespace MoneyTrackr.Dtos
             get { return RegularUserRoleId; }
             set { }
         }
+
+        public override RoleDto Role
+        {
+            get { return null; }
+            set { }
+        }
+    }
+    #endregion
+
+    #region RoleDto
+    public class RoleDto
+    {
+        public RoleDto(string roleId)
+        {
+            Id = roleId;
+            Name = RoleHelper.GetRoleName(roleId);
+        }
+
+        public string Id { get; set; }
+        public string Name { get; set; }
     }
     #endregion
 }

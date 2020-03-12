@@ -77,7 +77,8 @@ namespace MoneyTrackr.Controllers.API
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.Id),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserName),
                     new Claim(ClaimTypes.Role, RoleHelper.GetRoleName(roleId))
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
@@ -140,12 +141,14 @@ namespace MoneyTrackr.Controllers.API
             var users = await dbContext.Users.ToListAsync();
 
             //Convert Models into Dtos
-            var dtos = users.Select(u => UserDto.ConvertBack(u, userWithRoles[u.Id])).ToArray();
+            var dtos = users
+                .Select(u => UserDto.ConvertBack(u, userWithRoles.ContainsKey(u.Id) ? userWithRoles[u.Id] : null))
+                .ToArray();
 
             //Order by RoleId and then by Username
             dtos = dtos
-                .Where(u => isAdmin || u.RoleId != AdministratorRoleId) //If not an Administrator, filter non-Administrator Users
-                .OrderBy(u => u.RoleId)
+                .Where(u => u.Role != null && (isAdmin || u.Role.Id != AdministratorRoleId)) //If not an Administrator, filter non-Administrator Users
+                .OrderBy(u => u.Role.Id)
                 .ThenBy(u => u.UserName)
                 .ToArray();
 
@@ -157,16 +160,16 @@ namespace MoneyTrackr.Controllers.API
         /// <summary>
         /// Gets a single User by its Id
         /// </summary>
-        /// <param name="id">The Id of the user to be found</param>
-        [HttpGet("{id}")]
-        public async Task<ActionResult> Get(string id)
+        /// <param name="username">The Username of the user to be found</param>
+        [HttpGet("{username}")]
+        public async Task<ActionResult> Get(string username)
         {
-            var userInDb = await userManager.FindByIdAsync(id.ToString());
+            var userInDb = await userManager.FindByNameAsync(username);
 
             if (userInDb == null)
                 return NotFound();
 
-            string roleName = (await userManager.GetRolesAsync(userInDb)).Single();
+            string roleName = await GetUserRoleName(userInDb);
             if (User.IsInRole(UserManagerRoleName) && roleName == AdministratorRoleName)
                 return Forbid();
 
@@ -186,20 +189,140 @@ namespace MoneyTrackr.Controllers.API
                 return Forbid();
 
             //Check if the role is valid before going on
-            var role = await dbContext.Roles.SingleOrDefaultAsync(r => r.Id == roleId);
-            if (role == null)
+            if(!ValidateRole(roleId))
                 return BadRequest("The provided roleId is not valid");
 
             //Get users in DB and filter by roleId
-            var users = await userManager.GetUsersInRoleAsync(role.Name);
+            var users = await userManager.GetUsersInRoleAsync(RoleHelper.GetRoleName(roleId));
 
             //Order by Username, then convert to Dto
             var dtos = users
-                .Select(u => UserDto.ConvertBack(u))
+                .Select(u => UserDto.ConvertBack(u, roleId))
                 .OrderBy(u => u.UserName)
                 .ToArray();
 
             return Ok(dtos);
+        }
+        #endregion
+
+        #region Post
+        /// <summary>
+        /// Create a new User.
+        /// </summary>
+        [HttpPost]
+        public async Task<ActionResult> Post(UserDto dto)
+        {
+            //Validate RoleId
+            if (!User.IsInRole(AdministratorRoleName) && dto.RoleId == AdministratorRoleId)
+                return Forbid();
+
+            if (!ValidateRole(dto.RoleId))
+                return BadRequest("The provided roleId is not valid");
+            
+            try
+            {
+                dto.Id = await CreateUser(dto);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            //Everything went fine, prepare the Dto and make sure NOT to return the password
+            dto.Password = null;
+            dto.Role = new RoleDto(dto.RoleId);
+            dto.RoleId = null;
+
+            //Return location of the new User along with the Dto
+            return Created( Url.Action("Get", "Users", new { dto.UserName }), dto);
+        }
+        #endregion
+
+        #region Put
+        /// <summary>
+        /// Updates a specific User.
+        /// </summary>
+        [HttpPut("{username}")]
+        public async Task<ActionResult> Put(string username, [FromBody]UserDto dto)
+        {
+            //Validate RoleId
+            if (!User.IsInRole(AdministratorRoleName) && dto.RoleId == AdministratorRoleId)
+                return Forbid();
+
+            if (dto.RoleId != null && !ValidateRole(dto.RoleId))
+                return BadRequest("The provided roleId is not valid");
+
+            //Get User in the DB
+            var userInDb = await userManager.FindByNameAsync(username);
+
+            //Return NotFound if null
+            if (userInDb == null) 
+                return NotFound();
+
+            //Change username only if it was supplied
+            if(!string.IsNullOrWhiteSpace(dto.UserName))
+                userInDb.UserName = dto.UserName;
+
+            //Change password only if it was supplied
+            if (dto.Password != null)
+            {
+                //Validates password
+                var passwordResult = await userManager.PasswordValidators.First().ValidateAsync(userManager, userInDb, dto.Password);
+
+                //Return BadRequest if a validation error was found
+                if (!passwordResult.Succeeded)
+                    return BadRequest(passwordResult.Errors.First());
+
+                //Set password if no error were found
+                userInDb.PasswordHash = userManager.PasswordHasher.HashPassword(userInDb, dto.Password);
+            }
+
+            //Attemp to update the user
+            var result = await userManager.UpdateAsync(userInDb);
+
+            //If any error was found, return it as a BadRequest
+            if (!result.Succeeded)
+                return BadRequest(result.Errors.First());
+
+            //Change the RoleId if they are different
+            string role = RoleHelper.GetRoleName(dto.RoleId);
+            if (dto.RoleId != null && !(await userManager.IsInRoleAsync(userInDb, role)))
+            {
+                string currentRole = await GetUserRoleName(userInDb);
+                await userManager.RemoveFromRoleAsync(userInDb, currentRole);
+                await userManager.AddToRoleAsync(userInDb, role);
+            }
+
+            return Ok();
+        }
+        #endregion
+
+        #region Delete
+        /// <summary>
+        /// Deletes a specific User.
+        /// </summary>
+        [HttpDelete("{username}")]
+        public async Task<ActionResult> Delete(string username)
+        {
+            //Avoid a User to delete itself
+            if (User.FindFirst(ClaimTypes.NameIdentifier).Value.ToUpper() == username.ToUpper())
+                return BadRequest("Sorry, but you can't delete yourself!");
+
+            //Get the User
+            var user = await userManager.FindByNameAsync(username);
+
+            //Return NotFound if null
+            if (user == null)
+                return NotFound();
+
+            //Prevents a non-Administrator from deleting an Administrator
+            if (!User.IsInRole(AdministratorRoleName) && await GetUserRoleName(user) == AdministratorRoleName)
+                return Forbid();
+
+            //Removes the User
+            await userManager.DeleteAsync(user);
+
+            return NoContent();
         }
         #endregion
 
@@ -223,7 +346,7 @@ namespace MoneyTrackr.Controllers.API
 
             //If the user was not created, throw exception
             if (!result.Succeeded)
-                throw new ArgumentException(result.Errors.First().Description);
+                throw new ArgumentException(result.Errors.ToString());
 
             //Create the UserRole entry
             result = await userManager.AddToRoleAsync(user, RoleHelper.GetRoleName(dto.RoleId));
@@ -234,6 +357,24 @@ namespace MoneyTrackr.Controllers.API
 
             //Return the user id
             return user.Id;
+        }
+
+        /// <summary>
+        /// Validates if the provided RoleId is valid
+        /// </summary>
+        private bool ValidateRole(string roleId)
+        {
+            return RoleHelper.GetRoleName(roleId) != null;
+        }
+
+        /// <summary>
+        /// Gets the Role Name from a given User
+        /// </summary>
+        /// <param name="user">The User to get the Role from</param>
+        /// <returns>The Role Name of the User</returns>
+        private async Task<string> GetUserRoleName(IdentityUser user)
+        {
+            return (await userManager.GetRolesAsync(user)).SingleOrDefault();
         }
         #endregion
     }
