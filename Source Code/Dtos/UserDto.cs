@@ -91,18 +91,4 @@ namespace MoneyTrackr.Dtos
         }
     }
     #endregion
-
-    #region RoleDto
-    public class RoleDto
-    {
-        public RoleDto(string roleId)
-        {
-            Id = roleId;
-            Name = RoleHelper.GetRoleName(roleId);
-        }
-
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
-    #endregion
 }
