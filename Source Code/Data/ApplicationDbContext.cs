@@ -2,23 +2,14 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using MoneyTrackr.Data.DomainObjects;
 using System;
 using System.Threading.Tasks;
 using static MoneyTrackr.Constants.Role;
 
 namespace MoneyTrackr.Data
 {
-    public interface IApplicationDbContext
-    {
-        DbSet<IdentityRole> Roles { get; set; }
-        DbSet<IdentityUser> Users { get; set; }
-        public DbSet<IdentityUserRole<string>> UserRoles { get; set; }
-        //DbSet<Entry> Entries { get; set; }
-
-        Task<int> SaveChangesAsync();
-    }
-
-    public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public IConfiguration Configuration { get; }
 
@@ -29,16 +20,13 @@ namespace MoneyTrackr.Data
             Configuration = configuration;
         }
 
-        public Task<int> SaveChangesAsync()
-        {
-            return SaveChangesAsync();
-        }
+        public DbSet<Entry> Entries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            string adminUserId = Guid.NewGuid().ToString();
-            string userManagerId = Guid.NewGuid().ToString();
-            string regularUserId = Guid.NewGuid().ToString();
+            string adminUserId = "1d954590-2b9e-4f2f-922c-4aeaf62c6889";
+            string userManagerId = "f0e89618-1f43-40cd-8ac4-85988296266a";
+            string regularUserId = "47a17c9f-be3a-44fb-a48c-70930ecd2b40";
 
             PasswordHasher<IdentityUser> passwordHasher = new PasswordHasher<IdentityUser>();
 
@@ -48,19 +36,22 @@ namespace MoneyTrackr.Data
                 {
                     Id = AdministratorRoleId,
                     Name = AdministratorRoleName,
-                    NormalizedName = NormalizedAdministratorRoleName
+                    NormalizedName = NormalizedAdministratorRoleName,
+                    ConcurrencyStamp = "b592db73-d6a0-4ddc-b552-b0cdf96d6741"
                 },
                 new IdentityRole
                 {
                     Id = UserManagerRoleId,
                     Name = UserManagerRoleName,
-                    NormalizedName = NormalizedUserManagerRoleName
+                    NormalizedName = NormalizedUserManagerRoleName,
+                    ConcurrencyStamp = "7b053b9d-a08f-4eac-ba9e-067caeb1c08f"
                 },
                 new IdentityRole
                 {
                     Id = RegularUserRoleId,
                     Name = RegularUserRoleName,
-                    NormalizedName = NormalizedRegularUserRoleName
+                    NormalizedName = NormalizedRegularUserRoleName,
+                    ConcurrencyStamp = "8f253445-8f89-44f3-bb07-57c3ecccdaa7"
                 }
             );
 
@@ -69,26 +60,31 @@ namespace MoneyTrackr.Data
                 Id = adminUserId,
                 UserName = "Admin",
                 NormalizedUserName = "Admin".ToUpper(),
-                LockoutEnabled = true
+                PasswordHash = Configuration["AdminPassword"],
+                LockoutEnabled = true,
+                SecurityStamp = "2016e79f-f4ac-42af-a277-406f6ffabe56",
+                ConcurrencyStamp = "55270b70-0750-4fd9-8fed-3a46bcd06185"
             };
             var managerUser = new IdentityUser
             {
                 Id = userManagerId,
                 UserName = "Manager",
                 NormalizedUserName = "Manager".ToUpper(),
-                LockoutEnabled = true
+                PasswordHash = "AQAAAAEAACcQAAAAEJo/+6SoKYtqTqeJ0yGp5o1Sj2HR5pmy3CvMjd1JAj3PZDE1dJ/9eE30jNcg8nIoag==",
+                LockoutEnabled = true,
+                SecurityStamp = "88dc18da-0d7a-4d8f-85d1-81a08e23efa3",
+                ConcurrencyStamp = "4c566e14-886a-46ff-9ee7-f4ef0c5bbb11"
             };
             var regularUser = new IdentityUser
             {
                 Id = regularUserId,
                 UserName = "Regular",
                 NormalizedUserName = "Regular".ToUpper(),
-                LockoutEnabled = true
+                PasswordHash = "AQAAAAEAACcQAAAAEBAi+Sdhe180Cj1RmYTZilo8O5FH/6Boa7jjhjPkTZvv1Y3bdqiLD/ff2BVxIoNC3Q==",
+                LockoutEnabled = true,
+                SecurityStamp = "7ff4e046-cc54-44ea-9e1a-067e02694d07",
+                ConcurrencyStamp = "c8c3bb98-aaa3-4216-895f-55c0a61250ce"
             };
-
-            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, Configuration["AdminPassword"]);
-            managerUser.PasswordHash = passwordHasher.HashPassword(managerUser, "manager1");
-            regularUser.PasswordHash = passwordHasher.HashPassword(managerUser, "regular1");
             modelBuilder.Entity<IdentityUser>().HasData(adminUser, managerUser, regularUser);
             
             modelBuilder.Entity<IdentityUserRole<string>>().HasData

@@ -39,6 +39,14 @@
     <Compile Remove="Migrations\20200311201242_Initial_Migration.Designer.cs" />
     <Compile Remove="Migrations\20200311205200_Initial_Migration.cs" />
     <Compile Remove="Migrations\20200311205200_Initial_Migration.Designer.cs" />
+    <Compile Remove="Migrations\20200312173920_Entry_Table_Creation.cs" />
+    <Compile Remove="Migrations\20200312173920_Entry_Table_Creation.Designer.cs" />
+    <Compile Remove="Migrations\20200312174021_Entry_Table_Creation.cs" />
+    <Compile Remove="Migrations\20200312174021_Entry_Table_Creation.Designer.cs" />
+    <Compile Remove="Migrations\20200312174238_Entry_Table_Creation.cs" />
+    <Compile Remove="Migrations\20200312174238_Entry_Table_Creation.Designer.cs" />
+    <Compile Remove="Migrations\20200312174500_Entry_Table_Creation.cs" />
+    <Compile Remove="Migrations\20200312174500_Entry_Table_Creation.Designer.cs" />
   </ItemGroup>
 
 
@@ -57,7 +65,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Data\DomainObjects\" />
     <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
