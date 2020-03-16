@@ -36,10 +36,10 @@ html {
 }
 
 .border-top {
-  border-top: 1px solid #e5e5e5;
+    border-top: 1px solid rgba(26,188,156,0.75) !important;
 }
 .border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid rgba(26,188,156,0.75) !important;
 }
 
 .box-shadow {
@@ -59,13 +59,435 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-top: 100px;
+    margin-bottom: 60px;
 }
 .footer {
-  position: absolute;
   bottom: 0;
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+  background-color: white;
+}
+
+/*#region animations */
+.animate-top {
+    position: relative;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 1s;
+    animation-name: animatetop;
+    animation-duration: 1s
+}
+
+@-webkit-keyframes animatetop {
+    from {
+        top: -100px;
+        opacity: 0
+    }
+
+    to {
+        top: 0px;
+        opacity: 1
+    }
+}
+
+@keyframes animatetop {
+    from {
+        top: -100px;
+        opacity: 0
+    }
+
+    to {
+        top: 0;
+        opacity: 1
+    }
+}
+
+.animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+    from {
+        bottom: -100px;
+        opacity: 0
+    }
+
+    to {
+        bottom: 0px;
+        opacity: 1
+    }
+}
+
+@keyframes animatebottom {
+    from {
+        bottom: -100px;
+        opacity: 0
+    }
+
+    to {
+        bottom: 0;
+        opacity: 1
+    }
+}
+
+.animate-left {
+    position: relative;
+    -webkit-animation-name: animateleft;
+    -webkit-animation-duration: 1s;
+    animation-name: animateleft;
+    animation-duration: 1s
+}
+
+@-webkit-keyframes animateleft {
+    from {
+        left: -100px;
+        opacity: 0
+    }
+
+    to {
+        left: 0px;
+        opacity: 1
+    }
+}
+
+@keyframes animateleft {
+    from {
+        left: -100px;
+        opacity: 0
+    }
+
+    to {
+        left: 0;
+        opacity: 1
+    }
+}
+
+.animate-right {
+    position: relative;
+    -webkit-animation-name: animateright;
+    -webkit-animation-duration: 1s;
+    animation-name: animateright;
+    animation-duration: 1s
+}
+
+@-webkit-keyframes animateright {
+    from {
+        right: -100px;
+        opacity: 0
+    }
+
+    to {
+        right: 0px;
+        opacity: 1
+    }
+}
+
+@keyframes animateright {
+    from {
+        right: -100px;
+        opacity: 0
+    }
+
+    to {
+        right: 0;
+        opacity: 1
+    }
+}
+
+.text-danger {
+    color: red;
+}
+
+.animatehighlight {
+    -webkit-animation-name: animatehighlight; /* Safari 4.0 - 8.0 */
+    -webkit-animation-duration: 1s; /* Safari 4.0 - 8.0 */
+    animation-name: animatehighlight;
+    animation-duration: 1s;
+}
+
+/* Safari 4.0 - 8.0 */
+@-webkit-keyframes animatehighlight {
+    from {
+        background-color: initial;
+        opacity: 0;
+    }
+
+    to {
+        background-color: rgba(83,205,181,0.25);
+        opacity: 1;
+    }
+}
+
+/* Standard syntax */
+@keyframes animatehighlight {
+    from {
+        background-color: initial;
+        opacity: 0;
+    }
+
+    to {
+        background-color: rgba(83,205,181,0.25);
+        opacity: 1;
+    }
+}
+/*#endregion */
+
+/*#region css for a loader */
+.loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid rgb(83,205,181);
+    width: 60px;
+    height: 60px;
+    -webkit-animation: spin 1s linear infinite; /* Safari */
+    animation: spin 1s linear infinite;
+    margin: 12px auto;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+/*#endregion */
+
+/*#region theming for .btn-primary */
+.btn-primary {
+    background-color: rgb(83,205,181);
+    border-color: rgb(81,194,157);
+}
+
+    .btn-primary:hover {
+        background-color: rgb(53,175,151) !important;
+        border-color: rgb(51,164,127) !important;
+    }
+
+    .btn-primary:focus,
+    .btn-primary:active {
+        box-shadow: 0 0 0 0.2rem rgba(53,175,151, 0.5) !important;
+        background-color: rgb(53,175,151) !important;
+        border-color: rgb(51,164,127) !important;
+    }
+
+    .btn-primary.disabled {
+        background-color: rgba(83,205,181,0.9);
+        border-color: rgba(83,205,181,0.9);
+    }
+/*#endregion */
+
+/*#region theming for .btn-warning */
+.btn-warning {
+    background-color: rgb(240,173,78);
+    border-color: rgb(238,162,54);
+    color: white !important;
+}
+
+    .btn-warning:hover {
+        background-color: rgb(210,143,58) !important;
+        border-color: rgb(208,132,24) !important;
+        color: white !important;
+    }
+
+    .btn-warning:focus,
+    .btn-warning:active {
+        box-shadow: 0 0 0 0.2rem rgba(210,143,58, 0.5) !important;
+        background-color: rgb(210,143,58) !important;
+        border-color: rgb(208,132,24) !important;
+        color: white !important;
+    }
+/*#endregion */
+
+/*#region theming for anchors */
+a {
+    color: darkgreen;
+}
+
+    a:hover {
+        color: rgb(83,205,181);
+    }
+/*#endregion */
+
+/*#region navbar */
+.navbar {
+    background-color: rgb(83,205,181);
+}
+
+.navbar-brand {
+    font-size: x-large;
+    color: darkgreen;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.nav-link {
+    color: darkgreen;
+    font-weight: bold;
+    font-size: large;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+    .nav-link:hover,
+    .nav-link:focus {
+        color: rgba(0,100,0,.5);
+    }
+
+    .nav-link.active {
+        background-color: darkgreen !important;
+    }
+
+        .nav-link.active:hover {
+            background-color: rgba(0,100,0,.5) !important;
+        }
+
+.navbar-toggler {
+    border: solid 2px darkgreen;
+}
+
+    .navbar-toggler:hover {
+        background-color: rgba(0,100,0,.5);
+    }
+
+    .navbar-toggler:focus {
+        outline: none;
+    }
+
+    .navbar-toggler .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,100,0,1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+    }
+/*#endregion */
+
+.loading {
+    max-width: 300px;
+    width: 50%;
+    margin: 0 auto;
+}
+
+hr {
+    border-top: solid 1px rgba(26,188,156,0.75);
+}
+
+.social {
+    opacity: 0.5;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+    .social:hover, .social:focus {
+        opacity: 1;
+        text-decoration: none;
+    }
+
+/*#region theming for card */
+.card {
+    border: 1px solid rgba(26,188,156,0.75);
+    margin-bottom: 32px;
+    margin: 0 auto 32px auto;
+}
+
+.card-header {
+    background-color: rgba(26,188,156,0.75);
+    border-bottom: 1px solid rgba(26,188,156,0.75);
+    color: white;
+}
+
+.list-group-item {
+    border: 1px solid rgba(26,188,156,0.75);
+}
+
+.list-group-item-action,
+.list-group-item-action:hover,
+.list-group-item-action:focus {
+    color: darkgreen;
+}
+
+.badge-primary {
+    background-color: rgba(26,188,156,0.75);
+}
+/*#endregion */
+
+.jumbotron {
+    background-color: rgba(26,188,156,0.3);
+    padding: 2rem;
+    align-self: flex-start;
+}
+
+/*#region theming for table */
+.table .thead-dark th {
+    background-color: rgb(26,188,156);
+    border: none;
+}
+
+.table tbody td {
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(26,188,156,0.15);
+}
+
+    .table-hover tbody tr:hover a:hover {
+        color: darkgreen;
+    }
+/*#endregion */
+
+.form-inline .input-group {
+    margin-right: 12px;
+}
+
+/*#region theming for toastr */
+.toast {
+    opacity: 1 !important;
+}
+
+#toast-container > div {
+    opacity: 1 !important;
+}
+
+#toast-container > .toast-success {
+    background-color: #28a745;
+}
+
+#toast-container > .toast-error {
+    background-color: #dc3545;
+}
+
+#toast-container > .toast-info {
+    background-color: #007bff;
+}
+
+#toast-container > .toast-warning {
+    background-color: #ffc107;
+}
+/*#endregion */
+
+@media (min-width: 768px) {
+    .col-md-2 {
+        max-width: 40% !important;
+    }
+}
+
+.separated-list li {
+    margin-bottom: 10px;
 }

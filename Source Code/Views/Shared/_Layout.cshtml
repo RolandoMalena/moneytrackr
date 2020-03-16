@@ -3,47 +3,75 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MoneyTrackr</title>
+    <title>MoneyTrackr</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MoneyTrackr</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+    <header id="navbar" class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <nav class="navbar-header">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+
+                <label class="navbar-brand">
+                    <img src="~/images/icon.svg" width="40" height="40" class="d-inline-block align-top" alt="">
+                    MoneyTrackr
+                </label>
+            </nav>
+            <div id="navbarContent" class="navbar-collapse collapse">
+                <ul class="navbar-nav nav-pills">
+                    <li id="lnkHome" class="nav-item"><a class="nav-link" href="#Home">Home</a></li>
+                    <li id="lnkUsers" class="nav-item"><a class="nav-link" href="#Users">Users</a></li>
+                    <li id="lnkEntries" class="nav-item"><a class="nav-link" href="#Entries">Entries</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#About">About</a></li>
+                </ul>
+                <ul class="navbar-nav nav-pills ml-md-auto">
+                    <li id="lnkManage" class="nav-item">
+                        <a class="nav-link" href="#Manage"></a>
+                    </li>
+                    <li id="lnkLogOff" class="nav-item">
+                        <a class="nav-link" href="javascript:users.logOff()">
+                            Log off
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </nav>
+        </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - MoneyTrackr - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="container border-top footer text-muted fixed-bottom">
+        <div class="row">
+            <text class="col-md-auto align-self-center">&copy; @DateTime.Now.Year - MoneyTrackr</text>
+            <div class="col-md"></div>
+            <div class="col-md text-right">
+                <a class="social col-md-auto" href="https://www.linkedin.com/in/rolandomalena/" target="_blank">
+                    <img src="~/images/linkedin.png" width="32" title="LinkedIn Profile" />
+                </a>
+                &nbsp;
+                <a class="social col-md-auto" href="https://github.com/RolandoMalena" target="_blank">
+                    <img src="~/images/github.png" width="32" title="GitHub Profile" />
+                </a>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/users.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

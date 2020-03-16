@@ -159,6 +159,9 @@ namespace MoneyTrackr.Controllers.API
             if (validationResult != null)
                 return validationResult;
 
+            if (dto.Amount == 0)
+                return BadRequest("The Amount cannot be 0.");
+
             var userId = (await userManager.FindByNameAsync(username)).Id;
 
             //Convert Dto to Model Object
@@ -186,6 +189,9 @@ namespace MoneyTrackr.Controllers.API
             var validationResult = await ValidateUser(username);
             if (validationResult != null)
                 return validationResult;
+
+            if (dto.Amount == 0)
+                return BadRequest("The Amount cannot be 0.");
 
             //Get Entry in the DB
             var entryInDb = await GetEntry(username, id);

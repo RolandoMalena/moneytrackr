@@ -1,0 +1,32 @@
+﻿@model MoneyTrackr.ViewModels.LoginViewModel
+
+<form onsubmit="return users.logIn(this)">
+    <div class="form-horizontal">
+        <h4>Log In</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @for = "Login-Username", @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Username, new { htmlAttributes = new { id = "Login-Username", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @for = "Login-Password", @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { id = "Login-Password", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div id="summaryErrors" class="text-danger"></div>
+                <br />
+                <input type="submit" value="Log In" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>

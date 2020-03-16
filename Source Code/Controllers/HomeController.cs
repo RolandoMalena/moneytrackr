@@ -1,37 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MoneyTrackr.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace MoneyTrackr.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
+        // GET: Home
+        //Initial Landing Page
+        public ActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        //Returns the Home Page for non-authenticated Users
+        public PartialViewResult GetHomePage()
         {
-            return View();
+            return PartialView("_Home");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        //Returns the About Page
+        public PartialViewResult GetAboutPage()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return PartialView("_About");
+        }
+
+        //Returns the NotFound Page
+        public PartialViewResult GetNotFoundPage()
+        {
+            return PartialView("_NotFoundPartial");
         }
     }
 }

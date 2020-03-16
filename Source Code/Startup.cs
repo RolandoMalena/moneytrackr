@@ -20,12 +20,14 @@ namespace MoneyTrackr
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Env { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -71,12 +73,17 @@ namespace MoneyTrackr
             //Ends JWT Authentication Configuration
 
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            var builder = services.AddRazorPages();
             services.AddMvc()
                 .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
 
-            //WARNING: Set to false for production
-            Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+#if DEBUG
+            if(Env.IsDevelopment())
+            {
+                Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+                builder.AddRazorRuntimeCompilation();
+            }
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

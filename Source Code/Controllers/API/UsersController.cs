@@ -346,14 +346,14 @@ namespace MoneyTrackr.Controllers.API
 
             //If the user was not created, throw exception
             if (!result.Succeeded)
-                throw new ArgumentException(result.Errors.ToString());
+                throw new ArgumentException(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
 
             //Create the UserRole entry
             result = await userManager.AddToRoleAsync(user, RoleHelper.GetRoleName(dto.RoleId));
 
             //If the role was not set, throw exception
             if (!result.Succeeded)
-                throw new ArgumentException(result.Errors.First().Description);
+                throw new ArgumentException(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
 
             //Return the user id
             return user.Id;
