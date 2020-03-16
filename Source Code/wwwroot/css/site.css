@@ -433,6 +433,10 @@ hr {
     align-self: flex-start;
 }
 
+.jumbotron-center {
+    margin: 0 auto;
+}
+
 /*#region theming for table */
 .table .thead-dark th {
     background-color: rgb(26,188,156);

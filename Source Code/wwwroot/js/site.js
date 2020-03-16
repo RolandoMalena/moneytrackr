@@ -146,6 +146,10 @@ function showContent() {
 //Returns a default template for AJAX requests
 function request(url, type = 'GET', data = null, contentType = "application/json", additionalHeaders = [], cache = false) {
 	let headers = {};
+	let jwt = sessionStorage.getItem("jwt");
+
+	if (jwt != null)
+		headers.Authorization = "Bearer " + jwt;
 
 	//If Additional Headers are given, merge them into the headers variable
 	if (additionalHeaders.length > 0) {
