@@ -7,7 +7,7 @@ namespace MoneyTrackr.ViewModels
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Current Password")]
-        public string OldPassword { get; set; }
+        public string CurrentPassword { get; set; }
 
         [Required]
         [StringLength(25, MinimumLength = 5, ErrorMessage = "The New Password must be between {2} and {1} characters long.")]

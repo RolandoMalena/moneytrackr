@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MoneyTrackr.Data;
 using MoneyTrackr.Dtos;
 
 namespace MoneyTrackr.Controllers.API
@@ -21,6 +18,28 @@ namespace MoneyTrackr.Controllers.API
         public ManageController(UserManager<IdentityUser> _userManager)
         {
             userManager = _userManager;
+        }
+        #endregion
+
+        #region ChangeUserName
+        [HttpPatch("ChangeUsername")]
+        public async Task<IActionResult> ChangeUserName([FromBody] ChangeUserNameDto dto)
+        {
+            var user = await userManager.FindByIdAsync(User.FindFirst(ClaimTypes.Name).Value);
+
+            //Verify if the CurrentPassword is correct
+            var passwordHasher = new PasswordHasher<IdentityUser>();
+            if (passwordHasher.VerifyHashedPassword(user, user.PasswordHash, dto.CurrentPassword) != PasswordVerificationResult.Success)
+                return BadRequest("The Current Password is incorrect.");
+
+            //Procceed to change the username
+            user.UserName = dto.UserName;
+            var result = await userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+                return BadRequest(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+
+            return Ok();
         }
         #endregion
 
@@ -40,7 +59,11 @@ namespace MoneyTrackr.Controllers.API
                 return BadRequest("The Current Password is incorrect.");
 
             //Procceed to change the password
-            await userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
+            var result = await userManager.ChangePasswordAsync(user, dto.CurrentPassword, dto.NewPassword);
+
+            if (!result.Succeeded)
+                return BadRequest(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+
             return Ok();
         }
         #endregion
