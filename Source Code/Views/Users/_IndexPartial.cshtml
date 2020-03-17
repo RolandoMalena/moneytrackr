@@ -1,1 +1,35 @@
-﻿Users
+﻿<h1 class="text-center animate-top">Manage Users</h1>
+<br />
+<div class="animate-left">
+    <button onclick="users.loadForm()" class="btn btn-info btn-sm">
+        <span class="icon icons-add"></span>
+    </button>
+</div>
+<br />
+<div class="animate-right">
+    <table id="users" class="table table-hover table-responsive-sm table-sm">
+        <colgroup>
+            <col style="width:50%">
+            <col style="width:50%">
+            <col style="width:auto">
+            <col style="width:auto">
+        </colgroup>
+        <thead class="thead-dark">
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+</div>
+
+<partial name="_Modal" />
+
+<script>
+    users.loadUsers();
+</script>

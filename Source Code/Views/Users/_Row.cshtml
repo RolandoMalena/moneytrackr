@@ -1,0 +1,14 @@
+﻿<tr name="{UserName}">
+    <td>{UserName}</td>
+    <td>{Role.Name}</td>
+    <td>
+        <button onclick="users.loadForm('{UserName}')" class="btn btn-warning btn-sm">
+            <span class="icon icons-edit"></span>
+        </button>
+    </td>
+    <td>
+        <button onclick="users.deleteUser('{UserName}')" class="btn btn-danger btn-sm">
+            <span class="icon icons-delete"></span>
+        </button>
+    </td>
+</tr>

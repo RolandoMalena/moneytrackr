@@ -122,7 +122,7 @@ namespace MoneyTrackr.Controllers.API
 
         #region GetAll
         /// <summary>
-        /// Get every User registered in the Database. If the Logged In user is an User Manager, it won't return Administrators
+        /// Get every User registered in the Database. If the Logged In user is a User Manager, it won't return Administrators
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -216,6 +216,9 @@ namespace MoneyTrackr.Controllers.API
             if (!User.IsInRole(AdministratorRoleName) && dto.RoleId == AdministratorRoleId)
                 return Forbid();
 
+            if (string.IsNullOrWhiteSpace(dto.Password))
+                return BadRequest("The Password is required.");
+
             if (!ValidateRole(dto.RoleId))
                 return BadRequest("The provided roleId is not valid");
             
@@ -249,6 +252,10 @@ namespace MoneyTrackr.Controllers.API
             if (!User.IsInRole(AdministratorRoleName) && dto.RoleId == AdministratorRoleId)
                 return Forbid();
 
+            //We should not allow a User to update itself
+            if (User.FindFirst(ClaimTypes.NameIdentifier).Value.ToUpper() == username.ToUpper())
+                return BadRequest("Sorry, but you can't edit yourself. If you want to change your Username and/or Password, check the Manage API.");
+
             if (dto.RoleId != null && !ValidateRole(dto.RoleId))
                 return BadRequest("The provided roleId is not valid");
 
@@ -260,7 +267,7 @@ namespace MoneyTrackr.Controllers.API
                 return NotFound();
 
             //Change username only if it was supplied
-            if(!string.IsNullOrWhiteSpace(dto.UserName))
+            if (!string.IsNullOrWhiteSpace(dto.UserName))
                 userInDb.UserName = dto.UserName;
 
             //Change password only if it was supplied
@@ -271,7 +278,7 @@ namespace MoneyTrackr.Controllers.API
 
                 //Return BadRequest if a validation error was found
                 if (!passwordResult.Succeeded)
-                    return BadRequest(passwordResult.Errors.First());
+                    return BadRequest(string.Join(Environment.NewLine, passwordResult.Errors.Select(e => e.Description)));
 
                 //Set password if no error were found
                 userInDb.PasswordHash = userManager.PasswordHasher.HashPassword(userInDb, dto.Password);
@@ -282,7 +289,7 @@ namespace MoneyTrackr.Controllers.API
 
             //If any error was found, return it as a BadRequest
             if (!result.Succeeded)
-                return BadRequest(result.Errors.First());
+                return BadRequest(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
 
             //Change the RoleId if they are different
             string role = RoleHelper.GetRoleName(dto.RoleId);

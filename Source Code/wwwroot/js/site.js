@@ -230,6 +230,11 @@ $(window).on("hashchange", function () {
 	navigate();
 });
 
+//Helper function to replace all occurances
+function replaceAll(text, searchValue, valueToReplace) {
+	return text.split(searchValue).join(valueToReplace);
+}
+
 //Setting up toastr
 toastr.options.progressBar = true;
 toastr.options.hideDuration = 300;
