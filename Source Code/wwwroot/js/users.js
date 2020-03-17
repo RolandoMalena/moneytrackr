@@ -86,8 +86,8 @@ var users = (function () {
 	}
 
 	//Loads all Users
-	let loadUsers = async function () {
-		content.append(loadingHTML);
+	let loadUsers = function () {
+		content.append($(loadingHTML).clone().addClass("animate-bottom"));
 		
 		//Get the HTML for each Row
 		getHTML("/Users/GetRow", function (result) {
@@ -135,14 +135,14 @@ var users = (function () {
 			//Otherwise attempt to get the user and fill the input fields
 			request("/api/Users/" + username, "GET")
 				.done(function (user) {
-					let content = $(html);
+					let formContent = $(html);
 
-					content.find("#Id").val(username);
-					content.find("#Username").val(username);
-					content.find("#RoleId").val(user.role.id);
+					formContent.find("#Id").val(username);
+					formContent.find("#Username").val(username);
+					formContent.find("#RoleId").val(user.role.id);
 
 					//Set modal content
-					handler.setForm(content);
+					handler.setForm(formContent);
 				}).fail(function (response) {
 					toastr.error(response);
 					return;
@@ -214,7 +214,7 @@ var users = (function () {
 	let deleteUser = function (username) {
 		//Shows the modal with the warning
 		let handler = new ModalHandler("modal");
-		handler.show("Delete User", "Are you sure you want to delete this user?");
+		handler.show("Delete User '" + username + "'", "Are you sure you want to delete this user?");
 
 		//On Submit...
 		handler.onSubmit(function () {

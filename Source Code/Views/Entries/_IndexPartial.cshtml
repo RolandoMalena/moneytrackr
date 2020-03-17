@@ -1,1 +1,56 @@
-﻿Entries
+﻿@using System.Security.Claims
+
+<h1 class="text-center animate-top">Manage Entries</h1>
+<br />
+<div class="row">
+    <div class="animate-left col-md-auto">
+        <button id="btnAdd" onclick="entries.loadForm()" class="btn btn-info btn-sm">
+            <span class="icon icons-add"></span>
+        </button>
+        <button id="btnBack" onclick="entries.getEntries()" style="display:none" class="btn btn-light btn-sm">
+            <span class="icon icons-back"></span>
+        </button>
+    </div>
+
+    <div class="col-md" />
+
+    <div class="animate-right col-md-auto">
+        <partial name="_FilterEntriesPartial" model="new MoneyTrackr.ViewModels.FilterEntriesViewModel()" />
+    </div>
+</div>
+<br />
+
+<table id="entries" class="table table-hover table-responsive-sm table-sm animate-bottom">
+    <colgroup>
+        <col style="width:5%">
+        <col style="width:15%">
+        <col style="width:50%">
+        <col style="width:15%">
+        <col style="width:15%">
+        <col style="width:auto">
+        <col style="width:auto">
+    </colgroup>
+    <thead class="thead-dark">
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Balance</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<input type="hidden" id="currentUser" />
+<partial name="_Modal" />
+
+<script>
+    if(sessionStorage.getItem("roleName") != '@Constants.Role.RegularUserRoleName')
+        entries.getUsers();
+
+    content.find("#searchForm").submit();
+</script>

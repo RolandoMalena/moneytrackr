@@ -95,6 +95,13 @@ namespace MoneyTrackr.Controllers.API
                 .OrderByDescending(e => e.Date)
                 .ToArrayAsync();
 
+            //If there are no entries at all, there is nothing to be done
+            if (entries.Length == 0)
+                return Ok(new ReportDto()
+                {
+                    Entries = new ReportDetailDto[0]
+                });
+
             //Get the summary data
             int rowCount = entries.Length;
             double currentBalance = entries.Sum(e => e.Amount);
@@ -102,12 +109,12 @@ namespace MoneyTrackr.Controllers.API
             var deposits = entries.Where(e => e.Amount > 0);
             int depositCount = deposits.Count();
             double totalDeposit = deposits.Sum(e => e.Amount);
-            double depositAvg = deposits.Average(e => e.Amount);
+            double depositAvg = depositCount == 0 ? deposits.Average(e => e.Amount) : 0;
 
-            var withdraws = entries.Where(e => e.Amount < 0);
-            int withdrawCount = withdraws.Count();
-            double totalWithdraws = withdraws.Sum(e => e.Amount);
-            double withdrawAvg = withdraws.Average(e => e.Amount);
+            var withdrawals = entries.Where(e => e.Amount < 0);
+            int withdrawalsCount = withdrawals.Count();
+            double totalWithdrawals = withdrawals.Sum(e => e.Amount);
+            double withdrawalAvg = withdrawalsCount > 0 ? withdrawals.Average(e => e.Amount) : 0;
 
             //Convert to DTOs
             var dtos = entries
@@ -137,9 +144,9 @@ namespace MoneyTrackr.Controllers.API
                 TotalDeposits = totalDeposit,
                 DepositAverage = double.IsNaN(depositAvg) ? 0 : depositAvg,
 
-                WithdrawCount = withdrawCount,
-                TotalWithdraws = totalWithdraws,
-                WithdrawAverage = double.IsNaN(withdrawAvg) ? 0 : withdrawAvg,
+                WithdrawCount = withdrawalsCount,
+                TotalWithdraws = totalWithdrawals,
+                WithdrawAverage = double.IsNaN(withdrawalAvg) ? 0 : withdrawalAvg,
 
                 Entries = dtos
             };

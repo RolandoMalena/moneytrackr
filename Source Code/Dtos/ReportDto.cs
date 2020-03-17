@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MoneyTrackr.Dtos
+﻿namespace MoneyTrackr.Dtos
 {
     public class ReportDto
     {
-        public double CurrentBalance { get; set; }
-        public int EntryCount { get; set; }
+        public double CurrentBalance { get; set; } = 0;
+        public int EntryCount { get; set; } = 0;
 
-        public double TotalDeposits { get; set; }
-        public double DepositAverage { get; set; }
-        public int DepositCount { get; set; }
+        public double TotalDeposits { get; set; } = 0;
+        public double DepositAverage { get; set; } = 0;
+        public int DepositCount { get; set; } = 0;
 
-        public double TotalWithdraws { get; set; }
-        public double WithdrawAverage { get; set; }
-        public int WithdrawCount { get; set; }
+        public double TotalWithdraws { get; set; } = 0;
+        public double WithdrawAverage { get; set; } = 0;
+        public int WithdrawCount { get; set; } = 0;
 
         public ReportDetailDto[] Entries { get; set; }
     }

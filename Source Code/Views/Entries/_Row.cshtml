@@ -1,0 +1,17 @@
+﻿<tr name="{Id}">
+    <td name="id">{Id}</td>
+    <td name="date">{Date}</td>
+    <td name="description">{Description}</td>
+    <td name="amount">{Amount}</td>
+    <td name="balance"><strong>{Balance}</strong></td>
+    <td>
+        <button onclick="entries.loadForm({Id})" class="btn btn-warning btn-sm">
+            <span class="icon icons-edit"></span>
+        </button>
+    </td>
+    <td>
+        <button onclick="entries.deleteEntry({Id})" class="btn btn-danger btn-sm">
+            <span class="icon icons-delete"></span>
+        </button>
+    </td>
+</tr>

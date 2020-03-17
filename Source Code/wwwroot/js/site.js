@@ -6,6 +6,19 @@ const loadingHTML = $("#loading")[0];
 //Content div, everything will be placed inside it
 const content = $("#content");
 
+//Formatter used for numbers to be displayed in currency format
+const currencyFormatter = new Intl.NumberFormat('en', {
+	style: 'currency',
+	currency: 'USD'
+})
+
+//Formatter used for dates
+const dateFormatter = Intl.DateTimeFormat('en', {
+	year: 'numeric',
+	month: '2-digit',
+	day: '2-digit'
+});
+
 //Updates content dynamically, with the option to override
 function navigate(targetLocation = "") {
 	//Default hash value
@@ -186,24 +199,13 @@ function setNavigationLinks() {
 	else {
 		links.find("#lnkHome").hide();
 
+		links.find("#lnkEntries").show();
 		links.find("#lnkLogOff").show();
 
-		switch (roleName) {
-			case "User Manager": {
-				links.find("#lnkUsers").show();
-				links.find("#lnkEntries").hide();
-			} break;
-
-			case "Regular User": {
-				links.find("#lnkUsers").hide();
-				links.find("#lnkEntries").show();
-			} break;
-
-			default: {
-				links.find("#lnkUsers").show();
-				links.find("#lnkEntries").show();
-			} break;
-		}
+		if (roleName == "Regular User")
+			links.find("#lnkUsers").hide();
+		else
+			links.find("#lnkUsers").show();
 
 		//Finally, shows the username
 		links.find("#lnkManage a").html("Hello " + sessionStorage.getItem("username") + "!");
@@ -233,6 +235,11 @@ $(window).on("hashchange", function () {
 //Helper function to replace all occurances
 function replaceAll(text, searchValue, valueToReplace) {
 	return text.split(searchValue).join(valueToReplace);
+}
+
+//Helper function to format string to number
+function formatCurrenty(str) {
+	return currencyFormatter.format(str).replace('$', '');
 }
 
 //Setting up toastr
