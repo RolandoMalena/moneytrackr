@@ -15,6 +15,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 namespace MoneyTrackr
 {
@@ -76,9 +79,28 @@ namespace MoneyTrackr
             var builder = services.AddRazorPages();
             services.AddMvc()
                 .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "MoneyTrackr API",
+                    Version = "v1",
+                    Description = "Sample API to manage deposits and withdrawals entries, it also implements User management. All endpoints except the 'Login' and 'Register' endpoints requires the 'Authorization' header to be set using the JWT provided by the 'Login' endpoint preceded by the 'Bearer' indicator.",
+                    Contact = new OpenApiContact()
+                    {
+                        Name = "Rolando Malena",
+                        Url = new Uri("https://www.linkedin.com/in/rolandomalena/")
+                    }
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
 
 #if DEBUG
-            if(Env.IsDevelopment())
+            if (Env.IsDevelopment())
             {
                 Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
                 builder.AddRazorRuntimeCompilation();
@@ -108,6 +130,14 @@ namespace MoneyTrackr
             
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MoneyTrackr V1");
+                c.RoutePrefix = "api/doc";
+            });
 
             app.UseEndpoints(endpoints =>
             {

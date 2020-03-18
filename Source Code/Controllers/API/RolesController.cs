@@ -27,6 +27,7 @@ namespace MoneyTrackr.Controllers.API
         /// <summary>
         /// Get all Roles
         /// </summary>
+        /// <returns>An array of RoleDto</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -35,7 +36,7 @@ namespace MoneyTrackr.Controllers.API
             var roles = await dbContext.Roles
                 .Where(r => isAdmin || r.Id != AdministratorRoleId)
                 .ToListAsync();
-
+            
             return Ok(roles.Select(r => RoleDto.ConvertBack(r)).ToArray());
         }
         #endregion

@@ -22,6 +22,10 @@ namespace MoneyTrackr.Controllers.API
         #endregion
 
         #region ChangeUserName
+        /// <summary>
+        /// Changes your Username
+        /// </summary>
+        /// <param name="dto">The new Username along with the Password for verification.</param>
         [HttpPatch("ChangeUsername")]
         public async Task<IActionResult> ChangeUserName([FromBody] ChangeUserNameDto dto)
         {
@@ -44,6 +48,10 @@ namespace MoneyTrackr.Controllers.API
         #endregion
 
         #region ChangePassword
+        /// <summary>
+        /// Changes your Password
+        /// </summary>
+        /// <param name="dto">The new Password along with the current one for verification.</param>
         [HttpPatch("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
         {

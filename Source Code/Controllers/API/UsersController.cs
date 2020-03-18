@@ -40,10 +40,10 @@ namespace MoneyTrackr.Controllers.API
 
         #region LogIn
         /// <summary>
-        /// Log in User and returns a JWT if succeeds
+        /// Logs in User and returns a JWT
         /// </summary>
         [AllowAnonymous]
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<IActionResult> LogIn([FromBody] UserLogInDto userDto)
         {
             var passwordHasher = new PasswordHasher<IdentityUser>();
@@ -122,7 +122,7 @@ namespace MoneyTrackr.Controllers.API
 
         #region GetAll
         /// <summary>
-        /// Get every User registered in the Database. If the Logged In user is a User Manager, it won't return Administrators
+        /// Get every User registered.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -158,7 +158,7 @@ namespace MoneyTrackr.Controllers.API
 
         #region Get
         /// <summary>
-        /// Gets a single User by its Id
+        /// Gets a single User by its Username
         /// </summary>
         /// <param name="username">The Username of the user to be found</param>
         [HttpGet("{username}")]
@@ -179,7 +179,7 @@ namespace MoneyTrackr.Controllers.API
 
         #region GetByRole
         /// <summary>
-        /// Get every User registered by its RoleId
+        /// Get every User registered by its Role
         /// </summary>
         [HttpGet("GetByRole/{roleId}")]
         public async Task<ActionResult> GetByRole(string roleId)

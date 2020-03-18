@@ -31,7 +31,7 @@ namespace MoneyTrackr.Controllers.API
 
         #region Get All (with optional Date Range)
         /// <summary>
-        /// Get every Entry registered and optionally within two dates.
+        /// Get every Entry registered to a given User and optionally within two dates.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Get(string username, DateTime? from, DateTime? to)
@@ -58,8 +58,9 @@ namespace MoneyTrackr.Controllers.API
 
         #region Get
         /// <summary>
-        /// Gets a single Entry by its Id.
+        /// Gets a single Entry by its Id and for the given User.
         /// </summary>
+        /// <param name="username">The username to whom the entry belongs</param>
         /// <param name="id">The Id of the entry to be found</param>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string username, int id)
