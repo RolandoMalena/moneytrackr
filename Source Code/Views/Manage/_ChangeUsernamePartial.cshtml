@@ -1,6 +1,6 @@
 ﻿@model MoneyTrackr.ViewModels.ChangeUsernameViewModel
 
-<form onsubmit="return manage.changeUsername(this)">
+<form onsubmit="return manage.changeUsername(this)" autocomplete="off">
     <div class="form-horizontal">
         <h4>Change Username</h4>
         <hr />
@@ -8,7 +8,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label  col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
                 @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -16,7 +16,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CurrentPassword, htmlAttributes: new { @class = "control-label  col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CurrentPassword, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CurrentPassword, new { htmlAttributes = new { @class = "form-control", autocomplete = "new-password" } })
                 @Html.ValidationMessageFor(model => model.CurrentPassword, "", new { @class = "text-danger" })
             </div>
         </div>

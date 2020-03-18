@@ -30,17 +30,19 @@ var entries = (function () {
 			to: frm.find("#To").val()
 		};
 
-		let user = frm.find("#Users").val();
-		let tableBody = content.find("#entries tbody");
-
 		//If 'To' is lower than 'From, display error and return
 		if (Date.parse(model.to) < Date.parse(model.from)) {
 			errorMsg.text("The field 'To' can't be lower than 'From'.");
 			return false;
 		}
 
+		let user = frm.find("#Users").val();
+		let tableBody = content.find("#entries tbody");
+		let details = content.find("#details");
+
 		//At this point, clear the error message and hide content
 		errorMsg.text('');
+		details.hide();
 		tableBody.empty();
 		content.append($(loadingHTML).clone().addClass("animate-bottom"));
 
@@ -50,7 +52,16 @@ var entries = (function () {
 
 			//Do the request
 			request('/api/Users/' + user + '/Entries/Report?from=' + model.from + '&to=' + model.to, "GET")
-				.done(function (result) {
+				.done(async function (result) {
+					details.find("#balance").text(formatCurrenty(result.currentBalance));
+					details.find("#totalEntries").text(result.entryCount);
+					details.find("#totalDeposits").text(formatCurrenty(result.totalDeposits));
+					details.find("#countDeposits").text(result.depositCount);
+					details.find("#totalWithdrawals").text(formatCurrenty(result.totalWithdraws).replace('-', ''));
+					details.find("#countWithdrawals").text(result.withdrawCount);
+					content.find("#currentUser").val(user);
+
+					//If there are not entries, nothing else needs to be done
 					if (result.entries.length == 0) {
 						toastr.warning("No entries where to be found.");
 						return;
@@ -70,11 +81,11 @@ var entries = (function () {
 						tableBody.append(row);
 					});
 
-					content.find("#currentUser").val(user);
 				}).fail(function (response) {
 					toastr.error(response.responseText);
 				})
 				.always(function () {
+					details.show();
 					content.find("#loading.animate-bottom").remove();
 				});
 		});

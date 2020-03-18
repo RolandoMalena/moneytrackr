@@ -1,6 +1,6 @@
 ﻿@model MoneyTrackr.ViewModels.RegisterViewModel
 
-<form onsubmit="return users.register(this)">
+<form onsubmit="return users.register(this)" autocomplete="off">
     <div class="form-horizontal">
         <h4>Register</h4>
         <hr />
@@ -16,7 +16,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @for = "Register-Password", @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { id = "Register-Password", @class = "form-control" } })
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { id = "Register-Password", @class = "form-control", autocomplete = "new-password" } })
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
         </div>

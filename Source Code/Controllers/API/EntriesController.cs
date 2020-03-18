@@ -45,6 +45,7 @@ namespace MoneyTrackr.Controllers.API
                 .Where(e => !from.HasValue || from.Value.Date <= e.Date)
                 .Where(e => !to.HasValue || e.Date <= to.Value.Date)
                 .OrderByDescending(e => e.Date)
+                .ThenByDescending(e => e.Id)
                 .ToArrayAsync();
 
             var dtos = entries
@@ -93,6 +94,7 @@ namespace MoneyTrackr.Controllers.API
             //Get the entries
             var entries = await (await GetEntriesQuery(username))
                 .OrderByDescending(e => e.Date)
+                .ThenByDescending(e => e.Id)
                 .ToArrayAsync();
 
             //If there are no entries at all, there is nothing to be done

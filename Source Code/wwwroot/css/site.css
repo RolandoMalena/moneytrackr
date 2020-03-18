@@ -238,39 +238,9 @@ body {
 }
 /*#endregion */
 
-/*#region css for a loader */
-.loader {
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid rgb(83,205,181);
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 1s linear infinite; /* Safari */
-    animation: spin 1s linear infinite;
-    margin: 12px auto;
+.spinner-border {
+    color: rgb(83,205,181);
 }
-
-/* Safari */
-@-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
-
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-/*#endregion */
 
 /*#region theming for .btn-primary */
 .btn-primary {
@@ -297,6 +267,10 @@ body {
 /*#endregion */
 
 /*#region theming for .btn-warning */
+.bg-warning {
+    background-color: rgb(240,173,78) !important;
+}
+
 .btn-warning {
     background-color: rgb(240,173,78);
     border-color: rgb(238,162,54);
@@ -439,7 +413,7 @@ hr {
 
 /*#region theming for table */
 .table .thead-dark th {
-    background-color: rgb(26,188,156);
+    background-color: rgba(26,188,156,0.75);
     border: none;
 }
 
@@ -451,9 +425,12 @@ hr {
     background-color: rgba(26,188,156,0.15);
 }
 
-    .table-hover tbody tr:hover a:hover {
-        color: darkgreen;
-    }
+.table-hover tbody tr:hover a:hover {
+    color: darkgreen;
+}
+.table tbody tr td {
+    border-top-color: rgba(26,188,156,0.75);
+}
 /*#endregion */
 
 .form-inline .input-group {

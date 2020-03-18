@@ -1,6 +1,4 @@
-﻿@using System.Security.Claims
-
-<h1 class="text-center animate-top">Manage Entries</h1>
+﻿<h1 class="text-center animate-top">Manage Entries</h1>
 <br />
 <div class="row">
     <div class="animate-left col-md-auto">
@@ -16,6 +14,63 @@
 
     <div class="animate-right col-md-auto">
         <partial name="_FilterEntriesPartial" model="new MoneyTrackr.ViewModels.FilterEntriesViewModel()" />
+    </div>
+</div>
+<br />
+
+<div id="details" class="card-deck">
+    <div class="card animate-left">
+        <div class="card-header">
+            <h4 class="text-center">General</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-sm-auto" />
+            <div class="col-sm-5">
+                <h6 class="text-center">Balance</h6>
+                <h6 id="balance" class="text-center"></h6>
+            </div>
+            <div class="col-sm-5">
+                <h6 class="text-center">Entries</h6>
+                <h6 id="totalEntries" class="text-center"></h6>
+            </div>
+            <div class="col-sm-auto" />
+        </div>
+    </div>
+    <div class="card animate-bottom">
+        <div class="card-header">
+            <h4 class="text-center">Deposits</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-sm-auto" />
+            <div class="col-sm-5">
+                <h6 class="text-center">Total</h6>
+                <h6 id="totalDeposits" class="text-center"></h6>
+            </div>
+            <div class="col-sm-5">
+                <h6 class="text-center">Entries</h6>
+                <h6 id="countDeposits" class="text-center"></h6>
+            </div>
+            <div class="col-sm-auto" />
+            <div class="col-sm-auto" />
+        </div>
+    </div>
+    <div class="card animate-right">
+        <div class="card-header">
+            <h4 class="text-center">Withdrawals</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-sm-auto" />
+            <div class="col-sm-5">
+                <h6 class="text-center">Total</h6>
+                <h6 id="totalWithdrawals" class="text-center"></h6>
+            </div>
+            <div class="col-sm-5">
+                <h6 class="text-center">Entries</h6>
+                <h6 id="countWithdrawals" class="text-center"></h6>
+            </div>
+            <div class="col-sm-auto" />
+            <div class="col-sm-auto" />
+        </div>
     </div>
 </div>
 <br />

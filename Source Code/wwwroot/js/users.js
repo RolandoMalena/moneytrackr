@@ -121,13 +121,16 @@ var users = (function () {
 	let loadForm = function (username = null) {
 		//Declare ModalHandler and shows it
 		let handler = new ModalHandler("modal");
-		handler.show(username == null ? "New User" : "Edit User '" + username + "'", $(loadingHTML), false);
+		let isNewUser = username == undefined || username == null || username == "";
+		handler.show(isNewUser ? "New User" : "Edit User '" + username + "'", $(loadingHTML), false);
 
 		//Get the Form
 		getHTML('/Users/GetForm', function (html) {
 			//If we are attempting to create a user...
-			if (username == undefined && username == null) {
-				//Set modal content and return
+			if (isNewUser) {
+				//Set modal content, hide password warning and return
+				html = $(html);
+				html.find("#passwordWarning").hide();
 				handler.setForm(html);
 				return;
 			}
