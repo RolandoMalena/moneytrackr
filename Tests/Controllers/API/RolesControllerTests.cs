@@ -12,6 +12,7 @@ namespace MoneyTrackr.Tests.Controllers.API
     {
         const string endpoint = "/api/Roles";
 
+        #region Get
         [Test]
         public async Task GetRolesAsAnonymous_ShouldGetUnauthorized()
         {
@@ -61,5 +62,6 @@ namespace MoneyTrackr.Tests.Controllers.API
 
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
         }
+        #endregion
     }
 }

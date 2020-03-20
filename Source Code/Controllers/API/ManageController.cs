@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MoneyTrackr.Dtos;
@@ -10,6 +11,7 @@ namespace MoneyTrackr.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ManageController : ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
@@ -55,10 +57,6 @@ namespace MoneyTrackr.Controllers.API
         [HttpPatch("ChangePassword")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
         {
-            //Check that the passwords aren't equal
-            if (dto.CurrentPassword == dto.NewPassword)
-                return BadRequest("The New Password cannot be equal to the Current Password.");
-
             var user = await userManager.FindByNameAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             //Verify if the CurrentPassword is correct

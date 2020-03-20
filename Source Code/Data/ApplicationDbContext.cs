@@ -59,7 +59,6 @@ namespace MoneyTrackr.Data
                 Id = adminUserId,
                 UserName = AdminUserName,
                 NormalizedUserName = AdminUserName.ToUpper(),
-                PasswordHash = Configuration["Passwords:AdminPassword"],
                 LockoutEnabled = true,
                 SecurityStamp = "2016e79f-f4ac-42af-a277-406f6ffabe56",
                 ConcurrencyStamp = "55270b70-0750-4fd9-8fed-3a46bcd06185"
@@ -69,7 +68,6 @@ namespace MoneyTrackr.Data
                 Id = userManagerId,
                 UserName = ManagerUserName,
                 NormalizedUserName = ManagerUserName.ToUpper(),
-                PasswordHash = Configuration["Passwords:ManagerPassword"],
                 LockoutEnabled = true,
                 SecurityStamp = "88dc18da-0d7a-4d8f-85d1-81a08e23efa3",
                 ConcurrencyStamp = "4c566e14-886a-46ff-9ee7-f4ef0c5bbb11"
@@ -79,11 +77,14 @@ namespace MoneyTrackr.Data
                 Id = regularUserId,
                 UserName = RegularUserName,
                 NormalizedUserName = RegularUserName.ToUpper(),
-                PasswordHash = Configuration["Passwords:RegularPassword"],
                 LockoutEnabled = true,
                 SecurityStamp = "7ff4e046-cc54-44ea-9e1a-067e02694d07",
                 ConcurrencyStamp = "c8c3bb98-aaa3-4216-895f-55c0a61250ce"
             };
+
+            adminUser.PasswordHash = passwordHasher.HashPassword(adminUser, Configuration["Passwords:AdminPassword"]);
+            managerUser.PasswordHash = passwordHasher.HashPassword(managerUser, Configuration["Passwords:ManagerPassword"]);
+            regularUser.PasswordHash = passwordHasher.HashPassword(regularUser, Configuration["Passwords:RegularPassword"]);
             modelBuilder.Entity<IdentityUser>().HasData(adminUser, managerUser, regularUser);
             
             modelBuilder.Entity<IdentityUserRole<string>>().HasData

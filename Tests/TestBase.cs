@@ -1,13 +1,9 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using MoneyTrackr.Helpers;
+﻿using MoneyTrackr.Helpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
 using static MoneyTrackr.Constants.Role;
 using static MoneyTrackr.Constants.User;
 
@@ -17,6 +13,7 @@ namespace MoneyTrackr.Tests
     public class TestBase : MoneyTrackrWebApplicationFactory<Startup>
     {
         public HttpClient Client { get; set; }
+        public const string ValidationError = "One or more validation errors occurred.";
 
         private Dictionary<UserType, string> JWTs = new Dictionary<UserType, string>();
 
