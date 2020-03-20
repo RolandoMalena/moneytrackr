@@ -16,5 +16,12 @@
             public const string NormalizedUserManagerRoleName = "USER MANAGER";
             public const string NormalizedRegularUserRoleName = "REGULAR USER";
         }
+
+        public static class User
+        {
+            public const string AdminUserName = "Amin";
+            public const string ManagerUserName = "Manager";
+            public const string RegularUserName = "Regular";
+        }
     }
 }

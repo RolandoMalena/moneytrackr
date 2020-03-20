@@ -29,7 +29,7 @@ namespace MoneyTrackr.Controllers.API
         [HttpPatch("ChangeUsername")]
         public async Task<IActionResult> ChangeUserName([FromBody] ChangeUserNameDto dto)
         {
-            var user = await userManager.FindByIdAsync(User.FindFirst(ClaimTypes.Name).Value);
+            var user = await userManager.FindByNameAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             //Verify if the CurrentPassword is correct
             var passwordHasher = new PasswordHasher<IdentityUser>();
@@ -59,7 +59,7 @@ namespace MoneyTrackr.Controllers.API
             if (dto.CurrentPassword == dto.NewPassword)
                 return BadRequest("The New Password cannot be equal to the Current Password.");
 
-            var user = await userManager.FindByIdAsync(User.FindFirst(ClaimTypes.Name).Value);
+            var user = await userManager.FindByNameAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             //Verify if the CurrentPassword is correct
             var passwordHasher = new PasswordHasher<IdentityUser>();

@@ -77,7 +77,6 @@ namespace MoneyTrackr.Controllers.API
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id),
                     new Claim(ClaimTypes.NameIdentifier, user.UserName),
                     new Claim(ClaimTypes.Role, RoleHelper.GetRoleName(roleId))
                 }),

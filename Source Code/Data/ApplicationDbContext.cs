@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MoneyTrackr.Data.DomainObjects;
-using System;
-using System.Threading.Tasks;
 using static MoneyTrackr.Constants.Role;
+using static MoneyTrackr.Constants.User;
 
 namespace MoneyTrackr.Data
 {
@@ -58,9 +57,9 @@ namespace MoneyTrackr.Data
             var adminUser = new IdentityUser
             {
                 Id = adminUserId,
-                UserName = "Admin",
-                NormalizedUserName = "Admin".ToUpper(),
-                PasswordHash = Configuration["AdminPassword"],
+                UserName = AdminUserName,
+                NormalizedUserName = AdminUserName.ToUpper(),
+                PasswordHash = Configuration["Passwords:AdminPassword"],
                 LockoutEnabled = true,
                 SecurityStamp = "2016e79f-f4ac-42af-a277-406f6ffabe56",
                 ConcurrencyStamp = "55270b70-0750-4fd9-8fed-3a46bcd06185"
@@ -68,9 +67,9 @@ namespace MoneyTrackr.Data
             var managerUser = new IdentityUser
             {
                 Id = userManagerId,
-                UserName = "Manager",
-                NormalizedUserName = "Manager".ToUpper(),
-                PasswordHash = "AQAAAAEAACcQAAAAEJo/+6SoKYtqTqeJ0yGp5o1Sj2HR5pmy3CvMjd1JAj3PZDE1dJ/9eE30jNcg8nIoag==",
+                UserName = ManagerUserName,
+                NormalizedUserName = ManagerUserName.ToUpper(),
+                PasswordHash = Configuration["Passwords:ManagerPassword"],
                 LockoutEnabled = true,
                 SecurityStamp = "88dc18da-0d7a-4d8f-85d1-81a08e23efa3",
                 ConcurrencyStamp = "4c566e14-886a-46ff-9ee7-f4ef0c5bbb11"
@@ -78,9 +77,9 @@ namespace MoneyTrackr.Data
             var regularUser = new IdentityUser
             {
                 Id = regularUserId,
-                UserName = "Regular",
-                NormalizedUserName = "Regular".ToUpper(),
-                PasswordHash = "AQAAAAEAACcQAAAAEBAi+Sdhe180Cj1RmYTZilo8O5FH/6Boa7jjhjPkTZvv1Y3bdqiLD/ff2BVxIoNC3Q==",
+                UserName = RegularUserName,
+                NormalizedUserName = RegularUserName.ToUpper(),
+                PasswordHash = Configuration["Passwords:RegularPassword"],
                 LockoutEnabled = true,
                 SecurityStamp = "7ff4e046-cc54-44ea-9e1a-067e02694d07",
                 ConcurrencyStamp = "c8c3bb98-aaa3-4216-895f-55c0a61250ce"

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyTrackr", "Source Code/MoneyTrackr.csproj", "{6DEB95F1-1B74-4C03-BA2A-51887FFE094E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTrackr", "Source Code\MoneyTrackr.csproj", "{6DEB95F1-1B74-4C03-BA2A-51887FFE094E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyTrackr.Tests", "Tests\MoneyTrackr.Tests.csproj", "{69F1DFC9-133C-4235-BBE7-11528976C434}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6DEB95F1-1B74-4C03-BA2A-51887FFE094E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DEB95F1-1B74-4C03-BA2A-51887FFE094E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DEB95F1-1B74-4C03-BA2A-51887FFE094E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69F1DFC9-133C-4235-BBE7-11528976C434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69F1DFC9-133C-4235-BBE7-11528976C434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69F1DFC9-133C-4235-BBE7-11528976C434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69F1DFC9-133C-4235-BBE7-11528976C434}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

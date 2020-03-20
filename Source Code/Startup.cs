@@ -54,8 +54,6 @@ namespace MoneyTrackr
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //Starts JWT Authentication Configuration
-            var key = Encoding.ASCII.GetBytes(Configuration["Secret"]);
-
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -68,7 +66,7 @@ namespace MoneyTrackr
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Secret"])),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
