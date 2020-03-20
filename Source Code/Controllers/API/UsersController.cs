@@ -71,27 +71,19 @@ namespace MoneyTrackr.Controllers.API
             string roleId = (await dbContext.UserRoles
                 .SingleOrDefaultAsync(u => u.UserId == user.Id)).RoleId;
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(configuration["Secret"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserName),
-                    new Claim(ClaimTypes.Role, RoleHelper.GetRoleName(roleId))
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
-            };
+            string jwt = JwtHelper.GenerateToken(
+                configuration["Secret"],
+                user.UserName,
+                RoleHelper.GetRoleName(roleId),
+                DateTime.UtcNow.AddDays(7));
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var response = new
-            {
-                auth_token = tokenHandler.WriteToken(token)
-            };
-
+            //Reset the AccessFailedCount before returning the Token
             await userManager.ResetAccessFailedCountAsync(user);
-            return Ok(response);
+
+            return Ok(new
+            {
+                auth_token = jwt
+            });
         }
         #endregion
 

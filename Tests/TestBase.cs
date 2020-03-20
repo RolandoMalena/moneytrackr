@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using MoneyTrackr.Helpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -79,26 +80,14 @@ namespace MoneyTrackr.Tests
                     throw new NotImplementedException($"UserType {userType} has not been implemented.");
             }
 
-            //Set the claims
-            var claims = new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, userName),
-                new Claim(ClaimTypes.Role, roleName)
-            };
+            //Generate the Token
+            string jwt = JwtHelper.GenerateToken(
+                Configuration["Secret"],
+                userName,
+                roleName,
+                DateTime.UtcNow.AddMinutes(10));
 
-            //Generate the JWT based on the claims
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Configuration["Secret"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(10),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            string jwt = tokenHandler.WriteToken(token);
-
+            //Set the Authorization header of the Client
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
 
             //Add the Token to the Dictionary
