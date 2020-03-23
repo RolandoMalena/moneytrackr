@@ -1,15 +1,12 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using MoneyTrackr.Data;
 using MoneyTrackr.Dtos;
 using MoneyTrackr.Helpers;
@@ -256,6 +253,10 @@ namespace MoneyTrackr.Controllers.API
             //Return NotFound if null
             if (userInDb == null) 
                 return NotFound();
+
+            //Return Forbidden if non-admin is trying to update an Admin
+            if (!User.IsInRole(AdministratorRoleName) && (await userManager.GetRolesAsync(userInDb)).Single() == AdministratorRoleName)
+                return Forbid();
 
             //Change username only if it was supplied
             if (!string.IsNullOrWhiteSpace(dto.UserName))
