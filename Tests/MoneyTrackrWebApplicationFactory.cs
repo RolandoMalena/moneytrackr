@@ -45,8 +45,19 @@ namespace MoneyTrackr.Tests
 
                     //While we are here, set the Configuration property for future use
                     Configuration = scopedServices.GetRequiredService<IConfiguration>();
+
+                    //Seed database
+                    SeedDatabase(db);
                 }
             });
+        }
+
+        /// <summary>
+        /// Seeds the Database. Override this method to manipulate what data get seeded.
+        /// </summary>
+        protected virtual void SeedDatabase(ApplicationDbContext dbContext)
+        {
+            
         }
     }
 }

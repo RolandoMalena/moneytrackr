@@ -1,4 +1,6 @@
-﻿using MoneyTrackr.Dtos;
+﻿using Microsoft.AspNetCore.Identity;
+using MoneyTrackr.Data;
+using MoneyTrackr.Dtos;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,79 @@ namespace MoneyTrackr.Tests.Controllers.API
         UserDto userDto = new UserDto();
         UserLogInDto logInDto = new UserLogInDto();
         RegisterUserDto registerDto = new RegisterUserDto();
+
+        #region DB Seeding
+        Dictionary<string, string> putUserDataForAdmin;
+        Dictionary<string, string> putUserDataForManager;
+
+        Dictionary<string, string> deleteUserDataForAdmin;
+        Dictionary<string, string> deleteUserDataForManager;
+        
+        protected override void SeedDatabase(ApplicationDbContext dbContext)
+        {
+            PasswordHasher<IdentityUser> hasher = new PasswordHasher<IdentityUser>();
+            List<IdentityUser> usersToAdd = new List<IdentityUser>();
+            List<IdentityUserRole<string>> userRolesToAdd = new List<IdentityUserRole<string>>();
+
+            //Start by creating new instances of the dictionaries and fill them
+            putUserDataForAdmin = new Dictionary<string, string>()
+            {
+                { AdministratorRoleId, GetRandomUsername() },
+                { UserManagerRoleId, GetRandomUsername() },
+                { RegularUserRoleId, GetRandomUsername() }
+            };
+
+            putUserDataForManager = new Dictionary<string, string>()
+            {
+                { UserManagerRoleId, GetRandomUsername() },
+                { RegularUserRoleId, GetRandomUsername() }
+            };
+
+            deleteUserDataForAdmin = new Dictionary<string, string>()
+            {
+                { AdministratorRoleId, GetRandomUsername() },
+                { UserManagerRoleId, GetRandomUsername() },
+                { RegularUserRoleId, GetRandomUsername() }
+            };
+
+            deleteUserDataForManager = new Dictionary<string, string>()
+            {
+                { UserManagerRoleId, GetRandomUsername() },
+                { RegularUserRoleId, GetRandomUsername() }
+            };
+
+            //Iterate all KVPs and join them to share the user creation code
+            List<KeyValuePair<string, string>> keyValuePairs = new List<KeyValuePair<string, string>>();
+            keyValuePairs.AddRange(putUserDataForAdmin.Select(kvp => new KeyValuePair<string, string>(kvp.Key, kvp.Value)));
+            keyValuePairs.AddRange(putUserDataForManager.Select(kvp => new KeyValuePair<string, string>(kvp.Key, kvp.Value)));
+            keyValuePairs.AddRange(deleteUserDataForAdmin.Select(kvp => new KeyValuePair<string, string>(kvp.Key, kvp.Value)));
+            keyValuePairs.AddRange(deleteUserDataForManager.Select(kvp => new KeyValuePair<string, string>(kvp.Key, kvp.Value)));
+
+            //Create the Users and the respective UserRoles
+            foreach (var kvp in keyValuePairs)
+            {
+                var user = new IdentityUser()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = kvp.Value,
+                    NormalizedUserName = kvp.Value.ToUpper()
+                };
+                user.PasswordHash = hasher.HashPassword(user, "password1");
+                usersToAdd.Add(user);
+
+                userRolesToAdd.Add(new IdentityUserRole<string>()
+                {
+                    UserId = user.Id,
+                    RoleId = kvp.Key
+                });
+            }
+
+            //Add the rows and save the changes
+            dbContext.Users.AddRange(usersToAdd);
+            dbContext.UserRoles.AddRange(userRolesToAdd);
+            dbContext.SaveChanges();
+        }
+        #endregion
 
         #region Login
         [Test]
@@ -544,27 +619,21 @@ namespace MoneyTrackr.Tests.Controllers.API
         public async Task PutUserAsAdministrator_ShouldReturnOk(string roleId)
         {
             SetToken(UserType.Administrator);
-            userDto.UserName = GetRandomUsername();
-            userDto.Password = "testing1";
-            userDto.RoleId = RegularUserRoleId;
-
-            //POST
-            var response = await Client.PostAsync(usersEndpoint, userDto.ToHttpContent());
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 
             //PUT
-            string oldUsername = userDto.UserName;
+            string oldUsername = putUserDataForAdmin[roleId];
             userDto.UserName = GetRandomUsername();
             userDto.Password = "testing2";
             userDto.RoleId = roleId;
 
-            response = await Client.PutAsync(usersEndpoint + oldUsername, userDto.ToHttpContent());
+            var response = await Client.PutAsync(usersEndpoint + oldUsername, userDto.ToHttpContent());
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             //GET
             response = await Client.GetAsync(usersEndpoint + userDto.UserName);
             Assert.IsTrue(response.IsSuccessStatusCode);
             Assert.IsNotNull(response.Content);
+
             var user = await response.Content.Deserialize<UserDto>();
             Assert.IsNotNull(user);
             Assert.AreEqual(userDto.UserName, user.UserName);
@@ -585,27 +654,21 @@ namespace MoneyTrackr.Tests.Controllers.API
         public async Task PutUserAsUserManager_ShouldReturnOk(string roleId)
         {
             SetToken(UserType.UserManager);
-            userDto.UserName = GetRandomUsername();
-            userDto.Password = "testing1";
-            userDto.RoleId = RegularUserRoleId;
-
-            //POST
-            var response = await Client.PostAsync(usersEndpoint, userDto.ToHttpContent());
-            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
 
             //PUT
-            string oldUsername = userDto.UserName;
+            string oldUsername = putUserDataForManager[roleId];
             userDto.UserName = GetRandomUsername();
             userDto.Password = "testing2";
             userDto.RoleId = roleId;
 
-            response = await Client.PutAsync(usersEndpoint + oldUsername, userDto.ToHttpContent());
+            var response = await Client.PutAsync(usersEndpoint + oldUsername, userDto.ToHttpContent());
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             //GET
             response = await Client.GetAsync(usersEndpoint + userDto.UserName);
             Assert.IsTrue(response.IsSuccessStatusCode);
             Assert.IsNotNull(response.Content);
+
             var user = await response.Content.Deserialize<UserDto>();
             Assert.IsNotNull(user);
             Assert.AreEqual(userDto.UserName, user.UserName);
@@ -645,6 +708,21 @@ namespace MoneyTrackr.Tests.Controllers.API
         }
 
         [Test]
+        public async Task PutLoggedUser_ShouldReturnBadRequest()
+        {
+            SetToken(UserType.UserManager);
+            userDto.UserName = "testing";
+            userDto.Password = "testing1";
+            userDto.RoleId = RegularUserRoleId;
+            string expectedError = "Sorry, but you can't edit yourself. If you want to change your Username and/or Password, check the Manage API.";
+
+            var response = await Client.PutAsync(usersEndpoint + ManagerUserName, userDto.ToHttpContent());
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.AreEqual(expectedError, await response.Content.ReadAsStringAsync());
+        }
+
+        [Test]
         public async Task PutUserAsRegularUser_ShouldGetForbidden()
         {
             SetToken(UserType.Regular);
@@ -673,20 +751,13 @@ namespace MoneyTrackr.Tests.Controllers.API
         public async Task DeleteUserAsAdministrator_ShouldDeleteUser(string roleId)
         {
             SetToken(UserType.Administrator);
-            userDto.UserName = GetRandomUsername();
-            userDto.Password = "testing1";
-            userDto.RoleId = roleId;
-
-            //POST
-            var response = await Client.PostAsync(usersEndpoint, userDto.ToHttpContent());
-            Assert.IsTrue(response.IsSuccessStatusCode);
 
             //DELETE
-            response = await Client.DeleteAsync(usersEndpoint + userDto.UserName);
+            var response = await Client.DeleteAsync(usersEndpoint + deleteUserDataForAdmin[roleId]);
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             //GET
-            response = await Client.GetAsync(usersEndpoint + userDto.UserName);
+            response = await Client.GetAsync(usersEndpoint + deleteUserDataForAdmin[roleId]);
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
@@ -696,20 +767,13 @@ namespace MoneyTrackr.Tests.Controllers.API
         public async Task DeleteUserAsUserManager_ShouldDeleteUser(string roleId)
         {
             SetToken(UserType.UserManager);
-            userDto.UserName = GetRandomUsername();
-            userDto.Password = "testing1";
-            userDto.RoleId = roleId;
-
-            //POST
-            var response = await Client.PostAsync(usersEndpoint, userDto.ToHttpContent());
-            Assert.IsTrue(response.IsSuccessStatusCode);
 
             //DELETE
-            response = await Client.DeleteAsync(usersEndpoint + userDto.UserName);
+            var response = await Client.DeleteAsync(usersEndpoint + deleteUserDataForManager[roleId]);
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             //GET
-            response = await Client.GetAsync(usersEndpoint + userDto.UserName);
+            response = await Client.GetAsync(usersEndpoint + deleteUserDataForManager[roleId]);
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
@@ -734,6 +798,17 @@ namespace MoneyTrackr.Tests.Controllers.API
         }
 
         [Test]
+        public async Task DeleteLoggedUser_ShouldReturnBadRequest()
+        {
+            SetToken(UserType.UserManager);
+
+            var response = await Client.DeleteAsync(usersEndpoint + ManagerUserName);
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.AreEqual("Sorry, but you can't delete yourself!", await response.Content.ReadAsStringAsync());
+        }
+
+        [Test]
         public async Task DeleteUserAsRegularUser_ShouldDeleteForbidden()
         {
             SetToken(UserType.Regular);
@@ -747,7 +822,7 @@ namespace MoneyTrackr.Tests.Controllers.API
         #region Private Helpers
         private string GetRandomUsername()
         {
-            return Guid.NewGuid().ToString().Replace("-", "").Substring(0, 25);
+            return Guid.NewGuid().ToString().Replace("-", "").Substring(0, 10);
         }
         #endregion
     }
