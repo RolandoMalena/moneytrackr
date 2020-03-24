@@ -42,5 +42,16 @@ namespace MoneyTrackr.Tests
                 return null;
             }
         }
+
+        /// <summary>
+        /// Formats string just like how string.Format() would do.
+        /// </summary>
+        /// <param name="str">The string to format.</param>
+        /// <param name="args">The arguments to be used to format the string.</param>
+        /// <returns>The formatted string.</returns>
+        public static string Format(this string str, params object[] args)
+        {
+            return string.Format(str, args);
+        }
     }
 }

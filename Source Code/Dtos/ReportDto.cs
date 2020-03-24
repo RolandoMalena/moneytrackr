@@ -18,6 +18,10 @@
 
     public class ReportDetailDto : EntryDto
     {
+        public ReportDetailDto()
+        {
+        }
+
         public ReportDetailDto(EntryDto dto)
         {
             Id = dto.Id;

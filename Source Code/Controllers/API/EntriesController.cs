@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace MoneyTrackr.Controllers.API
 {
     [Route("api/Users/{username}/[controller]")]
     [ApiController]
+    [Authorize]
     public class EntriesController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -112,7 +114,7 @@ namespace MoneyTrackr.Controllers.API
             var deposits = entries.Where(e => e.Amount > 0);
             int depositCount = deposits.Count();
             double totalDeposit = deposits.Sum(e => e.Amount);
-            double depositAvg = depositCount == 0 ? deposits.Average(e => e.Amount) : 0;
+            double depositAvg = depositCount > 0 ? deposits.Average(e => e.Amount) : 0;
 
             var withdrawals = entries.Where(e => e.Amount < 0);
             int withdrawalsCount = withdrawals.Count();

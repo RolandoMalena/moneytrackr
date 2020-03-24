@@ -19,9 +19,17 @@
 
         public static class User
         {
-            public const string AdminUserName = "Amin";
+            public const string AdminUserId = "1d954590-2b9e-4f2f-922c-4aeaf62c6889";
+            public const string ManagerUserId = "f0e89618-1f43-40cd-8ac4-85988296266a";
+            public const string RegularUserId = "47a17c9f-be3a-44fb-a48c-70930ecd2b40";
+
+            public const string AdminUserName = "Admin";
             public const string ManagerUserName = "Manager";
             public const string RegularUserName = "Regular";
+
+            public const string NormalizedAdminUserName = "ADMIN";
+            public const string NormalizedManagerUserName = "MANAGER";
+            public const string NormalizedRegularUserName = "REGULAR";
         }
     }
 }
