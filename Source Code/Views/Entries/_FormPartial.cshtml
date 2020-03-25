@@ -1,6 +1,6 @@
 ﻿@model MoneyTrackr.ViewModels.EntryViewModel
 
-<form onsubmit="return entries.saveEntry(this)">
+<form id="entriesForm" onsubmit="return entries.saveEntry(this)">
     <div class="row">
         <div class="form-group col-md">
             @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label" })
