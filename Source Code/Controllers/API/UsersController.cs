@@ -169,7 +169,7 @@ namespace MoneyTrackr.Controllers.API
         /// <summary>
         /// Get every User registered by its Role
         /// </summary>
-        [HttpGet("GetByRole/{roleId}")]
+        [HttpGet("/api/Roles/{roleId}/Users")]
         public async Task<ActionResult> GetByRole(string roleId)
         {
             //If User is not an Admin, and passed the Admin RoleId, return Forbidden

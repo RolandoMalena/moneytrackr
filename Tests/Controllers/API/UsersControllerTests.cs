@@ -19,7 +19,7 @@ namespace MoneyTrackr.Tests.Controllers.API
         const string usersEndpoint = "/api/Users/";
         const string loginEndpoint = "/api/Users/Login";
         const string registerEndpoint = "/api/Users/Register";
-        const string getByRoleEndpoint = "/api/Users/GetByRole/";
+        const string getByRoleEndpoint = "/api/Roles/{0}/Users/";
 
         const string loginFailedError = "Username or Password is incorrect.";
 
@@ -365,7 +365,7 @@ namespace MoneyTrackr.Tests.Controllers.API
         {
             SetToken(userType);
 
-            var response = await Client.GetAsync(getByRoleEndpoint + roleId);
+            var response = await Client.GetAsync(getByRoleEndpoint.Format(roleId));
 
             Assert.IsTrue(response.IsSuccessStatusCode);
             Assert.IsNotNull(response.Content);
@@ -380,7 +380,7 @@ namespace MoneyTrackr.Tests.Controllers.API
         {
             SetToken(UserType.UserManager);
 
-            var response = await Client.GetAsync(getByRoleEndpoint + AdministratorRoleId);
+            var response = await Client.GetAsync(getByRoleEndpoint.Format(AdministratorRoleId));
 
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
         }
@@ -390,7 +390,7 @@ namespace MoneyTrackr.Tests.Controllers.API
         {
             SetToken(UserType.UserManager);
 
-            var response = await Client.GetAsync(getByRoleEndpoint + "testRole");
+            var response = await Client.GetAsync(getByRoleEndpoint.Format("testRole"));
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
             Assert.IsNotNull(response.Content);
@@ -402,7 +402,7 @@ namespace MoneyTrackr.Tests.Controllers.API
         {
             SetToken(UserType.Regular);
 
-            var response = await Client.GetAsync(getByRoleEndpoint + RegularUserRoleId);
+            var response = await Client.GetAsync(getByRoleEndpoint.Format(RegularUserRoleId));
 
             Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
         }
