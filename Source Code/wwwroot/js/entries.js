@@ -42,7 +42,6 @@ var entries = (function () {
 
 		//At this point, clear the error message and hide content
 		errorMsg.text('');
-		details.hide();
 		tableBody.empty();
 		content.append($(loadingHTML).clone().addClass("animate-bottom"));
 

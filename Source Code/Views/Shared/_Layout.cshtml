@@ -18,8 +18,10 @@
                 </button>
 
                 <label class="navbar-brand">
-                    <img src="~/images/icon.svg" width="40" height="40" class="d-inline-block align-top" alt="">
-                    MoneyTrackr
+                    <a href="#Home">
+                        <img src="~/images/icon.svg" width="40" height="40" class="d-inline-block align-top" alt="">
+                        MoneyTrackr
+                    </a>
                 </label>
             </nav>
             <div id="navbarContent" class="navbar-collapse collapse">
@@ -30,11 +32,11 @@
                     <li class="nav-item"><a class="nav-link" href="#About">About</a></li>
                 </ul>
                 <ul class="navbar-nav nav-pills ml-md-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/api/doc" target="_blank">API Documentation</a>
-                    </li>
                     <li id="lnkManage" class="nav-item">
                         <a class="nav-link" href="#Manage"></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/api/doc" target="_blank">API Documentation</a>
                     </li>
                     <li id="lnkLogOff" class="nav-item">
                         <a class="nav-link" href="javascript:users.logOff()">
@@ -54,14 +56,14 @@
 
     <footer class="container border-top footer text-muted fixed-bottom">
         <div class="row">
-            <text class="col-md-auto align-self-center">&copy; @DateTime.Now.Year - MoneyTrackr</text>
-            <div class="col-md"></div>
-            <div class="col-md text-right">
-                <a class="social col-md-auto" href="https://www.linkedin.com/in/rolandomalena/" target="_blank">
+            <text class="col-sm align-self-center footer-section">&copy; @DateTime.Now.Year - MoneyTrackr by <strong><a href="#About">Rolando Malena</a></strong></text>
+            <span class="col-sm-auto col-md-auto footer-section footer-separator text-center"></span>
+            <div class="col-sm text-right footer-section">
+                <a class="social" href="https://www.linkedin.com/in/rolandomalena/" target="_blank">
                     <img src="~/images/linkedin.png" width="32" title="LinkedIn Profile" />
                 </a>
                 &nbsp;
-                <a class="social col-md-auto" href="https://github.com/RolandoMalena" target="_blank">
+                <a class="social" href="https://github.com/RolandoMalena" target="_blank">
                     <img src="~/images/github.png" width="32" title="GitHub Profile" />
                 </a>
             </div>

@@ -242,6 +242,24 @@ function formatCurrenty(str) {
 	return currencyFormatter.format(str).replace('$', '');
 }
 
+//Show/Hide the Login Form in exchange for the Register Form
+function showOrHideLoginForm(showLogin) {
+	let loginFrm = content.find("#loginForm");
+	let registerFrm = content.find("#registerForm");
+
+	if (loginFrm == undefined || loginFrm == null || registerFrm == undefined || registerFrm == null)
+		return;
+
+	if (showLogin) {
+		loginFrm.fadeIn();
+		registerFrm.hide();
+	}
+	else {
+		loginFrm.hide();
+		registerFrm.fadeIn();
+	}
+}
+
 //Setting up toastr
 toastr.options.progressBar = true;
 toastr.options.hideDuration = 300;

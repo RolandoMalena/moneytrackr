@@ -71,6 +71,18 @@ body {
   background-color: white;
 }
 
+.spacer-bottom {
+    margin-bottom: 12px;
+}
+
+.footer .footer-section {
+    width: auto;
+}
+
+.footer .footer-separator {
+    margin: 0 auto;
+}
+
 /*#region animations */
 .animate-top {
     position: relative;
@@ -293,11 +305,13 @@ body {
 /*#endregion */
 
 /*#region theming for anchors */
-a {
+a, .btn-link{
     color: darkgreen;
+    padding: 0px;
+    text-align: left;
 }
 
-    a:hover {
+    a:hover, .btn-link:hover {
         color: rgb(83,205,181);
     }
 /*#endregion */
@@ -312,6 +326,18 @@ a {
     color: darkgreen;
     font-weight: bold;
     margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+    .navbar-brand {
+        margin: 0px 8px;
+        vertical-align: middle;
+    }
+}
+
+.navbar-brand a:hover {
+    color: darkgreen;
+    text-decoration: none;
 }
 
 .nav-link {
@@ -334,6 +360,13 @@ a {
         .nav-link.active:hover {
             background-color: rgba(0,100,0,.5) !important;
         }
+
+@media (max-width: 768px) {
+    .nav-link {
+        margin-left: 0px;
+        padding: 8px !important;
+    }
+}
 
 .navbar-toggler {
     border: solid 2px darkgreen;
@@ -399,12 +432,16 @@ hr {
 .badge-primary {
     background-color: rgba(26,188,156,0.75);
 }
-/*#endregion */
 
+.list-group.list-group-horizontal .list-group-item {
+    border: none;
+}
+/*#endregion */
 .jumbotron {
     background-color: rgba(26,188,156,0.3);
-    padding: 2rem;
+    padding: 24px;
     align-self: flex-start;
+    margin: 0px 14px;
 }
 
 .jumbotron-center {
@@ -471,4 +508,32 @@ hr {
 
 .separated-list li {
     margin-bottom: 10px;
+}
+
+.padding-right-zero {
+    padding-right: 0 !important;
+}
+
+/*#region theming for form-inline */
+.form-inline .row > div {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+@media (max-width: 766px) {
+    .form-inline .row > div {
+        padding-left: 14px !important;
+        padding-right: 4px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-inline .row > div {
+        padding-right: 14px !important;
+    }
+}
+/*#endregion */
+
+.btn.btn-light {
+    border: 1px solid #ced4da;
 }

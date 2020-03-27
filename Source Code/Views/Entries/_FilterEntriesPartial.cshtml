@@ -14,38 +14,48 @@
 }
 
 <form id="searchForm" onsubmit="return entries.getEntries(this)" class="form-inline">
-    <div class="input-group input-group-sm" style="@(allowUserSelection ? "display:none;" : "")">
-        <div class="input-group-prepend">
-            <span class="input-group-text">
-                @Html.LabelFor(model => model.Users, htmlAttributes: new { @class = "control-label" })
-            </span>
+    <div class="row row-cols-2 spacer-bottom">
+        <div class="col-sm-6 col-md-4 spacer-bottom">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        @Html.NameFor(model => model.From)
+                    </span>
+                </div>
+
+                @Html.EditorFor(model => model.From, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
         </div>
 
-        @Html.DropDownListFor(model => model.Users, new SelectList(Model.Users, "Username", "Username", currentUsername), null, new { @class = "form-control" })
-    </div>
-
-    <div class="input-group input-group-sm">
-        <div class="input-group-prepend">
-            <span class="input-group-text">
-                @Html.LabelFor(model => model.From, htmlAttributes: new { @class = "control-label" })
-            </span>
+        <div class="col-sm-6 col-md-4 spacer-bottom">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        @Html.NameFor(model => model.To)
+                    </span>
+                </div>
+                @Html.EditorFor(model => model.To, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
         </div>
 
-        @Html.EditorFor(model => model.From, new { htmlAttributes = new { @class = "form-control", value = DateTime.Today.ToString("yyyy/MM/dd") } })
-    </div>
+        <div class="col-sm-6 col-md-3" style="@(allowUserSelection ? "display:none;" : "")">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        @Html.DisplayNameFor(model => model.Users)
+                    </span>
+                </div>
 
-    <div class="input-group input-group-sm">
-        <div class="input-group-prepend">
-            <span class="input-group-text">
-                @Html.LabelFor(model => model.To, htmlAttributes: new { @class = "control-label" })
-            </span>
+                @Html.DropDownListFor(model => model.Users, new SelectList(Model.Users, "Username", "Username", currentUsername), null, new { @class = "form-control" })
+            </div>
         </div>
-        @Html.EditorFor(model => model.To, new { htmlAttributes = new { @class = "form-control", value = System.DateTime.Now } })
-    </div>
 
-    <button class="btn btn-light btn-sm" type="submit">
-        <span class="icon icons-search"></span>
-    </button>
+        <div class="col-sm-6 col-md-auto">
+            <button class="btn btn-light btn-sm" type="submit">
+                <span class="icon icons-search"></span> <span class="d-xs-inline d-sm-inline d-md-none"> &nbsp; Search</span>
+            </button>
+        </div>
+    </div>
 </form>
 
 <div id="filterValidation" class="text-danger text-right"></div>

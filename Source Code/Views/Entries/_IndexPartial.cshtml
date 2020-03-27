@@ -1,79 +1,32 @@
 ﻿<h1 class="text-center animate-top">Manage Entries</h1>
 <br />
-<div class="row">
-    <div class="animate-left col-md-auto">
-        <button id="btnAdd" onclick="entries.loadForm()" class="btn btn-info btn-sm">
-            <span class="icon icons-add"></span>
-        </button>
-        <button id="btnBack" onclick="entries.getEntries()" style="display:none" class="btn btn-light btn-sm">
-            <span class="icon icons-back"></span>
-        </button>
-    </div>
 
-    <div class="col-md" />
+<div id="details" class="entry-summary animate-left">
+    <div class="card">
+        <div class="card-header text-center">
+            <h4>Summary</h4>
+        </div>
 
-    <div class="animate-right col-md-auto">
-        <partial name="_FilterEntriesPartial" model="new MoneyTrackr.ViewModels.FilterEntriesViewModel()" />
+        <ul class="list-group list-group-horizontal list-group-flush">
+            <li class="list-group-item flex-fill text-center">
+                <strong>Current Balance</strong>
+                <h4><span id="balance" class="badge badge-primary badge-pill">0.00</span></h4>
+            </li>
+            <li class="list-group-item flex-fill text-center">
+                Total Deposits
+                <h4><span id="totalDeposits" class="badge badge-primary badge-pill">0.00</span></h4>
+            </li>
+            <li class="list-group-item flex-fill text-center">
+                Total Withdrawals
+                <h4><span id="totalWithdrawals" class="badge badge-primary badge-pill">0.00</span></h4>
+            </li>
+        </ul>
     </div>
 </div>
-<br />
 
-<div id="details" class="card-deck">
-    <div class="card animate-left">
-        <div class="card-header">
-            <h4 class="text-center">General</h4>
-        </div>
-        <div class="card-body row">
-            <div class="col-sm-auto" />
-            <div class="col-sm-5">
-                <h6 class="text-center">Balance</h6>
-                <h6 id="balance" class="text-center"></h6>
-            </div>
-            <div class="col-sm-5">
-                <h6 class="text-center">Entries</h6>
-                <h6 id="totalEntries" class="text-center"></h6>
-            </div>
-            <div class="col-sm-auto" />
-        </div>
-    </div>
-    <div class="card animate-bottom">
-        <div class="card-header">
-            <h4 class="text-center">Deposits</h4>
-        </div>
-        <div class="card-body row">
-            <div class="col-sm-auto" />
-            <div class="col-sm-5">
-                <h6 class="text-center">Total</h6>
-                <h6 id="totalDeposits" class="text-center"></h6>
-            </div>
-            <div class="col-sm-5">
-                <h6 class="text-center">Entries</h6>
-                <h6 id="countDeposits" class="text-center"></h6>
-            </div>
-            <div class="col-sm-auto" />
-            <div class="col-sm-auto" />
-        </div>
-    </div>
-    <div class="card animate-right">
-        <div class="card-header">
-            <h4 class="text-center">Withdrawals</h4>
-        </div>
-        <div class="card-body row">
-            <div class="col-sm-auto" />
-            <div class="col-sm-5">
-                <h6 class="text-center">Total</h6>
-                <h6 id="totalWithdrawals" class="text-center"></h6>
-            </div>
-            <div class="col-sm-5">
-                <h6 class="text-center">Entries</h6>
-                <h6 id="countWithdrawals" class="text-center"></h6>
-            </div>
-            <div class="col-sm-auto" />
-            <div class="col-sm-auto" />
-        </div>
-    </div>
+<div class="animate-right d-flex flex-row-reverse bd-highlight">
+    <partial name="_FilterEntriesPartial" model="new MoneyTrackr.ViewModels.FilterEntriesViewModel()" />
 </div>
-<br />
 
 <table id="entries" class="table table-hover table-responsive-sm table-sm animate-bottom">
     <colgroup>
@@ -92,8 +45,12 @@
             <th>Description</th>
             <th>Amount</th>
             <th>Balance</th>
-            <th></th>
-            <th></th>
+            <th class="padding-right-zero"></th>
+            <th class="bg-white padding-right-zero">
+                <button id="btnAdd" onclick="entries.loadForm()" class="btn btn-info btn-sm">
+                    <span class="icon icons-add"></span>
+                </button>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -104,8 +61,8 @@
 <partial name="_Modal" />
 
 <script>
-    if(sessionStorage.getItem("roleName") != '@Constants.Role.RegularUserRoleName')
-        entries.getUsers();
+if(sessionStorage.getItem("roleName") != '@Constants.Role.RegularUserRoleName')
+    entries.getUsers();
 
-    content.find("#searchForm").submit();
+content.find("#searchForm").submit();
 </script>
