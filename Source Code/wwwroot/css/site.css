@@ -72,7 +72,7 @@ body {
 }
 
 .spacer-bottom {
-    margin-bottom: 12px;
+    margin-bottom: 12px !important;
 }
 
 .footer .footer-section {
@@ -508,6 +508,15 @@ hr {
 
 .separated-list li {
     margin-bottom: 10px;
+}
+
+.padding-sides-zero {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.padding-left-zero {
+    padding-left: 0 !important;
 }
 
 .padding-right-zero {
