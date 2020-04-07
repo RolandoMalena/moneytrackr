@@ -143,7 +143,7 @@ var entries = (function () {
 		//Prepare the model object to be sent
 		let model = {
 			Date: frm.find("#Date").val(),
-			Amount: parseFloat(frm.find("#Amount").val()),
+			Amount: parseFloat(replaceAll(frm.find("#Amount").val(), ',', '')),
 			Description: frm.find("#Description").val()
 		}
 

@@ -23,5 +23,14 @@ namespace MoneyTrackr.Controllers
         {
             return PartialView("_NotFoundPartial");
         }
+
+        [Route("Error/{StatusCode}")]
+        public IActionResult StatusCodeHandle(int statusCode)
+        {
+            if (statusCode == 401 || statusCode == 403)
+                return Redirect("~/");
+
+            return Redirect("~/#NotFound");
+        }
     }
 }

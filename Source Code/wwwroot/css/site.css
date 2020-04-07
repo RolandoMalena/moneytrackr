@@ -344,8 +344,8 @@ a, .btn-link{
     color: darkgreen;
     font-weight: bold;
     font-size: large;
-    margin-left: 8px;
-    margin-right: 8px;
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
     .nav-link:hover,
@@ -361,7 +361,7 @@ a, .btn-link{
             background-color: rgba(0,100,0,.5) !important;
         }
 
-@media (max-width: 768px) {
+@media (max-width: 993px) {
     .nav-link {
         margin-left: 0px;
         padding: 8px !important;
@@ -465,6 +465,11 @@ hr {
 .table-hover tbody tr:hover a:hover {
     color: darkgreen;
 }
+
+.table tbody tr:first-of-type td:last-of-type {
+    border-top-color: white;
+}
+
 .table tbody tr td {
     border-top-color: rgba(26,188,156,0.75);
 }
@@ -484,19 +489,23 @@ hr {
 }
 
 #toast-container > .toast-success {
-    background-color: #28a745;
+    background-color: #69C496;
 }
 
 #toast-container > .toast-error {
-    background-color: #dc3545;
+    background-color: #D66F6F;
 }
 
 #toast-container > .toast-info {
-    background-color: #007bff;
+    background-color: #6D62CC;
 }
 
 #toast-container > .toast-warning {
-    background-color: #ffc107;
+    background-color: #D6C37E;
+}
+
+#toast-container > div:hover {
+    box-shadow: 0 0 12px lightgrey;
 }
 /*#endregion */
 
@@ -523,7 +532,16 @@ hr {
     padding-right: 0 !important;
 }
 
+.margin-right-zero {
+    margin-right: 0 !important;
+}
+
 /*#region theming for form-inline */
+.form-inline .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .form-inline .row > div {
     padding-left: 0 !important;
     padding-right: 0 !important;

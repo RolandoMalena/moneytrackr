@@ -207,7 +207,7 @@ function setNavigationLinks() {
 		else
 			links.find("#lnkUsers").show();
 
-		//Finally, shows the username
+		//Finally, show the username
 		links.find("#lnkManage a").html("Hello " + sessionStorage.getItem("username") + "!");
 		links.find("#lnkManage").show();
 	}

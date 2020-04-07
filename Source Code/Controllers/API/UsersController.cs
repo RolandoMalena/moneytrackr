@@ -44,7 +44,7 @@ namespace MoneyTrackr.Controllers.API
         public async Task<IActionResult> LogIn([FromBody] UserLogInDto userDto)
         {
             var passwordHasher = new PasswordHasher<IdentityUser>();
-            
+
             var user = await dbContext.Users
                 .SingleOrDefaultAsync(x => x.UserName.ToLower() == userDto.Username.ToLower());
 

@@ -111,10 +111,11 @@ var users = (function () {
 					});
 				}).fail(function (response) {
 					toastr.error(response);
+				})
+				.always(function () {
+					content.find("#loading").remove();
 				});
 		});
-
-		content.find("#loading").remove();
 	}
 
 	//Open Modal Form to add a new User or save an existing User

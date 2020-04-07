@@ -1,5 +1,5 @@
 ﻿<div class="row">
-    <div class="animate-left col-sm">
+    <div class="animate-left col-sm col-md">
         <h1 class="text-center">Welcome to MoneyTrackr!</h1>
         <hr />
         <div class="text-justify">
@@ -29,9 +29,7 @@
         </div>
     </div>
 
-    <div class="col-md-1"></div>
-
-    <div class="animate-right col-sm-3 jumbotron">
+    <div class="animate-right col-sm-3 col-md-4 jumbotron">
         <partial name="_LoginPartial" />
         <partial name="_RegisterPartial" />
     </div>
@@ -48,7 +46,9 @@
                 <form onsubmit="return users.logIn(this)">
                     <input name="Username" type="hidden" value="regular" />
                     <input name="Password" type="hidden" value="regular1" />
-                    <button class="btn btn-primary">Log in as a Regular User</button>
+                    <button class="btn btn-primary">
+                        <span class=" icon icons-login"></span> &nbsp Log in as a Regular User
+                    </button>
                 </form>
             </div>
         </div>
@@ -62,7 +62,9 @@
                 <form onsubmit="return users.logIn(this)">
                     <input name="Username" type="hidden" value="manager" />
                     <input name="Password" type="hidden" value="manager1" />
-                    <button class="btn btn-primary">Log in as a User Manager</button>
+                    <button class="btn btn-primary"> 
+                        <span class=" icon icons-login"></span> &nbsp Log in as a User Manager
+                    </button>
                 </form>
             </div>
         </div>
