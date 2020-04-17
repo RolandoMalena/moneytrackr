@@ -121,7 +121,7 @@ namespace MoneyTrackr
                 app.UseHsts();
             }
 
-            app.UseStatusCodePagesWithRedirects("/Error/{0}");
+            app.UseStatusCodePagesWithReExecute("/Error/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

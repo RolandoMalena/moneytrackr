@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MoneyTrackr.Areas.Identity.Pages.Account.Manage
 {
+    [AllowAnonymous]
     public class ShowRecoveryCodesModel : PageModel
     {
         [TempData]
@@ -19,12 +21,14 @@ namespace MoneyTrackr.Areas.Identity.Pages.Account.Manage
 
         public IActionResult OnGet()
         {
-            if (RecoveryCodes == null || RecoveryCodes.Length == 0)
-            {
-                return RedirectToPage("./TwoFactorAuthentication");
-            }
+            return NotFound();
 
-            return Page();
+            //if (RecoveryCodes == null || RecoveryCodes.Length == 0)
+            //{
+            //    return RedirectToPage("./TwoFactorAuthentication");
+            //}
+
+            //return Page();
         }
     }
 }

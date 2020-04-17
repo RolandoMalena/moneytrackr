@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MoneyTrackr.Areas.Identity.Pages.Account.Manage
 {
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken(Order = 1001)]
     public class SetPasswordModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -42,51 +45,55 @@ namespace MoneyTrackr.Areas.Identity.Pages.Account.Manage
             public string ConfirmPassword { get; set; }
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public IActionResult OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            return NotFound();
 
-            var hasPassword = await _userManager.HasPasswordAsync(user);
+            //var user = await _userManager.GetUserAsync(User);
+            //if (user == null)
+            //{
+            //    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            //}
 
-            if (hasPassword)
-            {
-                return RedirectToPage("./ChangePassword");
-            }
+            //var hasPassword = await _userManager.HasPasswordAsync(user);
 
-            return Page();
+            //if (hasPassword)
+            //{
+            //    return RedirectToPage("./ChangePassword");
+            //}
+
+            //return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+            return NotFound();
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return Page();
+            //}
 
-            var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
-            if (!addPasswordResult.Succeeded)
-            {
-                foreach (var error in addPasswordResult.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-                return Page();
-            }
+            //var user = await _userManager.GetUserAsync(User);
+            //if (user == null)
+            //{
+            //    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            //}
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your password has been set.";
+            //var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
+            //if (!addPasswordResult.Succeeded)
+            //{
+            //    foreach (var error in addPasswordResult.Errors)
+            //    {
+            //        ModelState.AddModelError(string.Empty, error.Description);
+            //    }
+            //    return Page();
+            //}
 
-            return RedirectToPage();
+            //await _signInManager.RefreshSignInAsync(user);
+            //StatusMessage = "Your password has been set.";
+
+            //return RedirectToPage();
         }
     }
 }

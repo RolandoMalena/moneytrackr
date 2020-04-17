@@ -10,9 +10,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MoneyTrackr.Areas.Identity.Pages.Account.Manage
 {
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken(Order = 1001)]
     public class EnableAuthenticatorModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -53,62 +56,66 @@ namespace MoneyTrackr.Areas.Identity.Pages.Account.Manage
             public string Code { get; set; }
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public IActionResult OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            return NotFound();
 
-            await LoadSharedKeyAndQrCodeUriAsync(user);
+            //var user = await _userManager.GetUserAsync(User);
+            //if (user == null)
+            //{
+            //    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            //}
 
-            return Page();
+            //await LoadSharedKeyAndQrCodeUriAsync(user);
+
+            //return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public IActionResult OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
+            return NotFound();
 
-            if (!ModelState.IsValid)
-            {
-                await LoadSharedKeyAndQrCodeUriAsync(user);
-                return Page();
-            }
+            //var user = await _userManager.GetUserAsync(User);
+            //if (user == null)
+            //{
+            //    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            //}
 
-            // Strip spaces and hypens
-            var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+            //if (!ModelState.IsValid)
+            //{
+            //    await LoadSharedKeyAndQrCodeUriAsync(user);
+            //    return Page();
+            //}
 
-            var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
-                user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+            //// Strip spaces and hypens
+            //var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
-            if (!is2faTokenValid)
-            {
-                ModelState.AddModelError("Input.Code", "Verification code is invalid.");
-                await LoadSharedKeyAndQrCodeUriAsync(user);
-                return Page();
-            }
+            //var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
+            //    user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
 
-            await _userManager.SetTwoFactorEnabledAsync(user, true);
-            var userId = await _userManager.GetUserIdAsync(user);
-            _logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
+            //if (!is2faTokenValid)
+            //{
+            //    ModelState.AddModelError("Input.Code", "Verification code is invalid.");
+            //    await LoadSharedKeyAndQrCodeUriAsync(user);
+            //    return Page();
+            //}
 
-            StatusMessage = "Your authenticator app has been verified.";
+            //await _userManager.SetTwoFactorEnabledAsync(user, true);
+            //var userId = await _userManager.GetUserIdAsync(user);
+            //_logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
 
-            if (await _userManager.CountRecoveryCodesAsync(user) == 0)
-            {
-                var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-                RecoveryCodes = recoveryCodes.ToArray();
-                return RedirectToPage("./ShowRecoveryCodes");
-            }
-            else
-            {
-                return RedirectToPage("./TwoFactorAuthentication");
-            }
+            //StatusMessage = "Your authenticator app has been verified.";
+
+            //if (await _userManager.CountRecoveryCodesAsync(user) == 0)
+            //{
+            //    var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+            //    RecoveryCodes = recoveryCodes.ToArray();
+            //    return RedirectToPage("./ShowRecoveryCodes");
+            //}
+            //else
+            //{
+            //    return RedirectToPage("./TwoFactorAuthentication");
+            //}
         }
 
         private async Task LoadSharedKeyAndQrCodeUriAsync(IdentityUser user)

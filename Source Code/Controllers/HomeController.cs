@@ -27,10 +27,10 @@ namespace MoneyTrackr.Controllers
         [Route("Error/{StatusCode}")]
         public IActionResult StatusCodeHandle(int statusCode)
         {
-            if (statusCode == 401 || statusCode == 403)
-                return Redirect("~/");
+            if(statusCode == 404)
+                return Redirect("~/#NotFound");
 
-            return Redirect("~/#NotFound");
+            return StatusCode(statusCode);
         }
     }
 }

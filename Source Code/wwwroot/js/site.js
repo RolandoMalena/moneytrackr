@@ -32,6 +32,12 @@ function navigate(targetLocation = "") {
 	else if (location.hash)
 		hash = location.hash;
 
+	//If we are outside of Home, redirect back
+	if (location.pathname != "/") {
+		window.location.replace("https://" + location.host + "/" + hash);
+		return;
+    }
+
 	//Remove the '#' from the hash value
 	hash = hash.substr(1);
 

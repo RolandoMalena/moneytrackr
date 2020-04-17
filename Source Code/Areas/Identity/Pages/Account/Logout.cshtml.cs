@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace MoneyTrackr.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
+    [IgnoreAntiforgeryToken(Order = 1001)]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -22,22 +23,25 @@ namespace MoneyTrackr.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnPost(string returnUrl = null)
+        public IActionResult OnPost(string returnUrl = null)
         {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToPage();
-            }
+            return NotFound();
+
+            //await _signInManager.SignOutAsync();
+            //_logger.LogInformation("User logged out.");
+            //if (returnUrl != null)
+            //{
+            //    return LocalRedirect(returnUrl);
+            //}
+            //else
+            //{
+            //    return RedirectToPage();
+            //}
         }
     }
 }
