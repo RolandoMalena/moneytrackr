@@ -12,9 +12,9 @@ using MoneyTrackr.Dtos;
 using MoneyTrackr.Helpers;
 using static MoneyTrackr.Constants.Role;
 
-namespace MoneyTrackr.Controllers.API
+namespace MoneyTrackr.Controllers.API.V1
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [Authorize(Roles = AdministratorRoleName + "," + UserManagerRoleName)]
     public class UsersController : ControllerBase
@@ -169,7 +169,7 @@ namespace MoneyTrackr.Controllers.API
         /// <summary>
         /// Get every User registered by its Role
         /// </summary>
-        [HttpGet("/api/Roles/{roleId}/Users")]
+        [HttpGet("/api/v1/Roles/{roleId}/Users")]
         public async Task<ActionResult> GetByRole(string roleId)
         {
             //If User is not an Admin, and passed the Admin RoleId, return Forbidden
@@ -332,7 +332,7 @@ namespace MoneyTrackr.Controllers.API
         /// </summary>
         /// <param name="dto">User data</param>
         /// <returns>Id of the new User.</returns>
-        async Task<string> CreateUser(UserDto dto)
+        private async Task<string> CreateUser(UserDto dto)
         {
             //Create model
             var user = new IdentityUser()

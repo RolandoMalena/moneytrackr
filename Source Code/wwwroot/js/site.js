@@ -19,6 +19,9 @@ const dateFormatter = Intl.DateTimeFormat('en', {
 	day: '2-digit'
 });
 
+//Current active API Version
+const apiVersion = "v1";
+
 //Updates content dynamically, with the option to override
 function navigate(targetLocation = "") {
 	//Default hash value

@@ -24,6 +24,7 @@ namespace MoneyTrackr.Controllers
             return PartialView("_NotFoundPartial");
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Route("Error/{StatusCode}")]
         public IActionResult StatusCodeHandle(int statusCode)
         {

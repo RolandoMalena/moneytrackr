@@ -16,10 +16,10 @@ namespace MoneyTrackr.Tests.Controllers.API
     [TestFixture]
     public class UsersControllerTests : TestBase
     {
-        const string usersEndpoint = "/api/Users/";
-        const string loginEndpoint = "/api/Users/Login";
-        const string registerEndpoint = "/api/Users/Register";
-        const string getByRoleEndpoint = "/api/Roles/{0}/Users/";
+        const string usersEndpoint = "/api/v1/Users/";
+        const string loginEndpoint = "/api/v1/Users/Login";
+        const string registerEndpoint = "/api/v1/Users/Register";
+        const string getByRoleEndpoint = "/api/v1/Roles/{0}/Users/";
 
         const string loginFailedError = "Username or Password is incorrect.";
 

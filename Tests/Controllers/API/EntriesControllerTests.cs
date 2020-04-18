@@ -17,11 +17,11 @@ namespace MoneyTrackr.Tests.Controllers.API
     [TestFixture]
     public class EntriesControllerTests : TestBase
     {
-        const string endpoint = "api/Users/{0}/Entries/";
-        const string endpointRegular = "api/Users/" + RegularUserName + "/Entries/";
+        const string endpoint = "api/v1/Users/{0}/Entries/";
+        const string endpointRegular = "api/v1/Users/" + RegularUserName + "/Entries/";
 
-        const string reportEndpoint = "api/Users/{0}/Entries/Report";
-        const string reportEndpointRegular = "api/Users/" + RegularUserName + "/Entries/Report";
+        const string reportEndpoint = "api/v1/Users/{0}/Entries/Report";
+        const string reportEndpointRegular = "api/v1/Users/" + RegularUserName + "/Entries/Report";
 
         const string filterParameters = "?from={0}&to={1}";
 

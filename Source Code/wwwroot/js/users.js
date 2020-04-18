@@ -19,7 +19,7 @@ var users = (function () {
 		}
 
 		//Do the request
-		request("/api/users/login", "POST", JSON.stringify(model))
+		request("/api/" + apiVersion + "/users/login", "POST", JSON.stringify(model))
 			.done(function (result) {
 
 				sessionStorage.setItem("jwt", result.auth_token);
@@ -71,7 +71,7 @@ var users = (function () {
 		}
 
 		//Do the request
-		request("/api/Users/Register", "POST", JSON.stringify(model))
+		request("/api/" + apiVersion + "/Users/Register", "POST", JSON.stringify(model))
 			.done(function () {
 				//Message the user, empty every field and clear validation errors
 				toastr.success("User created successfully. You can now log in.");
@@ -95,7 +95,7 @@ var users = (function () {
 			let tableBody = $("#users tbody");
 
 			//Do the request
-			request("/api/Users", "GET")
+			request("/api/" + apiVersion + "/Users", "GET")
 				.done(function (users) {
 					//Iterate all users
 					$.each(users, function (index, u) {
@@ -137,7 +137,7 @@ var users = (function () {
 			}
 
 			//Otherwise attempt to get the user and fill the input fields
-			request("/api/Users/" + username, "GET")
+			request("/api/" + apiVersion + "/Users/" + username, "GET")
 				.done(function (user) {
 					let formContent = $(html);
 
@@ -181,7 +181,7 @@ var users = (function () {
 		let isNewUser = originalUsername == "";
 
 		//Do the request
-		request("/api/Users/" + originalUsername, isNewUser ? "POST" : "PUT", JSON.stringify(model))
+		request("/api/" + apiVersion + "/Users/" + originalUsername, isNewUser ? "POST" : "PUT", JSON.stringify(model))
 			.done(function (result) {
 				//Get the HTML for each Row
 				getHTML("/Users/GetRow", function (html) {

@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,9 +11,9 @@ using MoneyTrackr.Data.DomainObjects;
 using MoneyTrackr.Dtos;
 using static MoneyTrackr.Constants.Role;
 
-namespace MoneyTrackr.Controllers.API
+namespace MoneyTrackr.Controllers.API.V1
 {
-    [Route("api/Users/{username}/[controller]")]
+    [Route("api/v1/Users/{username}/[controller]")]
     [ApiController]
     [Authorize]
     public class EntriesController : ControllerBase
@@ -178,7 +176,7 @@ namespace MoneyTrackr.Controllers.API
 
             //Convert Dto to Model Object
             var newEntry = dto.Convert(userId);
-            
+
             //Add Entry and save the changes
             dbContext.Entries.Add(newEntry);
             await dbContext.SaveChangesAsync();
@@ -209,7 +207,7 @@ namespace MoneyTrackr.Controllers.API
             var entryInDb = await GetEntry(username, id);
 
             //Return NotFound if null
-            if (entryInDb == null) 
+            if (entryInDb == null)
                 return NotFound();
 
             //Make changes to the other Model properties and save changes

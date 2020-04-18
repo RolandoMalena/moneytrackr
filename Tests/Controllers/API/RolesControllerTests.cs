@@ -10,7 +10,7 @@ namespace MoneyTrackr.Tests.Controllers.API
     [TestFixture]
     public class RolesControllerTests : TestBase
     {
-        const string endpoint = "/api/Roles";
+        const string endpoint = "/api/v1/Roles";
 
         #region Get
         [Test]

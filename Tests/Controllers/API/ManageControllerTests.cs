@@ -9,8 +9,8 @@ namespace MoneyTrackr.Tests.Controllers.API
     [TestFixture]
     public class ManageControllerTests : TestBase
     {
-        const string changeUsernameEndpoint = "/api/Manage/ChangeUsername";
-        const string changePasswordEndpoint = "/api/Manage/ChangePassword";
+        const string changeUsernameEndpoint = "/api/v1/Manage/ChangeUsername";
+        const string changePasswordEndpoint = "/api/v1/Manage/ChangePassword";
 
         ChangeUserNameDto changeUserNameDto = new ChangeUserNameDto();
         ChangePasswordDto changePasswordDto = new ChangePasswordDto();

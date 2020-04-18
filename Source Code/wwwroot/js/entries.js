@@ -4,7 +4,7 @@ var entries = (function () {
 	//Get Users
 	let getUsers = function () {
 		//Do the request
-		request("/api/Users", "GET")
+		request("/api/" + apiVersion + "/Users", "GET")
 			.done(function (users) {
 				//Iterate all users
 				$.each(users, function (index, u) {
@@ -50,7 +50,7 @@ var entries = (function () {
 			let rowTemplate = result;
 
 			//Do the request
-			request('/api/Users/' + user + '/Entries/Report?from=' + model.from + '&to=' + model.to, "GET")
+			request("/api/" + apiVersion + "/Users/" + user + "/Entries/Report?from=" + model.from + "&to=" + model.to, "GET")
 				.done(async function (result) {
 					details.find("#balance").text(formatCurrenty(result.currentBalance));
 					details.find("#totalEntries").text(result.entryCount);
@@ -110,7 +110,7 @@ var entries = (function () {
 			let username = content.find("#currentUser").val();
 
 			//Otherwise attempt to get the entry and fill the input fields
-			request("/api/Users/" + username + "/Entries/" + id, "GET")
+			request("/api/" + apiVersion + "/Users/" + username + "/Entries/" + id, "GET")
 				.done(function (entry) {
 					let formContent = $(html);
 
@@ -153,7 +153,7 @@ var entries = (function () {
 		let isNewEntry = parseInt(id) == NaN;
 
 		//Do the request
-		request("/api/Users/" + user + "/Entries/" + (isNewEntry ? "" : id), id == "" ? "POST" : "PUT", JSON.stringify(model))
+		request("/api/" + apiVersion + "/Users/" + user + "/Entries/" + (isNewEntry ? "" : id), id == "" ? "POST" : "PUT", JSON.stringify(model))
 			.done(function (result) {
 				//Hide modal
 				handler.hide();

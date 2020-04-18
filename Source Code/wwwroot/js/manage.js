@@ -19,7 +19,7 @@ var manage = (function () {
 		}
 
 		//Do the request
-		request("/api/Manage/ChangeUsername", "PATCH", JSON.stringify(model))
+		request("/api/" + apiVersion + "/Manage/ChangeUsername", "PATCH", JSON.stringify(model))
 			.done(function () {
 				//Message the user, empty every field and clear validation errors
 				toastr.success("Username changed successfully.");
@@ -54,7 +54,7 @@ var manage = (function () {
 		}
 
 		//Do the request
-		request("/api/Manage/ChangePassword", "PATCH", JSON.stringify(model))
+		request("/api/" + apiVersion + "/Manage/ChangePassword", "PATCH", JSON.stringify(model))
 			.done(function () {
 				//Message the user, empty every field and clear validation errors
 				toastr.success("Password changed successfully.");

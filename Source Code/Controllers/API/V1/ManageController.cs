@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MoneyTrackr.Dtos;
 
-namespace MoneyTrackr.Controllers.API
+namespace MoneyTrackr.Controllers.API.V1
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [Authorize]
     public class ManageController : ControllerBase

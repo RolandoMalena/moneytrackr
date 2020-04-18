@@ -7,9 +7,9 @@ using MoneyTrackr.Data;
 using MoneyTrackr.Dtos;
 using static MoneyTrackr.Constants.Role;
 
-namespace MoneyTrackr.Controllers.API
+namespace MoneyTrackr.Controllers.API.V1
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [Authorize(Roles = AdministratorRoleName + "," + UserManagerRoleName)]
     public class RolesController : ControllerBase
