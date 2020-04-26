@@ -35,12 +35,38 @@ namespace MoneyTrackr.Controllers.API.V1
         }
         #endregion
 
+        #region Register
+        /// <summary>
+        /// Register a new User. Will be given a Regular User role.
+        /// </summary>
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("/api/v1/Access/Register")]
+        public async Task<ActionResult> Register(RegisterUserDto dto)
+        {
+            try
+            {
+                //Attempts to create User and assign role
+                await CreateUser(dto);
+            }
+            catch (ArgumentException ex)
+            {
+                //An error was found, return as BadRequest
+                return BadRequest(ex.Message);
+            }
+
+            //Everything went fine to this point
+            return Ok();
+        }
+        #endregion
+
         #region LogIn
         /// <summary>
         /// Logs in User and returns a JWT
         /// </summary>
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost]
+        [Route("/api/v1/Access/Login")]
         public async Task<IActionResult> LogIn([FromBody] UserLogInDto userDto)
         {
             var passwordHasher = new PasswordHasher<IdentityUser>();
@@ -81,30 +107,6 @@ namespace MoneyTrackr.Controllers.API.V1
             {
                 auth_token = jwt
             });
-        }
-        #endregion
-
-        #region Register
-        /// <summary>
-        /// Register a new User. Will be given a Regular User role.
-        /// </summary>
-        [AllowAnonymous]
-        [HttpPost("Register")]
-        public async Task<ActionResult> Register(RegisterUserDto dto)
-        {
-            try
-            {
-                //Attempts to create User and assign role
-                await CreateUser(dto);
-            }
-            catch (ArgumentException ex)
-            {
-                //An error was found, return as BadRequest
-                return BadRequest(ex.Message);
-            }
-
-            //Everything went fine to this point
-            return Ok();
         }
         #endregion
 

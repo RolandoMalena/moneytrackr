@@ -18,6 +18,8 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace MoneyTrackr
 {
@@ -77,7 +79,8 @@ namespace MoneyTrackr
             var builder = services.AddRazorPages();
             services.AddMvc()
                 .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true);
-            
+
+            // NOTE: This auto-generates a json file with the documentation
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -91,6 +94,16 @@ namespace MoneyTrackr
                         Url = new Uri("https://www.linkedin.com/in/rolandomalena/")
                     }
                 });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\". If you don't have a user account, you can create one using the 'Register' method. You can get your JWT using the 'Login' method.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -134,7 +147,10 @@ namespace MoneyTrackr
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MoneyTrackr V1");
+                // Use this line instead if you want to use the auto-generated documentation
+                //c.SwaggerEndpoint("/swagger/v1/swagger.json", "MoneyTrackr V1");
+                
+                c.SwaggerEndpoint("/api_documentation.json", "MoneyTrackr V1");
                 c.RoutePrefix = "api/doc";
             });
 

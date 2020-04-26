@@ -41,7 +41,7 @@ namespace MoneyTrackr.Tests.Controllers
         [TestCase(null, homeEndpoint_GetHomePage, @">Welcome to MoneyTrackr!</h1>", @"<form id=""loginForm"" onsubmit=", @"<form id=""registerForm"" onsubmit=")]
         [TestCase(null, homeEndpoint_GetAboutPage, @">About the Developer</h1>")]
         [TestCase(null, homeEndpoint_GetNotFoundPage, @"<img src=""/images/404.png"" />")]
-        [TestCase(null, swaggerEndpoint, @"""url"":""/swagger/v1/swagger.json""", @"""name"":""MoneyTrackr V1""")]
+        [TestCase(null, swaggerEndpoint, @"""url"":""/api_documentation.json""", @"""name"":""MoneyTrackr V1""")]
         [TestCase(UserType.Administrator, manageEndpoint, @"<form id=""changeUsernameForm"" onsubmit=", @"<form id=""changePasswordForm"" onsubmit=")]
         [TestCase(UserType.UserManager, manageEndpoint, @"<form id=""changeUsernameForm"" onsubmit=", @"<form id=""changePasswordForm"" onsubmit=")]
         [TestCase(UserType.Regular, manageEndpoint, @"<form id=""changeUsernameForm"" onsubmit=", @"<form id=""changePasswordForm"" onsubmit=")]

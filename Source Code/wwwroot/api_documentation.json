@@ -1,0 +1,1061 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "MoneyTrackr API",
+    "description": "Sample API to manage deposits and withdrawals entries, it also implements User management. All endpoints except the 'Login' and 'Register' requires the 'Authorization' header to be set using the JWT provided by the 'Login' endpoint preceded by the 'Bearer' indicator.",
+    "contact": {
+      "name": "Rolando Malena",
+      "url": "https://www.linkedin.com/in/rolandomalena/"
+    },
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/Access/Register": {
+      "post": {
+        "tags": [
+          "Access"
+        ],
+        "summary": "Register a new User. Will be given a Regular User role.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/RegisterUserRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User Registered successfully."
+          },
+          "400": {
+            "description": "One or more validations error encountered"
+          }
+        }
+      }
+    },
+    "/api/v1/Access/Login": {
+      "post": {
+        "tags": [
+          "Access"
+        ],
+        "summary": "Logs in User and returns a JWT",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/LogInUserRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User Logged In successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/AuthorizationTokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Username or Password is incorrect or User has been blocked out."
+          }
+        }
+      }
+    },
+    "/api/v1/Roles": {
+      "get": {
+        "tags": [
+          "Roles"
+        ],
+        "summary": "Get all Roles",
+        "responses": {
+          "200": {
+            "description": "Role List retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/RolesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/Users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get every User registered",
+        "responses": {
+          "200": {
+            "description": "User List retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/UsersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new User",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/UserRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "One or more validations error encountered"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/Users/{username}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Gets a single User by its Username",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The Username of the user to be found",
+              "nullable": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSchema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          },
+          "404": {
+            "description": "User was not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Updates a specific User",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/UserRequestBody"
+              }
+            }
+          },
+          "description": "NOTE: Only the provided fields will be updated."
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          },
+          "400": {
+            "description": "One or more validations error encountered"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          },
+          "404": {
+            "description": "User was not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Deletes a specific User.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": false
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "400": {
+            "description": "User tried to delete him/herself"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          },
+          "404": {
+            "description": "User was not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/Roles/{roleId}/Users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get every User registered by its Role",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User List retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/UsersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The provided roleId is not valid"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/Users/{username}/Entries": {
+      "get": {
+        "tags": [
+          "Entries"
+        ],
+        "summary": "Get every Entry registered to a given User and optionally within two dates",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "example": "yyyy-mm-dd",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "nullable": true
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "example": "yyyy-mm-dd",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entry List retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/EntriesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The 'from' and/or 'to' parameter values are not valid"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Entries"
+        ],
+        "summary": "Create a new Entry",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/EntryRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Entry created successfully"
+          },
+          "400": {
+            "description": "One or more validations error encountered"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/Users/{username}/Entries/{id}": {
+      "get": {
+        "tags": [
+          "Entries"
+        ],
+        "summary": "Gets a single Entry by its Id and for the given User.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The username to whom the entry belongs",
+            "example": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The username to whom the entry belongs",
+              "nullable": true
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The Id of the entry to be found",
+            "example": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "The Id of the entry to be found",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entry retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntrySchema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          },
+          "404": {
+            "description": "User or Entry was not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Entries"
+        ],
+        "summary": "Updates an Entry",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "example": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "example": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/EntryRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Entry updated successfully"
+          },
+          "400": {
+            "description": "One or more validations error encountered"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          },
+          "404": {
+            "description": "User or Entry was not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Entries"
+        ],
+        "summary": "Deletes an Entry.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "example": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "example": "id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Entry deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          },
+          "404": {
+            "description": "User or Entry was not found"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/Users/{username}/Entries/Report": {
+      "get": {
+        "tags": [
+          "Entries"
+        ],
+        "summary": "Get a Detailed Account Report",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "example": "yyyy-mm-dd",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "nullable": true
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "example": "yyyy-mm-dd",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/EntryReportResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The 'from' and/or 'to' parameter values are not valid"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          },
+          "403": {
+            "description": "User has no access to this resource"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/Manage/ChangeUsername": {
+      "patch": {
+        "tags": [
+          "Manage"
+        ],
+        "summary": "Changes your Username",
+        "requestBody": {
+          "description": "The new Username along with the Password for verification",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/ChangeUsernameRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User Name updated successfully"
+          },
+          "400": {
+            "description": "One or more validations error encountered"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/Manage/ChangePassword": {
+      "patch": {
+        "tags": [
+          "Manage"
+        ],
+        "summary": "Changes your Password",
+        "requestBody": {
+          "description": "The new Password along with the current one for verification",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/ChangePasswordRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password updated successfully"
+          },
+          "400": {
+            "description": "One or more validations error encountered"
+          },
+          "401": {
+            "description": "Unauthorized. Use a Bearer Token"
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\". If you don't have a user account, you can create one using the 'Register' method. You can get your JWT using the 'Login' method.",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+
+    "schemas": {
+      "RoleSchema": {
+        "title": "Role",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Role Identifier",
+            "type": "string",
+            "nullable": false
+          },
+          "name": {
+            "description": "Role Name",
+            "type": "string",
+            "nullable": false
+          }
+        }
+      },
+      "UserSchema": {
+        "title": "User",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "User Identifier",
+            "type": "string",
+            "nullable": false
+          },
+          "userName": {
+            "description": "User Name",
+            "type": "string",
+            "nullable": false
+          },
+          "role": {
+            "description": "User Role",
+            "type": "object",
+            "nullable": false,
+            "$ref": "#/components/schemas/RoleSchema"
+          }
+        }
+      },
+      "EntrySchema": {
+        "title": "Entry",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Entry Identifier",
+            "type": "integer",
+            "example": 1,
+            "nullable": false
+          },
+          "description": {
+            "description": "Entry Description",
+            "type": "string",
+            "nullable": false
+          },
+          "amount": {
+            "description": "Entry Amount",
+            "type": "number",
+            "example": 100,
+            "nullable": false
+          },
+          "date": {
+            "description": "Entry Date",
+            "type": "string",
+            "example": "yyyy-mm-dd",
+            "nullable": false
+          }
+        }
+      },
+      "EntryReportSchema": {
+        "title": "Entry Report",
+        "type": "object",
+        "properties": {
+          "currentBalance": {
+            "description": "Current Balance",
+            "type": "number",
+            "example": 100,
+            "nullable": false
+          },
+          "entryCount": {
+            "description": "Total Entry Count",
+            "type": "integer",
+            "example": 1,
+            "nullable": false
+          },
+          "totalDeposits": {
+            "description": "Total Deposits Amount",
+            "type": "number",
+            "example": 100,
+            "nullable": false
+          },
+          "depositAverage": {
+            "description": "Total Deposits Average",
+            "type": "number",
+            "example": 100,
+            "nullable": false
+          },
+          "depositCount": {
+            "description": "Total Deposit Count",
+            "type": "integer",
+            "example": 1,
+            "nullable": false
+          },
+          "totalWithdraws": {
+            "description": "Total Withdraws Amount",
+            "type": "number",
+            "example": -100,
+            "nullable": false
+          },
+          "withdrawAverage": {
+            "description": "Total Withdraws Average",
+            "type": "number",
+            "example": -100,
+            "nullable": false
+          },
+          "withdrawCount": {
+            "description": "Total Withdraw Count",
+            "type": "integer",
+            "example": 1,
+            "nullable": false
+          },
+          "entries": {
+            "type": "object",
+            "$ref": "#/components/schemas/EntrySchema"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "RegisterUserRequestBody": {
+        "title": "Register User Request Body",
+        "type": "object",
+        "properties": {
+          "userName": {
+            "maxLength": 25,
+            "minLength": 5,
+            "type": "string",
+            "nullable": false
+          },
+          "password": {
+            "maxLength": 25,
+            "minLength": 5,
+            "type": "string",
+            "example": "password1",
+            "nullable": false,
+            "description": "NOTE: Passwords must contain at least one alphabetic character and at least one numeric character."
+          }
+        }
+      },
+      "LogInUserRequestBody": {
+        "title": "Log In User Request Body",
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": false
+          },
+          "password": {
+            "type": "string",
+            "nullable": false,
+            "example": "password1"
+          }
+        }
+      },
+      "UserRequestBody": {
+        "title": "User Request Body",
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "maxLength": 25,
+            "minLength": 5,
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "maxLength": 25,
+            "minLength": 5,
+            "type": "string",
+            "example": "password1",
+            "nullable": true,
+            "description": "NOTE: Passwords must contain at least one alphabetic character and at least one numeric character."
+          }
+        }
+      },
+      "EntryRequestBody": {
+        "title": "Entry Request Body",
+        "required": [
+          "amount",
+          "date",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": false
+          },
+          "amount": {
+            "type": "number",
+            "description": "NOTE: Cannot be 0 and can be positive or negative.",
+            "example": "100",
+            "nullable": false
+          },
+          "date": {
+            "type": "string",
+            "example": "yyyy-mm-dd",
+            "nullable": false
+          }
+        }
+      },
+      "ChangeUsernameRequestBody": {
+        "title": "Change Username Request Body",
+        "required": [
+          "currentPassword",
+          "userName"
+        ],
+        "type": "object",
+        "properties": {
+          "userName": {
+            "maxLength": 25,
+            "minLength": 5,
+            "type": "string",
+            "nullable": false,
+            "description": "New Username."
+          },
+          "currentPassword": {
+            "type": "string",
+            "example": "password1",
+            "nullable": false
+          }
+        }
+      },
+      "ChangePasswordRequestBody": {
+        "title": "Change Password Request Body",
+        "required": [
+          "currentPassword",
+          "newPassword"
+        ],
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "nullable": false,
+            "example": "password1"
+          },
+          "newPassword": {
+            "maxLength": 25,
+            "minLength": 5,
+            "type": "string",
+            "example": "password2",
+            "nullable": false
+          }
+        }
+      }
+    },
+    "responses": {
+      "AuthorizationTokenResponse": {
+        "title": "Authorization Token Response Object",
+        "type": "object",
+        "properties": {
+          "auth_token": {
+            "description": "Bearer Token to be used in all future requests.",
+            "type": "string",
+            "nullable": false
+          }
+        }
+      },
+      "RolesResponse": {
+        "title": "Get Roles Response",
+        "type": "array",
+        "$ref": "#/components/schemas/RoleSchema"
+      },
+      "UsersResponse": {
+        "title": "Get Users Response",
+        "type": "array",
+        "$ref": "#/components/schemas/UserSchema"
+      },
+      "EntriesResponse": {
+        "title": "Get Entries Response",
+        "type": "array",
+        "$ref": "#/components/schemas/EntrySchema"
+      },
+      "EntryReportResponse": {
+        "title": "Get Entry Report Response",
+        "type": "object",
+        "$ref": "#/components/schemas/EntryReportSchema"
+      }
+    }
+  }
+}
