@@ -19,7 +19,7 @@ var users = (function () {
 		}
 
 		//Do the request
-		request("/api/" + apiVersion + "/users/login", "POST", JSON.stringify(model))
+		request("/api/" + apiVersion + "/access/login", "POST", JSON.stringify(model))
 			.done(function (result) {
 
 				sessionStorage.setItem("jwt", result.auth_token);
@@ -71,7 +71,7 @@ var users = (function () {
 		}
 
 		//Do the request
-		request("/api/" + apiVersion + "/Users/Register", "POST", JSON.stringify(model))
+		request("/api/" + apiVersion + "/Access/Register", "POST", JSON.stringify(model))
 			.done(function () {
 				//Message the user, empty every field and clear validation errors
 				toastr.success("User created successfully. You can now log in.");
@@ -226,7 +226,7 @@ var users = (function () {
 			handler.content.html($(loadingHTML));
 			handler.toggleButtonsVisibility(false);
 
-			request("api/Users/" + username, "DELETE")
+			request("/api/" + apiVersion + "/Users/" + username, "DELETE")
 				.done(function () {
 					toastr.success("User deleted successfully!")
 					content.find("#users tbody tr[name='" + username + "']").remove();

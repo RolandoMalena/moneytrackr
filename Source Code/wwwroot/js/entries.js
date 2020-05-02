@@ -193,7 +193,7 @@ var entries = (function () {
 
 			let user = content.find("#currentUser").val();
 
-			request("api/Users/" + user + "/Entries/" + id, "DELETE")
+			request("/api/" + apiVersion + "/Users/" + user + "/Entries/" + id, "DELETE")
 				.done(function () {
 					//Remove row from table
 					let table = content.find("#entries");
