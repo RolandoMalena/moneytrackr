@@ -22,10 +22,11 @@ jobs:
             mkdir ${{ github.sha }}
             cd ${{ github.sha }}
             git clone https://github.com/RolandoMalena/moneytrackr.git
+            cd moneytrackr
             git switch ${{ github.ref_name }}
 
             echo Deploying application
-            cd moneytrackr/MoneyTrackr/MoneyTrackr.Web
+            cd MoneyTrackr/MoneyTrackr.Web
             sudo docker stop moneytrackr-staging
             sudo docker build -t moneytrackr-staging . 
             sudo docker run -p 8081:80 moneytrackr-staging
