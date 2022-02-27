@@ -8,7 +8,7 @@ on:
 jobs:
   deploy-staging:
     runs-on: ubuntu-20.04
-    if: ${{ github.ref == 'refs/heads/master' }}
+    # if: ${{ github.ref == 'refs/heads/master' }}
     steps:
       - name: Get SSH Key
         run: echo "${{ secrets.SSH_KEY }}" >> key.pem
@@ -16,5 +16,18 @@ jobs:
       - name: Remote into Server
         run: ssh -i key.pem ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
 
-      - name: Exit Server
-        run: exit
+      - name: Build Docker Image
+        run: |
+          cd deploy
+          git clone https://github.com/RolandoMalena/moneytrackr.git
+          git checkout ${{ github.ref }}
+          cd moneytrackr/MoneyTrackr/MoneyTrackr.Web
+          sudo docker stop moneytrackr-staging
+          sudo docker build -t moneytrackr-staging . 
+          sudo docker run -p 8081:80 moneytrackr-staging
+
+      - name: Cleanup
+        run: |
+          sudo docker container prune -f
+          sudo docker image prune -f
+          exit
