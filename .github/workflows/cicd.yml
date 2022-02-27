@@ -29,7 +29,7 @@ jobs:
             cd MoneyTrackr/MoneyTrackr.Web
             sudo docker stop moneytrackr-staging
             sudo docker build -t moneytrackr-staging . 
-            sudo docker run -p 8081:80 moneytrackr-staging
+            sudo docker run -d -p 8081:80 moneytrackr-staging
 
             echo Cleaning up
             cd ../../../
