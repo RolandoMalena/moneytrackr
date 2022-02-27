@@ -19,15 +19,19 @@ jobs:
           script: |
             echo Downloading source code
             cd deploy
+            mkdir ${{ github.sha }}
+            cd ${{ github.sha }}
             git clone https://github.com/RolandoMalena/moneytrackr.git
-            git checkout ${{ github.ref }}
+            git checkout ${{ github.ref_name }}
 
-            echo Deploying...
+            echo Deploying application
             cd moneytrackr/MoneyTrackr/MoneyTrackr.Web
             sudo docker stop moneytrackr-staging
             sudo docker build -t moneytrackr-staging . 
             sudo docker run -p 8081:80 moneytrackr-staging
 
-            echo Cleanup
+            echo Cleaning up
+            cd ../../../
+            rm moneytrackr -R -f
             sudo docker container prune -f
             sudo docker image prune -f
