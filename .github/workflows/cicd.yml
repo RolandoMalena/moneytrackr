@@ -10,11 +10,29 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:
-      - name: Get SSH Key
-        run: echo "${{ secrets.SSH_KEY }}" >> key.pem
+      - name: Deploy to Staging
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            echo Downloading source code
+            cd deploy
+            mkdir ${{ github.sha }}
+            cd ${{ github.sha }}
+            git clone https://github.com/RolandoMalena/moneytrackr.git
+            cd moneytrackr
+            git switch ${{ github.ref_name }}
 
-      - name: Remote into Server
-        run: ssh -i key.pem ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+            echo Deploying application
+            cd MoneyTrackr/MoneyTrackr.Web
+            sudo docker stop moneytrackr-staging
+            sudo docker build -t moneytrackr-staging . 
+            sudo docker run -d -p 8081:80 moneytrackr-staging
 
-      - name: Exit Server
-        run: exit
+            echo Cleaning up
+            cd ../../../
+            rm moneytrackr -R -f
+            sudo docker container prune -f
+            sudo docker image prune -f
