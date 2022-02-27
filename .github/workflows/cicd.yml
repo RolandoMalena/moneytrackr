@@ -8,7 +8,7 @@ on:
 jobs:
   deploy-staging:
     runs-on: ubuntu-20.04
-    # if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     steps:
       - name: Deploy to Staging
         uses: appleboy/ssh-action@master
