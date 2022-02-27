@@ -1,0 +1,20 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+    - '*'
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-20.04
+    if: ${{ github.ref == 'refs/heads/master' }}
+    steps:
+      - name: Get SSH Key
+        run: echo "${{ secrets.SSH_KEY }}" >> key.pem
+
+      - name: Remote into Server
+        run: ssh -i key.pem ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+
+      - name: Exit Server
+        run: exit
