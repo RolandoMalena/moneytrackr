@@ -33,6 +33,6 @@ jobs:
 
             echo Cleaning up
             cd ../../../
-            rm moneytrackr -R -f
+            rm ${{ github.sha }} -R -f
             sudo docker container prune -f
             sudo docker image prune -f
