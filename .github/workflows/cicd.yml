@@ -25,14 +25,20 @@ jobs:
             cd moneytrackr
             git switch ${{ github.ref_name }}
 
-            echo Deploying application
-            cd MoneyTrackr/MoneyTrackr.Web
-            sudo docker stop moneytrackr-staging
-            sudo docker build -t moneytrackr-staging . 
-            sudo docker run -d -p 8081:80 moneytrackr-staging
+            echo Deploying web api
+            cd MoneyTrackr/MoneyTrackr.Api
+            sudo docker stop moneytrackr-api-staging
+            sudo docker build -t moneytrackr-api-staging . 
+            sudo docker run -d -p 8081:80 moneytrackr-api-staging
+
+            echo Deploying web application
+            cd ../MoneyTrackr.Web
+            sudo docker stop moneytrackr-web-staging
+            sudo docker build -t moneytrackr-web-staging . 
+            sudo docker run -d -p 8082:80 moneytrackr-web-staging
 
             echo Cleaning up
-            cd ../../../
+            cd ../../../../
             rm ${{ github.sha }} -R -f
             sudo docker container prune -f
             sudo docker image prune -f
@@ -56,14 +62,20 @@ jobs:
             cd moneytrackr
             git switch ${{ github.ref_name }}
 
-            echo Deploying application
-            cd MoneyTrackr/MoneyTrackr.Web
-            sudo docker stop moneytrackr-production
-            sudo docker build -t moneytrackr-production . 
-            sudo docker run -d -p 8091:80 moneytrackr-production
+            echo Deploying web api
+            cd MoneyTrackr/MoneyTrackr.Api
+            sudo docker stop moneytrackr-api-production
+            sudo docker build -t moneytrackr-api-production . 
+            sudo docker run -d -p 8091:80 moneytrackr-api-production
+
+            echo Deploying web application
+            cd ../MoneyTrackr.Web
+            sudo docker stop moneytrackr-web-production
+            sudo docker build -t moneytrackr-web-production . 
+            sudo docker run -d -p 8092:80 moneytrackr-web-production
 
             echo Cleaning up
-            cd ../../../
+            cd ../../../../
             rm ${{ github.sha }} -R -f
             sudo docker container prune -f
             sudo docker image prune -f
