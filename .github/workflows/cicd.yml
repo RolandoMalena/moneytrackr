@@ -26,14 +26,14 @@ jobs:
             git switch ${{ github.ref_name }}
 
             echo Deploying web api
-            sudo docker-compose -f docker-compose-staging.yml stop api
-            sudo docker-compose -f docker-compose-staging.yml build api
-            sudo docker-compose -f docker-compose-staging.yml up -d api
+            sudo docker-compose -f docker-compose-staging.yml stop api-staging
+            sudo docker-compose -f docker-compose-staging.yml build api-staging
+            sudo docker-compose -f docker-compose-staging.yml up -d api-staging
 
             echo Deploying web application
-            sudo docker-compose -f docker-compose-staging.yml stop web
-            sudo docker-compose -f docker-compose-staging.yml build web
-            sudo docker-compose -f docker-compose-staging.yml up -d web
+            sudo docker-compose -f docker-compose-staging.yml stop web-staging
+            sudo docker-compose -f docker-compose-staging.yml build web-staging
+            sudo docker-compose -f docker-compose-staging.yml up -d web-staging
 
             echo Cleaning up
             cd ../../
@@ -61,14 +61,14 @@ jobs:
             git switch ${{ github.ref_name }}
 
             echo Deploying web api
-            sudo docker-compose -f docker-compose-production.yml stop api
-            sudo docker-compose -f docker-compose-production.yml build api
-            sudo docker-compose -f docker-compose-production.yml up -d api
+            sudo docker-compose -f docker-compose-production.yml stop api-production
+            sudo docker-compose -f docker-compose-production.yml build api-production
+            sudo docker-compose -f docker-compose-production.yml up -d api-production
 
             echo Deploying web application
-            sudo docker-compose -f docker-compose-production.yml stop web
-            sudo docker-compose -f docker-compose-production.yml build web
-            sudo docker-compose -f docker-compose-production.yml up -d web
+            sudo docker-compose -f docker-compose-production.yml stop web-production
+            sudo docker-compose -f docker-compose-production.yml build web-production
+            sudo docker-compose -f docker-compose-production.yml up -d web-production
 
             echo Cleaning up
             cd ../../
