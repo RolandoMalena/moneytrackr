@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ./MoneyTrackr/MoneyTrackr.Api
+    container_name: moneytrackr-api-staging
+    ports:
+      - 8081:80
+  web:
+    build:
+      context: ./MoneyTrackr/MoneyTrackr.Web
+    depends_on:
+      - api
+    container_name: moneytrackr-web-staging
+    ports:
+      - 8082:80
