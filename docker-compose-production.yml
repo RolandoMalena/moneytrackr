@@ -1,17 +1,17 @@
 version: "3.9"
 
 services:
-  api:
+  api-production:
     build:
       context: ./MoneyTrackr/MoneyTrackr.Api
     container_name: moneytrackr-api-production
     ports:
       - 8091:80
-  web:
+  web-production:
     build:
       context: ./MoneyTrackr/MoneyTrackr.Web
     depends_on:
-      - api
+      - api-production
     container_name: moneytrackr-web-production
     ports:
       - 8092:80
