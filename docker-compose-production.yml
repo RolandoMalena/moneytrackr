@@ -15,3 +15,5 @@ services:
     container_name: moneytrackr-web-production
     ports:
       - 8092:80
+    environment:
+      - API_URL=http://137.117.75.48:8091/
