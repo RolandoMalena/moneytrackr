@@ -5,7 +5,13 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTrackr.Web", "MoneyTrackr.Web\MoneyTrackr.Web.csproj", "{AC46B065-746F-4450-AC7F-88D3358F9323}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyTrackr.Api", "MoneyTrackr.Api\MoneyTrackr.Api.csproj", "{D5138683-037A-4445-9542-E93D3375D0BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTrackr.Api", "MoneyTrackr.Api\MoneyTrackr.Api.csproj", "{D5138683-037A-4445-9542-E93D3375D0BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{316E10A7-F4CC-4DD5-BF56-E2EE33817E9A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{E1DDB90F-EE0C-4B08-9DDB-882DAC19BD8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyTrackr.ApiClient", "MoneyTrackr.ApiClient\MoneyTrackr.ApiClient.csproj", "{B0182AF7-ADB5-4CF4-962A-C121B6096495}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +27,18 @@ Global
 		{D5138683-037A-4445-9542-E93D3375D0BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5138683-037A-4445-9542-E93D3375D0BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5138683-037A-4445-9542-E93D3375D0BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0182AF7-ADB5-4CF4-962A-C121B6096495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0182AF7-ADB5-4CF4-962A-C121B6096495}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0182AF7-ADB5-4CF4-962A-C121B6096495}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0182AF7-ADB5-4CF4-962A-C121B6096495}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AC46B065-746F-4450-AC7F-88D3358F9323} = {316E10A7-F4CC-4DD5-BF56-E2EE33817E9A}
+		{D5138683-037A-4445-9542-E93D3375D0BF} = {316E10A7-F4CC-4DD5-BF56-E2EE33817E9A}
+		{B0182AF7-ADB5-4CF4-962A-C121B6096495} = {E1DDB90F-EE0C-4B08-9DDB-882DAC19BD8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EE0D019A-82F4-4C15-BF92-C96183F37EE7}
