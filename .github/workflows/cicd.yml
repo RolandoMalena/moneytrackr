@@ -25,6 +25,11 @@ jobs:
             cd moneytrackr
             git switch ${{ github.ref_name }}
 
+            echo Preparing common container
+            cd MoneyTrackr/Common
+            sudo docker build -t moneytrackr_common-staging .
+            cd ../../
+
             echo Deploying web api
             sudo docker-compose -f docker-compose-staging.yml stop api-staging
             sudo docker-compose -f docker-compose-staging.yml build api-staging
@@ -59,6 +64,11 @@ jobs:
             git clone https://github.com/RolandoMalena/moneytrackr.git
             cd moneytrackr
             git switch ${{ github.ref_name }}
+
+            echo Preparing common container
+            cd MoneyTrackr/Common
+            sudo docker build -t moneytrackr_common-production .
+            cd ../../
 
             echo Deploying web api
             sudo docker-compose -f docker-compose-production.yml stop api-production

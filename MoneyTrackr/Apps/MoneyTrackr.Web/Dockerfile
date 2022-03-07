@@ -1,5 +1,9 @@
+ARG ENVIRONMENT
+FROM moneytrackr_common-${ENVIRONMENT} AS common
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
-WORKDIR /src
+COPY --from=common . .
+WORKDIR /MoneyTrackr/src
 COPY MoneyTrackr.Web.csproj .
 RUN dotnet restore MoneyTrackr.Web.csproj
 COPY . .
