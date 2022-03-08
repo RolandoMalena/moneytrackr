@@ -1,23 +1,11 @@
 version: "3.9"
 
 services:
-  api-production:
+  api:
+    image: rolandomalena/moneytrackr:api-production
     build:
       context: ./MoneyTrackr/Apps/MoneyTrackr.Api
-      args:
-        ENVIRONMENT: production
-    container_name: moneytrackr-api-production
-    ports:
-      - 8091:80
-  web-production:
+  web:
+    image: rolandomalena/moneytrackr:web-production
     build:
       context: ./MoneyTrackr/Apps/MoneyTrackr.Web
-      args:
-        ENVIRONMENT: production
-    depends_on:
-      - api-production
-    container_name: moneytrackr-web-production
-    ports:
-      - 8092:80
-    environment:
-      - API_URL=http://137.117.75.48:8091/
