@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
+            sudo docker login -u rolandomalena -p '${{ secrets.DOCKERHUB_PASSWORD }}'
 
             echo Deploying API
             sudo docker stop rolandomalena/moneytrackr:api-staging
@@ -86,7 +86,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
+            sudo docker login -u rolandomalena -p '${{ secrets.DOCKERHUB_PASSWORD }}'
 
             echo Deploying API
             sudo docker stop rolandomalena/moneytrackr:api-production
