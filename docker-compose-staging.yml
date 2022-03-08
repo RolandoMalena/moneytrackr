@@ -1,23 +1,11 @@
 version: "3.9"
 
 services:
-  api-staging:
+  api:
+    image: rolandomalena/moneytrackr:api-staging
     build:
       context: ./MoneyTrackr/Apps/MoneyTrackr.Api
-      args:
-        ENVIRONMENT: staging
-    container_name: moneytrackr-api-staging
-    ports:
-      - 8081:80
-  web-staging:
+  web:
+    image: rolandomalena/moneytrackr:web-staging
     build:
       context: ./MoneyTrackr/Apps/MoneyTrackr.Web
-      args:
-        ENVIRONMENT: staging
-    depends_on:
-      - api-staging
-    container_name: moneytrackr-web-staging
-    ports:
-      - 8082:80
-    environment:
-      - API_URL=http://137.117.75.48:8081/

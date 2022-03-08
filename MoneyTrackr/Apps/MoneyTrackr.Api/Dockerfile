@@ -1,5 +1,4 @@
-ARG ENVIRONMENT
-FROM moneytrackr_common-${ENVIRONMENT} AS common
+FROM moneytrackr-common AS common
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
 COPY --from=common . .

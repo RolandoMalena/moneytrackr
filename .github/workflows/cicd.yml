@@ -10,6 +10,26 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ github.ref == 'refs/heads/master' }}
     steps:
+      - name: Download source code
+        uses: actions/checkout@v2
+
+      - name: Prepare common container
+        run: |
+          cd MoneyTrackr/Common
+          docker build -t moneytrackr-common .
+      
+      - name: Build API container
+        run: docker-compose -f docker-compose-staging.yml build api
+      
+      - name: Build Web container
+        run: docker-compose -f docker-compose-staging.yml build web
+
+      - name: Push containers
+        run: |
+          docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker push rolandomalena/moneytrackr:api-staging
+          docker push rolandomalena/moneytrackr:web-staging
+
       - name: Deploy to Staging
         uses: appleboy/ssh-action@master
         with:
@@ -17,32 +37,21 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            echo Downloading source code
-            cd deploy
-            mkdir ${{ github.sha }}
-            cd ${{ github.sha }}
-            git clone https://github.com/RolandoMalena/moneytrackr.git
-            cd moneytrackr
-            git switch ${{ github.ref_name }}
+            docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
-            echo Preparing common container
-            cd MoneyTrackr/Common
-            sudo docker build -t moneytrackr_common-staging .
-            cd ../../
+            echo Deploying API
+            sudo docker stop rolandomalena/moneytrackr:api-staging
+            sudo docker rmi rolandomalena/moneytrackr:api-staging -f
+            sudo docker pull rolandomalena/moneytrackr:api-staging
+            sudo docker run -d -p 8081:80 --restart unless-stopped rolandomalena/moneytrackr:api-staging
 
-            echo Deploying web api
-            sudo docker-compose -f docker-compose-staging.yml stop api-staging
-            sudo docker-compose -f docker-compose-staging.yml build api-staging
-            sudo docker-compose -f docker-compose-staging.yml up -d api-staging
-
-            echo Deploying web application
-            sudo docker-compose -f docker-compose-staging.yml stop web-staging
-            sudo docker-compose -f docker-compose-staging.yml build web-staging
-            sudo docker-compose -f docker-compose-staging.yml up -d web-staging
+            echo Deploying Web App
+            sudo docker stop rolandomalena/moneytrackr:web-staging
+            sudo docker rmi rolandomalena/moneytrackr:web-staging -f
+            sudo docker pull rolandomalena/moneytrackr:web-staging
+            sudo docker run -d -p 8082:80 --restart unless-stopped -e API_URL=http://137.117.75.48:8081/ rolandomalena/moneytrackr:web-staging
 
             echo Cleaning up
-            cd ../../
-            rm ${{ github.sha }} -R -f
             sudo docker container prune -f
             sudo docker image prune -f
   
@@ -50,6 +59,26 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ github.ref == 'refs/heads/production' }}
     steps:
+      - name: Download source code
+        uses: actions/checkout@v2
+
+      - name: Prepare common container
+        run: |
+          cd MoneyTrackr/Common
+          docker build -t moneytrackr-common .
+      
+      - name: Build API container
+        run: docker-compose -f docker-compose-production.yml build api
+      
+      - name: Build Web container
+        run: docker-compose -f docker-compose-production.yml build web
+
+      - name: Push containers
+        run: |
+          docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker push rolandomalena/moneytrackr:api-production
+          docker push rolandomalena/moneytrackr:web-production
+
       - name: Deploy to Production
         uses: appleboy/ssh-action@master
         with:
@@ -57,31 +86,20 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            echo Downloading source code
-            cd deploy
-            mkdir ${{ github.sha }}
-            cd ${{ github.sha }}
-            git clone https://github.com/RolandoMalena/moneytrackr.git
-            cd moneytrackr
-            git switch ${{ github.ref_name }}
+            docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
-            echo Preparing common container
-            cd MoneyTrackr/Common
-            sudo docker build -t moneytrackr_common-production .
-            cd ../../
+            echo Deploying API
+            sudo docker stop rolandomalena/moneytrackr:api-production
+            sudo docker rmi rolandomalena/moneytrackr:api-production -f
+            sudo docker pull rolandomalena/moneytrackr:api-production
+            sudo docker run -d -p 8091:80 --restart unless-stopped rolandomalena/moneytrackr:api-production
 
-            echo Deploying web api
-            sudo docker-compose -f docker-compose-production.yml stop api-production
-            sudo docker-compose -f docker-compose-production.yml build api-production
-            sudo docker-compose -f docker-compose-production.yml up -d api-production
-
-            echo Deploying web application
-            sudo docker-compose -f docker-compose-production.yml stop web-production
-            sudo docker-compose -f docker-compose-production.yml build web-production
-            sudo docker-compose -f docker-compose-production.yml up -d web-production
+            echo Deploying Web App
+            sudo docker stop rolandomalena/moneytrackr:web-production
+            sudo docker rmi rolandomalena/moneytrackr:web-production -f
+            sudo docker pull rolandomalena/moneytrackr:web-production
+            sudo docker run -d -p 8092:80 -e API_URL=http://137.117.75.48:8091/ --restart unless-stopped rolandomalena/moneytrackr:web-production
 
             echo Cleaning up
-            cd ../../
-            rm ${{ github.sha }} -R -f
             sudo docker container prune -f
             sudo docker image prune -f
