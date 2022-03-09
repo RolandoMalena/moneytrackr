@@ -1,6 +1,10 @@
 version: "3.9"
 
 services:
+  common:
+    image: moneytrackr-common
+    build:
+      context: ./MoneyTrackr/Common
   api:
     image: rolandomalena/moneytrackr:api-staging
     build:
@@ -9,3 +13,4 @@ services:
     image: rolandomalena/moneytrackr:web-staging
     build:
       context: ./MoneyTrackr/Apps/MoneyTrackr.Web
+      dockerfile: Dockerfile.staging
