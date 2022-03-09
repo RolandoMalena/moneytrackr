@@ -5,23 +5,24 @@ namespace MoneyTrackr.ApiClient
 {
     public static class Configure
     {
-        private const string EnvironmentVariableName = "API_URL";
-        private const string LocalBaseAddress = "https://localhost:44356";
-
-        public static IServiceCollection AddMoneyTrackrClient(this IServiceCollection services)
+        public static IServiceCollection AddMoneyTrackrClient(this IServiceCollection services, ClientConfigurationSettings settings)
         {
-            services.AddClient<IWeatherForecastAPI, WeatherForecastAPI>();
+            if (settings is null)
+                throw new ArgumentNullException(nameof(settings));
+
+            if (settings.BaseApiAddress is null)
+                throw new ArgumentNullException($"{nameof(settings)}.{nameof(settings.BaseApiAddress)}");
+
+            services.AddClient<IWeatherForecastAPI, WeatherForecastAPI>(settings);
 
             return services;
         }
 
-        private static IServiceCollection AddClient<TClient, TImplementation>(this IServiceCollection services) where TClient : class where TImplementation : class, TClient
+        private static IServiceCollection AddClient<TClient, TImplementation>(this IServiceCollection services, ClientConfigurationSettings settings) where TClient : class where TImplementation : class, TClient
         {
-            string baseAddress = Environment.GetEnvironmentVariable(EnvironmentVariableName) ?? LocalBaseAddress;
-
             services.AddHttpClient<TClient, TImplementation>("MoneyTrackrClient", client =>
             {
-                client.BaseAddress = new Uri(baseAddress);
+                client.BaseAddress = settings.BaseApiAddress;
                 client.Timeout = new TimeSpan(0, 0, 30);
                 client.DefaultRequestHeaders.Clear();
             });
