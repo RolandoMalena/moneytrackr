@@ -47,7 +47,7 @@ jobs:
             sudo docker stop moneytrackr-web-staging
             sudo docker rmi rolandomalena/moneytrackr:web-staging -f
             sudo docker pull rolandomalena/moneytrackr:web-staging
-            sudo docker run -d -p 8082:80 --restart unless-stopped --name moneytrackr-web-staging -e API_URL=http://137.117.75.48:8081/ rolandomalena/moneytrackr:web-staging
+            sudo docker run -d -p 8082:80 --restart unless-stopped --name moneytrackr-web-staging rolandomalena/moneytrackr:web-staging
 
             echo Cleaning up
             sudo docker container prune -f
@@ -94,7 +94,7 @@ jobs:
             sudo docker stop moneytrackr-web-production
             sudo docker rmi rolandomalena/moneytrackr:web-production -f
             sudo docker pull rolandomalena/moneytrackr:web-production
-            sudo docker run -d -p 8092:80 --name moneytrackr-web-production -e API_URL=http://137.117.75.48:8091/ --restart unless-stopped rolandomalena/moneytrackr:web-production
+            sudo docker run -d -p 8092:80 --restart unless-stopped --name moneytrackr-web-production rolandomalena/moneytrackr:web-production
 
             echo Cleaning up
             sudo docker container prune -f
