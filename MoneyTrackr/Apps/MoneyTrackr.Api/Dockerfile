@@ -1,5 +1,8 @@
+FROM moneytrackr-common AS common
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
-WORKDIR /src
+COPY --from=common . .
+WORKDIR /MoneyTrackr/src
 COPY MoneyTrackr.Api.csproj .
 RUN dotnet restore MoneyTrackr.Api.csproj
 COPY . .

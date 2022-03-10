@@ -1,17 +1,16 @@
 version: "3.9"
 
 services:
-  api-production:
+  common:
+    image: moneytrackr-common
     build:
-      context: ./MoneyTrackr/MoneyTrackr.Api
-    container_name: moneytrackr-api-production
-    ports:
-      - 8091:80
-  web-production:
+      context: ./MoneyTrackr/Common
+  api:
+    image: rolandomalena/moneytrackr:api-production
     build:
-      context: ./MoneyTrackr/MoneyTrackr.Web
-    depends_on:
-      - api-production
-    container_name: moneytrackr-web-production
-    ports:
-      - 8092:80
+      context: ./MoneyTrackr/Apps/MoneyTrackr.Api
+  web:
+    image: rolandomalena/moneytrackr:web-production
+    build:
+      context: ./MoneyTrackr/Apps/MoneyTrackr.Web
+      dockerfile: Dockerfile.production
