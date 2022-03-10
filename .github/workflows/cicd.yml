@@ -38,13 +38,13 @@ jobs:
             sudo docker login -u rolandomalena -p '${{ secrets.DOCKERHUB_PASSWORD }}'
 
             echo Deploying API
-            sudo docker stop moneytrackr-api-staging
+            sudo docker rm moneytrackr-api-staging -f
             sudo docker rmi rolandomalena/moneytrackr:api-staging -f
             sudo docker pull rolandomalena/moneytrackr:api-staging
             sudo docker run -d -p 8081:80 --restart unless-stopped --name moneytrackr-api-staging rolandomalena/moneytrackr:api-staging
 
             echo Deploying Web App
-            sudo docker stop moneytrackr-web-staging
+            sudo docker rm moneytrackr-web-staging -f
             sudo docker rmi rolandomalena/moneytrackr:web-staging -f
             sudo docker pull rolandomalena/moneytrackr:web-staging
             sudo docker run -d -p 8082:80 --restart unless-stopped --name moneytrackr-web-staging rolandomalena/moneytrackr:web-staging
@@ -85,13 +85,13 @@ jobs:
             sudo docker login -u rolandomalena -p '${{ secrets.DOCKERHUB_PASSWORD }}'
 
             echo Deploying API
-            sudo docker stop moneytrackr-api-production
+            sudo docker rm moneytrackr-api-production -f
             sudo docker rmi rolandomalena/moneytrackr:api-production -f
             sudo docker pull rolandomalena/moneytrackr:api-production
             sudo docker run -d -p 8091:80 --restart unless-stopped --name moneytrackr-api-production rolandomalena/moneytrackr:api-production
 
             echo Deploying Web App
-            sudo docker stop moneytrackr-web-production
+            sudo docker rm moneytrackr-web-production -f
             sudo docker rmi rolandomalena/moneytrackr:web-production -f
             sudo docker pull rolandomalena/moneytrackr:web-production
             sudo docker run -d -p 8092:80 --restart unless-stopped --name moneytrackr-web-production rolandomalena/moneytrackr:web-production
