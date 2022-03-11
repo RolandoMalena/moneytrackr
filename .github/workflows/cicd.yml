@@ -6,29 +6,54 @@ on:
     - '*'
 
 jobs:
-  deploy-staging:
+  deploy:
     runs-on: ubuntu-20.04
-    if: ${{ github.ref == 'refs/heads/master' }}
+    strategy:
+      matrix:
+        arrays: [{
+          name: "API - Staging",
+          app: "api",
+          environment: "staging",
+          port: 8081,
+          shouldRun: "${{ github.ref == 'refs/heads/master' }}"
+        }, {
+          name: "Web App - Staging",
+          app: "web",
+          environment: "staging",
+          port: 8082,
+          shouldRun: "${{ github.ref == 'refs/heads/master' }}"
+        }, {
+          name: "API - Production",
+          app: "api",
+          environment: "production",
+          port: 8091,
+          shouldRun: "${{ github.ref == 'refs/heads/production' }}"
+        }, {
+          name: "Web App - Production",
+          app: "web",
+          environment: "production",
+          port: 8092,
+          shouldRun: "${{ github.ref == 'refs/heads/production' }}"
+        }]
+        exclude:
+          - arrays: { shouldRun: false }
+    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production' }}
     steps:
       - name: Download source code
         uses: actions/checkout@v2
 
       - name: Build common container
-        run: docker-compose -f docker-compose-staging.yml build common
+        run: docker-compose -f docker-compose-${{ matrix.arrays.environment }}.yml build common
       
-      - name: Build API container
-        run: docker-compose -f docker-compose-staging.yml build api
-      
-      - name: Build Web container
-        run: docker-compose -f docker-compose-staging.yml build web
+      - name: Build container
+        run: docker-compose -f docker-compose-${{ matrix.arrays.environment }}.yml build ${{ matrix.arrays.app }}
 
-      - name: Push containers
+      - name: Push container
         run: |
           docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
-          docker push rolandomalena/moneytrackr:api-staging
-          docker push rolandomalena/moneytrackr:web-staging
-
-      - name: Deploy to Staging
+          docker push rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }}
+      
+      - name: Deploy application
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -37,64 +62,11 @@ jobs:
           script: |
             sudo docker login -u rolandomalena -p '${{ secrets.DOCKERHUB_PASSWORD }}'
 
-            echo Deploying API
-            sudo docker rm moneytrackr-api-staging -f
-            sudo docker rmi rolandomalena/moneytrackr:api-staging -f
-            sudo docker pull rolandomalena/moneytrackr:api-staging
-            sudo docker run -d -p 8081:80 --restart unless-stopped --name moneytrackr-api-staging rolandomalena/moneytrackr:api-staging
-
-            echo Deploying Web App
-            sudo docker rm moneytrackr-web-staging -f
-            sudo docker rmi rolandomalena/moneytrackr:web-staging -f
-            sudo docker pull rolandomalena/moneytrackr:web-staging
-            sudo docker run -d -p 8082:80 --restart unless-stopped --name moneytrackr-web-staging rolandomalena/moneytrackr:web-staging
-
-            echo Cleaning up
-            sudo docker container prune -f
-            sudo docker image prune -f
-  
-  deploy-production:
-    runs-on: ubuntu-20.04
-    if: ${{ github.ref == 'refs/heads/production' }}
-    steps:
-      - name: Download source code
-        uses: actions/checkout@v2
-
-      - name: Prepare common container
-        run: docker-compose -f docker-compose-production.yml build common
-      
-      - name: Build API container
-        run: docker-compose -f docker-compose-production.yml build api
-      
-      - name: Build Web container
-        run: docker-compose -f docker-compose-production.yml build web
-
-      - name: Push containers
-        run: |
-          docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
-          docker push rolandomalena/moneytrackr:api-production
-          docker push rolandomalena/moneytrackr:web-production
-
-      - name: Deploy to Production
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            sudo docker login -u rolandomalena -p '${{ secrets.DOCKERHUB_PASSWORD }}'
-
-            echo Deploying API
-            sudo docker rm moneytrackr-api-production -f
-            sudo docker rmi rolandomalena/moneytrackr:api-production -f
-            sudo docker pull rolandomalena/moneytrackr:api-production
-            sudo docker run -d -p 8091:80 --restart unless-stopped --name moneytrackr-api-production rolandomalena/moneytrackr:api-production
-
-            echo Deploying Web App
-            sudo docker rm moneytrackr-web-production -f
-            sudo docker rmi rolandomalena/moneytrackr:web-production -f
-            sudo docker pull rolandomalena/moneytrackr:web-production
-            sudo docker run -d -p 8092:80 --restart unless-stopped --name moneytrackr-web-production rolandomalena/moneytrackr:web-production
+            echo Deploying
+            sudo docker rm moneytrackr-${{ matrix.arrays.app }}-${{ matrix.arrays.environment }} -f
+            sudo docker rmi rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }} -f
+            sudo docker pull rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }}
+            sudo docker run -d -p ${{ matrix.arrays.port }}:80 --restart unless-stopped --name moneytrackr-${{ matrix.arrays.app }}-${{ matrix.arrays.environment }} rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }}
 
             echo Cleaning up
             sudo docker container prune -f
