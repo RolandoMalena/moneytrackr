@@ -31,6 +31,8 @@ jobs:
           port: 8092,
           shouldRun: "${{ github.ref == 'refs/heads/production' }}"
         }]
+      exclude:
+        - environment: "production"
     steps:
       - name: Print Variables
         run: |
