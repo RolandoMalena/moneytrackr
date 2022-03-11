@@ -31,8 +31,9 @@ jobs:
           port: 8092,
           shouldRun: "${{ github.ref == 'refs/heads/production' }}"
         }]
-        exclude:
-          - arrays.environment: "production"
+        # exclude:
+        #   - arrays.environment: "production"
+    if: ${{ matrix.arrays.environment == 'production' }}
     steps:
       - name: Print Variables
         run: |
