@@ -32,11 +32,12 @@ jobs:
           shouldRun: "${{ github.ref == 'refs/heads/production' }}"
         }]
       steps:
-        - run: |
-          echo ${{ matrix.arrays.name }}
-          echo ${{ matrix.arrays.environment }}
-          echo ${{ matrix.arrays.port }}
-          echo ${{ matrix.arrays.shouldRun }}
+        - name: Print Variables
+          run: |
+          echo "${{ matrix.arrays.name }}"
+          echo "${{ matrix.arrays.environment }}"
+          echo "${{ matrix.arrays.port }}"
+          echo "${{ matrix.arrays.shouldRun }}"
 
   deploy-staging:
     runs-on: ubuntu-20.04
