@@ -32,7 +32,7 @@ jobs:
           shouldRun: "${{ github.ref == 'refs/heads/production' }}"
         }]
         exclude:
-          - environment: "production"
+          - arrays.environment: "production"
     steps:
       - name: Print Variables
         run: |
