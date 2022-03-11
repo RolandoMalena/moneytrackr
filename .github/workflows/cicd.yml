@@ -11,25 +11,25 @@ jobs:
     strategy:
       matrix:
         arrays: [{
-          name: "Deploy API to Staging",
+          name: "API - Staging",
           app: "api",
           environment: "staging",
           port: 8081,
           shouldRun: "${{ github.ref == 'refs/heads/master' }}"
         }, {
-          name: "Deploy Web App to Staging",
+          name: "Web App - Staging",
           app: "web",
           environment: "staging",
           port: 8082,
           shouldRun: "${{ github.ref == 'refs/heads/master' }}"
         }, {
-          name: "Deploy API to Production",
+          name: "API - Production",
           app: "api",
           environment: "production",
           port: 8091,
           shouldRun: "${{ github.ref == 'refs/heads/production' }}"
         }, {
-          name: "Deploy API to Production",
+          name: "Web App - Production",
           app: "web",
           environment: "production",
           port: 8092,
