@@ -6,6 +6,38 @@ on:
     - '*'
 
 jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        arrays: [{
+          name: "Deploy API to Staging",
+          environment: "staging",
+          port: 8081,
+          shouldRun: "${{ github.ref == 'refs/heads/master' }}"
+        }, {
+          name: "Deploy Web App to Staging",
+          environment: "staging",
+          port: 8082,
+          shouldRun: "${{ github.ref == 'refs/heads/master' }}"
+        }, {
+          name: "Deploy API to Production",
+          environment: "production",
+          port: 8091,
+          shouldRun: "${{ github.ref == 'refs/heads/production' }}"
+        }, {
+          name: "Deploy API to Production",
+          environment: "production",
+          port: 8092,
+          shouldRun: "${{ github.ref == 'refs/heads/production' }}"
+        }]
+      steps:
+        - run: |
+          echo ${{ matrix.arrays.name }}
+          echo ${{ matrix.arrays.environment }}
+          echo ${{ matrix.arrays.port }}
+          echo ${{ matrix.arrays.shouldRun }}
+
   deploy-staging:
     runs-on: ubuntu-20.04
     if: ${{ github.ref == 'refs/heads/master' }}
