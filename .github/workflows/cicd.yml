@@ -63,6 +63,7 @@ jobs:
         if: ${{ matrix.arrays.app == 'api' }}
         run: |
           cd MoneyTrackr/Apps/MoneyTrackr.Api
+          dotnet tool install --global dotnet-ef
           dotnet ef database update
         env:
           Database__Username: admin
