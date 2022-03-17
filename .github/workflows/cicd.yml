@@ -16,7 +16,7 @@ jobs:
           app: "api",
           environment: "staging",
           port: 8081,
-          db_host: ${{ secrets.DB_STAGING_HOST }},
+          db_host: '${{ secrets.DB_STAGING_HOST }}',
           db_port: "${{ secrets.DB_STAGING_PORT }}",
           db_password: "${{ secrets.DB_STAGING_PASSWORD }}",
           shouldRun: "${{ github.ref == 'refs/heads/master' }}"
