@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production' }}
     runs-on: ubuntu-20.04
     strategy:
       matrix:
@@ -15,6 +16,9 @@ jobs:
           app: "api",
           environment: "staging",
           port: 8081,
+          db_host: "DB_STAGING_HOST",
+          db_port: "DB_STAGING_PORT",
+          db_password: "DB_STAGING_PASSWORD",
           shouldRun: "${{ github.ref == 'refs/heads/master' }}"
         }, {
           name: "Web App - Staging",
@@ -27,6 +31,9 @@ jobs:
           app: "api",
           environment: "production",
           port: 8091,
+          db_host: "DB_PRODUCTION_HOST",
+          db_port: "DB_PRODUCTION_PORT",
+          db_password: "DB_PRODUCTION_PASSWORD",
           shouldRun: "${{ github.ref == 'refs/heads/production' }}"
         }, {
           name: "Web App - Production",
@@ -37,7 +44,6 @@ jobs:
         }]
         exclude:
           - arrays: { shouldRun: false }
-    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production' }}
     steps:
       - name: Download source code
         uses: actions/checkout@v2
@@ -52,6 +58,19 @@ jobs:
         run: |
           docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
           docker push rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }}
+
+      - name: Run Migrations
+        if: ${{ matrix.arrays.app == 'api' }}
+        run: |
+          cd MoneyTrackr/Apps/MoneyTrackr.Api
+          dotnet tool install --global dotnet-ef
+          dotnet ef database update
+        env:
+          Database__Username: admin
+          Database__Password: ${{ secrets[matrix.arrays.db_password] }}
+          Database__Host: ${{ secrets[matrix.arrays.db_host] }}
+          Database__Port: ${{ secrets[matrix.arrays.db_port] }}
+          Database__Database: db
       
       - name: Deploy application
         uses: appleboy/ssh-action@master
