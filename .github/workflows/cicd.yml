@@ -15,6 +15,9 @@ jobs:
           app: "api",
           environment: "staging",
           port: 8081,
+          db_host: "${{ secrets.DB_STAGING_HOST }}"
+          db_port: "${{ secrets.DB_STAGING_PORT }}"
+          db_password: "${{ secrets.DB_STAGING_PASSWORD }}"
           shouldRun: "${{ github.ref == 'refs/heads/master' }}"
         }, {
           name: "Web App - Staging",
@@ -27,6 +30,9 @@ jobs:
           app: "api",
           environment: "production",
           port: 8091,
+          db_host: "${{ secrets.DB_PRODUCTION_HOST }}"
+          db_port: "${{ secrets.DB_PRODUCTION_PORT }}"
+          db_password: "${{ secrets.DB_PRODUCTION_PASSWORD }}"
           shouldRun: "${{ github.ref == 'refs/heads/production' }}"
         }, {
           name: "Web App - Production",
@@ -52,6 +58,18 @@ jobs:
         run: |
           docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
           docker push rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }}
+
+      - name: Run Migrations
+        if: ${{ matrix.arrays.app == 'api' }}
+        run: |
+          cd MoneyTrackr/Apps/MoneyTrackr.Api
+          dotnet ef database update
+        env:
+          Database__Username: admin
+          Database__Password: ${{ matrix.arrays.db_password }}
+          Database__Host: ${{ matrix.arrays.db_host }}
+          Database__Port: ${{ matrix.arrays.db_port }}
+          Database__Database: db
       
       - name: Deploy application
         uses: appleboy/ssh-action@master

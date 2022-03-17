@@ -24,6 +24,6 @@ if (builder.HostEnvironment.IsProduction())
     clientSettings.BaseApiAddress = new Uri("http://137.117.75.48:8091/");
 }
 
-builder.Services.AddMoneyTrackrClient(clientSettings);
+builder.Services.SetupMoneyTrackrClient(clientSettings);
 
 await builder.Build().RunAsync();

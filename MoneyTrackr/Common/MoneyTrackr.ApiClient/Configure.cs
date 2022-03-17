@@ -5,7 +5,7 @@ namespace MoneyTrackr.ApiClient
 {
     public static class Configure
     {
-        public static IServiceCollection AddMoneyTrackrClient(this IServiceCollection services, ClientConfigurationSettings settings)
+        public static IServiceCollection SetupMoneyTrackrClient(this IServiceCollection services, ClientConfigurationSettings settings)
         {
             if (settings is null)
                 throw new ArgumentNullException(nameof(settings));
@@ -13,12 +13,12 @@ namespace MoneyTrackr.ApiClient
             if (settings.BaseApiAddress is null)
                 throw new ArgumentNullException($"{nameof(settings)}.{nameof(settings.BaseApiAddress)}");
 
-            services.AddClient<IWeatherForecastAPI, WeatherForecastAPI>(settings);
+            services.SetupClient<IWeatherForecastAPI, WeatherForecastAPI>(settings);
 
             return services;
         }
 
-        private static IServiceCollection AddClient<TClient, TImplementation>(this IServiceCollection services, ClientConfigurationSettings settings) where TClient : class where TImplementation : class, TClient
+        private static IServiceCollection SetupClient<TClient, TImplementation>(this IServiceCollection services, ClientConfigurationSettings settings) where TClient : class where TImplementation : class, TClient
         {
             services.AddHttpClient<TClient, TImplementation>("MoneyTrackrClient", client =>
             {
