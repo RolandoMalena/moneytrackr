@@ -17,11 +17,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-DataConfigurationSettings dataSettings = new()
-{
-    AppAssemblyName = "MoneyTrackr.Api"
-};
-builder.Services.SetupMoneyTrackrDataAccess(dataSettings);
+builder.Services.SetupMoneyTrackrDataAccess();
 
 var app = builder.Build();
 

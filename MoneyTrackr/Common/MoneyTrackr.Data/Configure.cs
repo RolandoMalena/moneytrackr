@@ -9,24 +9,15 @@ namespace MoneyTrackr.Data
 {
     public static class Configure
     {
-        public static IServiceCollection SetupMoneyTrackrDataAccess(this IServiceCollection services, DataConfigurationSettings configSettings)
+        public static IServiceCollection SetupMoneyTrackrDataAccess(this IServiceCollection services)
         {
-            if (configSettings is null)
-                throw new ArgumentNullException(nameof(configSettings));
-
-            if (configSettings.AppAssemblyName is null)
-                throw new ArgumentNullException($"{nameof(configSettings)}.{nameof(configSettings.AppAssemblyName)}");
-
             services.ConfigureSettings<DatabaseSettings>((settings, config) => 
                 settings.MapConfiguration(config));
 
             services.AddDbContext<MoneyTrackrDbContext>((s, opts) =>
             {
                 var dbSettings = s.GetRequiredService<IOptionsMonitor<DatabaseSettings>>();
-
-                opts.UseNpgsql(
-                    dbSettings.CurrentValue.GetConnectionString(), 
-                    b => b.MigrationsAssembly(configSettings.AppAssemblyName));
+                opts.UseNpgsql(dbSettings.CurrentValue.GetConnectionString());
             });
 
             // Add Repositories here
