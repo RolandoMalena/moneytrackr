@@ -72,7 +72,7 @@ namespace MoneyTrackr.Api.Migrations
 
             migrationBuilder.Insert(UsersTableName, UsersColumNames, new object[][]
             {
-                new object[] { AdministratorUser.Id, AdministratorUser.Email, AdministratorUser.SecurityStamp, AdministratorUser.ConcurrencyStamp },
+                new object[] { AdministratorUser.Id, AdministratorUser.Email, AdministratorUser.SecurityStamp, AdministratorUser.ConcurrencyStamp, AdministratorUser.EmailConfirmed, AdministratorUser.PhoneNumberConfirmed, AdministratorUser.TwoFactorEnabled, AdministratorUser.LockoutEnabled, AdministratorUser.AccessFailedCount },
             });
 
             migrationBuilder.Insert(UserRolesTableName, UserRolesColumNames, new object[][]
