@@ -1,5 +1,4 @@
-﻿using Dapper;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 using System.Text;
@@ -15,8 +14,6 @@ namespace MoneyTrackr.Data.Migrations.Helpers
 
         public static OperationBuilder<SqlOperation> Insert(this MigrationBuilder migrationBuilder, string TableName, string[] Columns, object[][] ValueSets)
         {
-            var builder = new SqlBuilder();
-
             StringBuilder sb = new();
             foreach (object[] set in ValueSets)
             {
