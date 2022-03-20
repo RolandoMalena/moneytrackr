@@ -17,6 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTrackr.Data", "Common\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyTrackr.Shared", "Common\MoneyTrackr.Shared\MoneyTrackr.Shared.csproj", "{F81E77B6-D164-413B-9D20-C472D7370033}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C4A774C2-29B6-41FD-9BE5-50B5342B8163}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\cicd.yml = ..\.github\workflows\cicd.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

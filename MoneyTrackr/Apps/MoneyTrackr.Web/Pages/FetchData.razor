@@ -1,15 +1,15 @@
 ﻿@page "/fetchdata"
 @using MoneyTrackr.ApiClient.APIs
-@using MoneyTrackr.ApiClient.DTOs
-@inject IWeatherForecastAPI Api
+@using MoneyTrackr.Shared.DTOs
+@inject IRolesAPI Api
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Roles</PageTitle>
 
-<h1>Weather forecast</h1>
+<h1>Roles</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (roles == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -18,20 +18,18 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Claims</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var role in roles)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@role.Id</td>
+                    <td>@role.Name</td>
+                    <td>@string.Join(", ", role.Claims?.Select(c => $"{c.Type}: {c.Value}") ?? new string[0])</td>
                 </tr>
             }
         </tbody>
@@ -39,10 +37,10 @@ else
 }
 
 @code {
-    private IList<WeatherForecastDto>? forecasts;
+    private IList<RoleDto>? roles;
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Api.GetForecastAsync();
+        roles = await Api.GetRolesAsync();
     }
 }

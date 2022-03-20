@@ -21,4 +21,8 @@
     <ProjectReference Include="..\..\Common\MoneyTrackr.Data\MoneyTrackr.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

@@ -13,7 +13,7 @@ namespace MoneyTrackr.ApiClient
             if (settings.BaseApiAddress is null)
                 throw new ArgumentNullException($"{nameof(settings)}.{nameof(settings.BaseApiAddress)}");
 
-            services.SetupClient<IWeatherForecastAPI, WeatherForecastAPI>(settings);
+            services.SetupClient<IRolesAPI, RolesAPI>(settings);
 
             return services;
         }
