@@ -11,15 +11,15 @@
         public static class FinanceManagementLevels
         {
             public const string Self = "Self";
-            public const string RegularUsers = "RegularUsers";
-            public const string UserManagers = "UserManagers";
+            public const string SelfAndRegularUsers = "SelfAndRegularUsers";
+            public const string AllUsers = "AllUsers";
         }
 
         public static class UserManagementLevels
         {
             public const string None = "None";
             public const string RegularUsers = "RegularUsers";
-            public const string UserManagers = "UserManagers";
+            public const string AllUsers = "AllUsers";
         }
     }
 }

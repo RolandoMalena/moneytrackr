@@ -43,16 +43,12 @@ namespace MoneyTrackr.Api.Migrations
         private record RoleClaim(string ClaimType, string ClaimValue);
         private readonly RoleClaim[] AdministratorRoleClaims = new RoleClaim[]
         {
-            new(ClaimTypes.FinanceManagementLevel, FinanceManagementLevels.Self),
-            new(ClaimTypes.FinanceManagementLevel, FinanceManagementLevels.RegularUsers),
-            new(ClaimTypes.FinanceManagementLevel, FinanceManagementLevels.UserManagers),
-            new(ClaimTypes.UserManagementLevel, UserManagementLevels.RegularUsers),
-            new(ClaimTypes.UserManagementLevel, UserManagementLevels.UserManagers),
+            new(ClaimTypes.FinanceManagementLevel, FinanceManagementLevels.AllUsers),
+            new(ClaimTypes.UserManagementLevel, UserManagementLevels.AllUsers),
         };
         private readonly RoleClaim[] UserManagerRoleClaims = new RoleClaim[]
         {
-            new(ClaimTypes.FinanceManagementLevel, FinanceManagementLevels.Self),
-            new(ClaimTypes.FinanceManagementLevel, FinanceManagementLevels.RegularUsers),
+            new(ClaimTypes.FinanceManagementLevel, FinanceManagementLevels.SelfAndRegularUsers),
             new(ClaimTypes.UserManagementLevel, UserManagementLevels.RegularUsers)
         };
         private readonly RoleClaim[] RegularUserRoleClaims = new RoleClaim[]
@@ -84,13 +80,9 @@ namespace MoneyTrackr.Api.Migrations
             {
                 new object[] { AdministratorRole.Id, AdministratorRoleClaims[0].ClaimType, AdministratorRoleClaims[0].ClaimValue },
                 new object[] { AdministratorRole.Id, AdministratorRoleClaims[1].ClaimType, AdministratorRoleClaims[1].ClaimValue },
-                new object[] { AdministratorRole.Id, AdministratorRoleClaims[2].ClaimType, AdministratorRoleClaims[2].ClaimValue },
-                new object[] { AdministratorRole.Id, AdministratorRoleClaims[3].ClaimType, AdministratorRoleClaims[3].ClaimValue },
-                new object[] { AdministratorRole.Id, AdministratorRoleClaims[4].ClaimType, AdministratorRoleClaims[4].ClaimValue },
                 
                 new object[] { UserManagerRole.Id, UserManagerRoleClaims[0].ClaimType, UserManagerRoleClaims[0].ClaimValue },
                 new object[] { UserManagerRole.Id, UserManagerRoleClaims[1].ClaimType, UserManagerRoleClaims[1].ClaimValue },
-                new object[] { UserManagerRole.Id, UserManagerRoleClaims[2].ClaimType, UserManagerRoleClaims[2].ClaimValue },
                 
                 new object[] { RegularUserRole.Id, RegularUserRoleClaims[0].ClaimType, RegularUserRoleClaims[0].ClaimValue },
                 new object[] { RegularUserRole.Id, RegularUserRoleClaims[1].ClaimType, RegularUserRoleClaims[1].ClaimValue },
