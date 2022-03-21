@@ -6,14 +6,12 @@ on:
     - '*'
 
 jobs:
-  deploy:
+  deploy-api:
     if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production' }}
     runs-on: ubuntu-20.04
     strategy:
       matrix:
         arrays: [{
-          name: "API - Staging",
-          app: "api",
           environment: "staging",
           port: 8081,
           db_host: "DB_STAGING_HOST",
@@ -21,25 +19,11 @@ jobs:
           db_password: "DB_STAGING_PASSWORD",
           shouldRun: "${{ github.ref == 'refs/heads/master' }}"
         }, {
-          name: "Web App - Staging",
-          app: "web",
-          environment: "staging",
-          port: 8082,
-          shouldRun: "${{ github.ref == 'refs/heads/master' }}"
-        }, {
-          name: "API - Production",
-          app: "api",
           environment: "production",
           port: 8091,
           db_host: "DB_PRODUCTION_HOST",
           db_port: "DB_PRODUCTION_PORT",
           db_password: "DB_PRODUCTION_PASSWORD",
-          shouldRun: "${{ github.ref == 'refs/heads/production' }}"
-        }, {
-          name: "Web App - Production",
-          app: "web",
-          environment: "production",
-          port: 8092,
           shouldRun: "${{ github.ref == 'refs/heads/production' }}"
         }]
         exclude:
@@ -52,15 +36,14 @@ jobs:
         run: docker-compose -f docker-compose-${{ matrix.arrays.environment }}.yml build common
       
       - name: Build container
-        run: docker-compose -f docker-compose-${{ matrix.arrays.environment }}.yml build ${{ matrix.arrays.app }}
+        run: docker-compose -f docker-compose-${{ matrix.arrays.environment }}.yml build api
 
       - name: Push container
         run: |
           docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
-          docker push rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }}
+          docker push rolandomalena/moneytrackr:api-${{ matrix.arrays.environment }}
 
       - name: Run Migrations
-        if: ${{ matrix.arrays.app == 'api' }}
         run: |
           cd MoneyTrackr/Apps/MoneyTrackr.Api
           dotnet tool install --global dotnet-ef
@@ -81,11 +64,61 @@ jobs:
           script: |
             sudo docker login -u rolandomalena -p '${{ secrets.DOCKERHUB_PASSWORD }}'
 
+            echo Deploying API
+            sudo docker rm moneytrackr-api-${{ matrix.arrays.environment }} -f
+            sudo docker rmi rolandomalena/moneytrackr:api-${{ matrix.arrays.environment }} -f
+            sudo docker pull rolandomalena/moneytrackr:api-${{ matrix.arrays.environment }}
+            sudo docker run -d -p ${{ matrix.arrays.port }}:80 --restart unless-stopped -e Database__Username=admin -e Database__Password=${{ secrets[matrix.arrays.db_password] }} -e Database__Host=${{ secrets[matrix.arrays.db_host] }} -e Database__Port=${{ secrets[matrix.arrays.db_port] }} -e Database__Database=db --name moneytrackr-api-${{ matrix.arrays.environment }} rolandomalena/moneytrackr:api-${{ matrix.arrays.environment }}
+
+            echo Cleaning up
+            sudo docker container prune -f
+            sudo docker image prune -f
+  
+  deploy-web:
+    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/production' }}
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        arrays: [{
+          environment: "staging",
+          port: 8082,
+          shouldRun: "${{ github.ref == 'refs/heads/master' }}"
+        }, {
+          environment: "production",
+          port: 8092,
+          shouldRun: "${{ github.ref == 'refs/heads/production' }}"
+        }]
+        exclude:
+          - arrays: { shouldRun: false }
+    steps:
+      - name: Download source code
+        uses: actions/checkout@v2
+
+      - name: Build common container
+        run: docker-compose -f docker-compose-${{ matrix.arrays.environment }}.yml build common
+      
+      - name: Build container
+        run: docker-compose -f docker-compose-${{ matrix.arrays.environment }}.yml build web
+
+      - name: Push container
+        run: |
+          docker login -u rolandomalena -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          docker push rolandomalena/moneytrackr:web-${{ matrix.arrays.environment }}
+
+      - name: Deploy application
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo docker login -u rolandomalena -p '${{ secrets.DOCKERHUB_PASSWORD }}'
+
             echo Deploying
-            sudo docker rm moneytrackr-${{ matrix.arrays.app }}-${{ matrix.arrays.environment }} -f
-            sudo docker rmi rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }} -f
-            sudo docker pull rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }}
-            sudo docker run -d -p ${{ matrix.arrays.port }}:80 --restart unless-stopped --name moneytrackr-${{ matrix.arrays.app }}-${{ matrix.arrays.environment }} rolandomalena/moneytrackr:${{ matrix.arrays.app }}-${{ matrix.arrays.environment }}
+            sudo docker rm moneytrackr-web-${{ matrix.arrays.environment }} -f
+            sudo docker rmi rolandomalena/moneytrackr:web-${{ matrix.arrays.environment }} -f
+            sudo docker pull rolandomalena/moneytrackr:web-${{ matrix.arrays.environment }}
+            sudo docker run -d -p ${{ matrix.arrays.port }}:80 --restart unless-stopped --name moneytrackr-web-${{ matrix.arrays.environment }} rolandomalena/moneytrackr:web-${{ matrix.arrays.environment }}
 
             echo Cleaning up
             sudo docker container prune -f
