@@ -1,17 +1,46 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
+    <div>
         <NavMenu />
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+        <article class="page-body">
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
+            @Body
             @Body
         </article>
     </main>
+
+    <footer class="fixed-bottom d-flex flex-wrap justify-content-between align-items-center py-2">
+        <div class="px-4">
+            &copy; @DateTime.Now.Year - MoneyTrackr <br class="hide-desktop" /> by <strong><a href="#About">Rolando Malena</a></strong>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex mx-4">
+            <li class="ms-3">
+                <a class="translusent" href="https://www.linkedin.com/in/rolandomalena/" target="_blank">
+                    <img src="images/linkedin.png" width="32" title="LinkedIn Profile" />
+                </a>
+                &nbsp;
+                <a class="translusent" href="https://github.com/RolandoMalena" target="_blank">
+                    <img src="images/github.png" width="32" title="GitHub Profile" />
+                </a>
+            </li>
+        </ul>
+    </footer>
 </div>
