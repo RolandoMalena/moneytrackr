@@ -1,9 +1,10 @@
 ﻿@page "/fetchdata"
 @using MoneyTrackr.ApiClient.APIs
 @using MoneyTrackr.Shared.DTOs
+@using System.Text
 @inject IRolesAPI Api
 
-<PageTitle>Roles</PageTitle>
+<PageTitle>@PageTitlePrefix - Roles</PageTitle>
 
 <h1>Roles</h1>
 
@@ -20,7 +21,8 @@ else
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Claims</th>
+                <th>@AddWhiteSpace(FinanceManagementLevel)</th>
+                <th>@AddWhiteSpace(UserManagementLevel)</th>
             </tr>
         </thead>
         <tbody>
@@ -29,7 +31,8 @@ else
                 <tr>
                     <td>@role.Id</td>
                     <td>@role.Name</td>
-                    <td>@string.Join(", ", role.Claims?.Select(c => $"{c.Type}: {c.Value}") ?? new string[0])</td>
+                    <td>@GetClaimValue(role.Claims, FinanceManagementLevel)</td>
+                    <td>@GetClaimValue(role.Claims, UserManagementLevel)</td>
                 </tr>
             }
         </tbody>
@@ -42,5 +45,32 @@ else
     protected override async Task OnInitializedAsync()
     {
         roles = await Api.GetRolesAsync();
+    }
+
+    private string AddWhiteSpace(string str)
+    {
+        StringBuilder builder = new();
+
+        foreach (char c in str)
+        {
+            if (char.IsUpper(c))
+                builder.Append(" ");
+
+            builder.Append(c);
+        }
+
+        return builder.ToString();
+    }
+
+    private string GetClaimValue(RoleClaimDto?[] claims, string claimToGet)
+    {
+        RoleClaimDto? claim = claims?
+            .Where(c => c is not null && c.Type == claimToGet)
+            .FirstOrDefault();
+
+        if (claim is null)
+            return "None";
+
+        return AddWhiteSpace(claim.Value);
     }
 }
