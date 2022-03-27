@@ -122,18 +122,25 @@
     font-size: medium;
 }
 
-.nav-link:hover {
-    text-decoration: none;
-    background-color: inherit !important;
-    color: rgba(0,100,0,.5) !important;
-}
 
 .nav-link.active {
     background-color: darkgreen !important;
     color: #fff !important;
 }
 
-.nav-link.active:hover {
-    background-color: rgba(0,100,0,.5) !important;
-    color: #fff !important;
+.nav-link:hover {
+    text-decoration: none;
+}
+
+@media (min-width: 768px) {
+    .nav-link:hover {
+        text-decoration: none;
+        background-color: inherit !important;
+        color: rgba(0,100,0,.5) !important;
+    }
+
+    .nav-link.active:hover {
+        background-color: rgba(0,100,0,.5) !important;
+        color: #fff !important;
+    }
 }
