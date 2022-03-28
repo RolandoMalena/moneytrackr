@@ -5,6 +5,7 @@
     top: 0;
     left: 0;
     right: 0;
+    z-index: 10000;
 }
 
 @media (max-width: 767px) {
@@ -142,5 +143,24 @@
     .nav-link.active:hover {
         background-color: rgba(0,100,0,.5) !important;
         color: #fff !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .menu-overlay {
+        display: block !important;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #000;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 200ms;
+    }
+
+    .menu-overlay:not(.collapse) {
+        opacity: 0.25;
     }
 }
