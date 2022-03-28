@@ -1,6 +1,7 @@
-﻿<div class="ps-3 navbar navbar-dark">
+﻿<div class="menu-overlay @NavMenuCssClass fade" @onclick="CloseNavMenu"></div>
+<div class="ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" href="" @onclick="ToggleNavMenu">
             <img src="icon.svg" width="40" height="40" alt="icon" />
             <span>MoneyTrackr</span>
         </a>
@@ -10,19 +11,19 @@
         <nav class="@NavMenuCssClass menu-container">
             <div class="menu menu-left">
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All" @onclick="CloseNavMenu">
                         <span class="oi oi-home" aria-hidden="true"></span> Home
                     </NavLink>
                 </div>
             </div>
             <div class="menu menu-right">
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="counter">
+                    <NavLink class="nav-link" href="counter" @onclick="CloseNavMenu">
                         <span class="oi oi-plus" aria-hidden="true"></span> Counter
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="fetchdata">
+                    <NavLink class="nav-link" href="fetchdata" @onclick="CloseNavMenu">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
                     </NavLink>
                 </div>
@@ -32,10 +33,16 @@
 </div>
 
 @code {
-    private string? NavMenuCssClass = "collapse";
+    private const string CloseClass = "collapse";
+    private string? NavMenuCssClass = CloseClass;
 
     private void ToggleNavMenu()
     {
-        NavMenuCssClass = NavMenuCssClass is null ? "collapse" : null;
+        NavMenuCssClass = NavMenuCssClass is null ? CloseClass : null;
+    }
+
+    public void CloseNavMenu()
+    {
+        NavMenuCssClass = "collapse";
     }
 }
