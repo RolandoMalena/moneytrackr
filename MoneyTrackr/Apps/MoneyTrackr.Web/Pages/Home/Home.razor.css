@@ -25,6 +25,7 @@
 
 @media (max-width: 767px) {
     .form-container {
+        width: 100%;
         min-width: auto;
     }
 }
