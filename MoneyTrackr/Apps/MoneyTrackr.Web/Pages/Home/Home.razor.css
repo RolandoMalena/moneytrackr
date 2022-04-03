@@ -1,0 +1,30 @@
+﻿.form-container {
+    min-width: 360px;
+    background-color: rgba(26,188,156,0.3);
+    padding: 1.5rem;
+    border-radius: 5px;
+    height: auto;
+    align-self: flex-start;
+}
+
+@media (min-width: 901px) {
+    .form-container {
+        margin-left: 2rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .form-container {
+        margin: auto;
+    }
+
+    .content-container {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 767px) {
+    .form-container {
+        min-width: auto;
+    }
+}
