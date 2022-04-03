@@ -1,0 +1,64 @@
+﻿<h3>@Title</h3>
+<hr />
+
+<div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" id="login-email" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" id="login-password" />
+    </div>
+
+    <div class="mb-3 collapsable @ConfirmPasswordClass">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" id="login-confirm-password" />
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">
+            <span class="oi oi-@Icon" aria-hidden="true"></span> @Title
+        </button>
+        <button @onclick="ToggleForm" type="button" class="btn btn-light">
+            <span class="oi oi-@AltIcon" aria-hidden="true"></span> @AltTitle instead
+        </button>
+    </div>
+
+@code {
+    private const string RegisterTitle = "Register";
+    private const string LogInTitle = "Log In";
+    private const string RegisterIcon = "person";
+    private const string LogInIcon = "account-login";
+    private const string ShowConfirmPasswordClassName = "show";
+
+    private bool IsLoggingIn = true;
+    private string Title = LogInTitle;
+    private string AltTitle = RegisterTitle;
+    private string? ConfirmPasswordClass = null;
+    private string Icon = LogInIcon;
+    private string AltIcon = RegisterIcon;
+
+    private void ToggleForm()
+    {
+        IsLoggingIn ^= true;
+
+        if (IsLoggingIn) // Log In
+        {
+            Title = LogInTitle;
+            AltTitle = RegisterTitle;
+            ConfirmPasswordClass = null;
+            Icon = LogInIcon;
+            AltIcon = RegisterIcon;
+
+            return;
+        }
+
+        // Register
+        Title = RegisterTitle;
+        AltTitle = LogInTitle;
+        ConfirmPasswordClass = ShowConfirmPasswordClassName;
+        Icon = RegisterIcon;
+        AltIcon = LogInIcon;
+    }
+}

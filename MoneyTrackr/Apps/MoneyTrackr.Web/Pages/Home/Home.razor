@@ -1,0 +1,41 @@
+﻿@page "/"
+@using MoneyTrackr.Web.Pages.Home.Components;
+
+<PageTitle>@PageTitlePrefix - Home</PageTitle>
+
+<div class="d-flex flex-row content-container">
+    <div class="text-justify p-2">
+        <h1 class="text-center">Welcome to MoneyTrackr!</h1>
+        <hr />
+        <p>
+            MoneyTrackr is a web application that allow users to manage their finances and visualize how money is spent.
+            It is a test project built as a development demonstration. It is a <strong>SPA (Single Page Application)</strong>
+            developed with <strong>ASP.NET Core 6</strong> with <strong>Blazor</strong> using
+            <strong>HTML5, CSS3 and Bootstrap 5</strong> for the front end and 
+            <strong>C# and Entity Framework Core</strong> for the API in the back end and <strong>PostgreSQL</strong>
+            for the database and it is currently hosted in <strong>Azure</strong>.
+        </p>
+
+        <p>
+            The SPA functionality works by downloading the application completely and dynamically
+            renders content in the browser. Data is loaded and saved with HTTP requests from our API.
+        </p>
+
+        <p>
+            MoneyTrackr is also a <strong>PWA (Progressive Web App)</strong> which allow users
+            to download the application to your device and open it through your Home Screen or Desktop.
+        </p>
+
+        <p>
+            <strong>This is not a real service so real data should never be submitted.</strong> Feel free
+            to register a user with a test email and play around. The Source Code is posted on
+            <strong><a href="https://github.com/RolandoMalena/moneytrackr" target="_blank">GitHub.</a></strong>
+            To know more about the developer, <strong><a href="#About">click here.</a></strong>
+            If you don't want to register, you can always use the accounts at the bottom to try it out.
+        </p>
+    </div>
+
+    <div class="form-container">
+        <SessionForm />
+    </div>
+</div>

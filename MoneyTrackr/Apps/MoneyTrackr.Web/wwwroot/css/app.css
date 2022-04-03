@@ -7,13 +7,13 @@ html, body {
 .page {
     flex-direction: column !important;
     max-width: 1140px;
-    margin: 40px auto;
+    margin: 40px auto 100px auto;
 }
 
 @media (min-width: 768px) {
     .page {
         margin-top: 80px;
-        margin-bottom: 80px;
+        margin-bottom: 60px;
     }
 }
 
@@ -76,16 +76,25 @@ h1:focus {
     content: "An error has occurred."
 }
 
+hr {
+    border-top: solid 1px rgba(26,188,156);
+    opacity: 1;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
 /*#region theming for anchors */
 a, .btn-link {
-    color: darkgreen !important;
+    color: darkgreen;
     padding: 0px;
     text-align: left;
     text-decoration: none;
 }
 
 a:hover, .btn-link:hover {
-    color: rgb(83,205,181) !important;
+    color: rgb(83,205,181);
     text-decoration: underline;
 }
 /*#endregion */
@@ -120,5 +129,28 @@ footer {
     max-width: 1140px;
     margin: 0 auto;
     background-color: #fff;
+}
+/*#endregion */
+
+/*#region theming for buttons */
+.btn-primary {
+    background-color: rgb(83,205,181);
+    border-color: rgb(81,194,157);
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: rgb(53,175,151) !important;
+    border-color: rgb(51,164,127) !important;
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgb(53 175 151 / 50%) !important;
+    background-color: rgb(53,175,151) !important;
+    border-color: rgb(51,164,127) !important;
+}
+
+.btn > .oi {
+    margin-right: 8px;
 }
 /*#endregion */
